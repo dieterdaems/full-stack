@@ -1,5 +1,5 @@
 # Team Collaboration Tool
 
-Description
-A collaboration tool where an admin can create teams, users can create a login and join teams. Users can add projects and see an overview of all the tasks that are involved in the project and complete them. Users can add new tasks when needed
+
+A collaboration tool for teams to manage their projects and divide them into tasks. An admin can create teams, users can create an account and join teams. Users can also add projects and divide them into tasks and complete them.
 ### \<Ibra Altaee> / \<Dieter Daems>
