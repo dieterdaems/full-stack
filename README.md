@@ -1,8 +1,5 @@
-[![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-24ddc0f5d75046c5622901739e7c5dd533143b0c8e959d652212380cedb1ea36.svg)](https://classroom.github.com/a/pdQz8rYq)
-# Project template
+# Team Collaboration Tool
 
-To get started, open the Readme.md files in the analysis, back-end and front-end folders.
-
-Change this readme file to describe your project, change the title and fill in your name below.
-
-### \<Student 1 name\> / \<Student 2 name\>
+Description
+A collaboration tool where an admin can create teams, users can create a login and join teams. Users can add projects and see an overview of all the tasks that are involved in the project and complete them. Users can add new tasks when needed
+### \<Ibra Altaee> / \<Dieter Daems>
