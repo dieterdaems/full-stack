@@ -1,8 +1,8 @@
 import { User } from "../../model/user";
 
 const users: User[] = [
-    new User({name: 'Stijnje', spec: 'niks', email: 'stijne-alex', pass: 't'}),
-    new User({name: 'Love', spec: 'curry', email: 'love-curry', pass:'t'})
+    new User({name: 'Stijnje', specialisation: 'Ai', email: 'stijn@test.be', password: 't'}),
+    new User({name: 'Sander', specialisation: 'Backend', email: 'sander@test.be', password:'t'})
 ,
 ];
 
