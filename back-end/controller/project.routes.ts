@@ -1,5 +1,5 @@
-import projectService from "../domain/service/project.service";
-import express, {Request, Response } from 'express';
+import projectService from "../service/project.service";
+import express, { Request, Response } from 'express';
 
 const projectRouter = express.Router();
 projectRouter.get('/', async (req: Request, res: Response) => {
@@ -9,6 +9,7 @@ projectRouter.get('/', async (req: Request, res: Response) => {
     }
     catch (error) {
         res.status(400).json({ status: 'error', errorMessage: error.message });
-    }});
+    }
+});
 
-export {projectRouter};
+export { projectRouter };

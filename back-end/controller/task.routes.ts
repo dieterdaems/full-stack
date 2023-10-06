@@ -1,6 +1,6 @@
 import e from "express";
-import taskService from "../domain/service/task.service";
-import express, {Request, Response } from 'express';
+import taskService from "../service/task.service";
+import express, { Request, Response } from 'express';
 
 const taskRouter = express.Router();
 taskRouter.get('/', async (req: Request, res: Response) => {
@@ -10,6 +10,7 @@ taskRouter.get('/', async (req: Request, res: Response) => {
     }
     catch (error) {
         res.status(400).json({ status: 'error', errorMessage: error.message });
-    }});
+    }
+});
 
-    export {taskRouter};
+export { taskRouter };

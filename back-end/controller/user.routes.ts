@@ -1,5 +1,5 @@
-import userService from "../domain/service/user.service";
-import express, {Request, Response } from 'express';
+import userService from "../service/user.service";
+import express, { Request, Response } from 'express';
 
 const userRouter = express.Router();
 userRouter.get('/', async (req: Request, res: Response) => {
@@ -9,7 +9,8 @@ userRouter.get('/', async (req: Request, res: Response) => {
     }
     catch (error) {
         res.status(400).json({ status: 'error', errorMessage: error.message });
-    }});
+    }
+});
 
 
-export {userRouter};
+export { userRouter };

@@ -1,5 +1,5 @@
-import teamService from "../domain/service/team.service";
-import express, {Request, Response } from 'express';
+import teamService from "../service/team.service";
+import express, { Request, Response } from 'express';
 
 const teamRouter = express.Router();
 teamRouter.get('/', async (req: Request, res: Response) => {
@@ -9,6 +9,7 @@ teamRouter.get('/', async (req: Request, res: Response) => {
     }
     catch (error) {
         res.status(400).json({ status: 'error', errorMessage: error.message });
-    }});
+    }
+});
 
-export {teamRouter};
+export { teamRouter };
