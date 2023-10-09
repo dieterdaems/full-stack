@@ -6,6 +6,8 @@ import { userRouter } from './controller/user.routes';
 import { projectRouter } from './controller/project.routes';
 import { teamRouter } from './controller/team.routes';
 import { taskRouter } from './controller/task.routes';
+import swaggerUI from 'swagger-ui-express';
+import swaggerJSDoc from 'swagger-jsdoc';
 
 const app = express();
 dotenv.config();
@@ -17,6 +19,20 @@ app.use(bodyParser.json());
 app.get('/status', (req, res) => {
     res.json({ message: 'Back-end is running...' });
 });
+
+const swaggerOptions = {
+    definition: {
+        openapi: '3.0.0',
+        info: {
+            title: 'Project API',
+            version: '1.0.0',
+            description: 'API for managing projects',
+      },
+    },
+    apis: ['./controller/*.routes.ts'],
+  };
+const swaggerSpec = swaggerJSDoc(swaggerOptions);
+app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerSpec));
 
 app.use('/users', userRouter);
 app.use('/teams', teamRouter);
