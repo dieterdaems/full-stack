@@ -4,7 +4,7 @@ import cors from 'cors';
 import * as bodyParser from 'body-parser';
 import { userRouter } from './controller/user.routes';
 import { projectRouter } from './controller/project.routes';
-import { teamRouter } from './controller/team.routs';
+import { teamRouter } from './controller/team.routes';
 import { taskRouter } from './controller/task.routes';
 
 const app = express();
