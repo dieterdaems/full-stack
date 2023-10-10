@@ -43,7 +43,7 @@ projectRouter.get('/', async (req: Request, res: Response) => {
 
 /**
  * @swagger
- * /project/{id}:
+ * /projects/{id}:
  *   get:
  *     summary: Get a project by ID.
  *     parameters:
