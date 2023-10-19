@@ -5,6 +5,8 @@ export class Project {
     readonly id: number;
     readonly team: Team;
 
+
+
     constructor(project: {name: string, id:number, team:Team}) {     
         this.name = project.name;
         this.id = project.id;

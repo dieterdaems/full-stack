@@ -1,4 +1,4 @@
-import userDb from "../domain/data-access/prisma/user.db";
+import userDb from "../domain/data-access/user.db";
 import { User } from "../domain/model/user";
 
 const getAllUsers = async (): Promise<User[]> => userDb.getAllUsers();

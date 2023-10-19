@@ -1,4 +1,4 @@
-import taskDb from "../domain/data-access/prisma/task.db";
+import taskDb from "../domain/data-access/task.db";
 import { Task } from "../domain/model/task";
 
 const getAllTasks = async (): Promise<Task[]> => taskDb.getAllTasks();

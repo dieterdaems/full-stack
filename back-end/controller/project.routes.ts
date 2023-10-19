@@ -83,4 +83,22 @@ projectRouter.get('/:id', async (req: Request, res: Response) => {
     }
 });
 
+projectRouter.post('/add', async (req: Request, res: Response) => {
+    try {
+        const project = <ProjectInput>req.body;
+        const newProject = await projectService.createProject(project);
+        res.status(200).json(project);
+    }
+    catch (error) {
+        res.status(400).json({ status: 'error', errorMessage: error.message });
+    }
+}
+);
+
+//post om toe te voegen
+//put om aan te passen
+//delete om te verwijderen
+
+
+
 export { projectRouter };
