@@ -1,3 +1,34 @@
+/**
+ * @swagger
+ *  components:
+ *   schemas:
+ *    User:
+ *      type: object
+ *      properties:
+ *          id:
+ *              type: number
+ *              format: int64
+ *          name:
+ *              type: string
+ *          specialisation:
+ *              type: string
+ *          email:
+ *              type: string
+ *          password:
+ *              type: string
+ *    UserInput:
+ *      type: object
+ *      properties:
+ *          name:
+ *              type: string
+ *          specialisation:
+ *              type: string
+ *          email:
+ *              type: string
+ *          password:
+ *              type: string
+ */
+
 import userService from "../service/user.service";
 import express, { Request, Response } from 'express';
 import { UserInput } from "../types";
@@ -83,7 +114,37 @@ userRouter.get('/:email', async (req: Request, res: Response) => {
     }
 });
 
-
+/**
+ * @swagger
+ * /users/add:
+ *   post:
+ *     summary: Create a new user.
+ *     requestBody:
+ *       description: User to add.
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/UserInput'
+ *     responses:
+ *       200:
+ *         description: Successful response with the new user.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/User'
+ *       400:
+ *         description: Bad request with an error message.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                 errorMessage:
+ *                   type: string
+ */
 userRouter.post('/add', async (req: Request, res: Response) => {
     try {
         const user = <UserInput>req.body; // cast to DTO
