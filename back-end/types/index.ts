@@ -24,3 +24,6 @@ type TaskInput = {
     deadline?: Date;
     project?: ProjectInput;
     };
+
+
+export { UserInput, ProjectInput, TeamInput, TaskInput };
