@@ -9,4 +9,10 @@ const users: User[] = [
 const getAllUsers = (): User[] => users;
 const getUserByEmail = (email: string): User => users.find((u) => u.email === email);
 
-export default { getAllUsers, getUserByEmail };
+const createUser = ({name, specialisation, email, password} : User): User => {
+    const user = new User({name, specialisation, email, password});
+    users.push(user);
+    return user;
+}
+
+export default { getAllUsers, getUserByEmail, createUser };

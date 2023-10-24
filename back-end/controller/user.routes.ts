@@ -1,5 +1,6 @@
 import userService from "../service/user.service";
 import express, { Request, Response } from 'express';
+import { UserInput } from "../types";
 
 const userRouter = express.Router();
 
@@ -82,5 +83,16 @@ userRouter.get('/:email', async (req: Request, res: Response) => {
     }
 });
 
+
+userRouter.post('/add', async (req: Request, res: Response) => {
+    try {
+        const user = <UserInput>req.body; // cast to DTO
+        const result = await userService.createUser(user);
+        res.status(200).json(result);
+    }
+    catch (error) {
+        res.status(400).json({ status: 'error', errorMessage: error.message });
+    }
+});
 
 export { userRouter };
