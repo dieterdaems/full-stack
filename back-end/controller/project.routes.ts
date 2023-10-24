@@ -1,5 +1,6 @@
 import projectService from "../service/project.service";
 import express, { Request, Response } from 'express';
+import { ProjectInput } from "../types";
 
 const projectRouter = express.Router();
 

@@ -2,6 +2,7 @@ import { get } from "http";
 import projectDb from "../domain/data-access/project.db";
 import { Project } from "../domain/model/project";
 import teamDb from "../domain/data-access/team.db";
+import { ProjectInput } from "../types";
 
 
 const getAllProjects = async (): Promise<Project[]> => projectDb.getAllProjects();
