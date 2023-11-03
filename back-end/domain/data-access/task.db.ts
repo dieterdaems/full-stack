@@ -5,7 +5,13 @@ import { Task } from "../model/task";
 
 const getAllTasks = async (): Promise<Task[]> => {
     try {
-        const tasksPrisma = await prisma.task.findMany();
+        const tasksPrisma = await prisma.task.findMany(
+            {
+                include: {
+                    project: true
+                }
+            }
+        );
         const tasks = tasksPrisma.map((taskPrisma) => Task.from(taskPrisma));
         return tasks;
     }
@@ -15,7 +21,13 @@ const getAllTasks = async (): Promise<Task[]> => {
 }
 const getTaskById = async (id: number): Promise<Task> => {
     try {
-        const taskPrisma = await prisma.task.findUnique({ where: { id: id } });
+        const taskPrisma = await prisma.task.findUnique({
+             where: { id: id },
+             include: {
+                    project: true
+              }
+            });
+            
         const task = Task.from(taskPrisma);
         return task;
     }
@@ -24,10 +36,16 @@ const getTaskById = async (id: number): Promise<Task> => {
     }
 }
 
-const createTask = async ({name, id, description, deadline}: TaskInput): Promise<Task> => {
+const createTask = async ({name, id, description, deadline, project}: TaskInput): Promise<Task> => {
     try {
         const newTask = new Task({name, id, description, deadline});
-        const taskPrisma = await prisma.task.create({ data: { name, id, description, deadline } });
+        const taskPrisma = await prisma.task.create({
+             data: { name, 
+                     description, 
+                     deadline, 
+                        project: { connect: { id: project.id } }
+                    },
+                include: {project: true} });
         const task = Task.from(taskPrisma);
         return task;
     }
@@ -39,7 +57,9 @@ const createTask = async ({name, id, description, deadline}: TaskInput): Promise
 const updateTask = async ({name, id, description, deadline}: TaskInput): Promise<Task> => {
     try {
         const newTask = new Task({name, id, description, deadline});
-        const taskPrisma = await prisma.task.update({ where: { id: id }, data: { name, id, description, deadline } });
+        const taskPrisma = await prisma.task.update({ where: { id: id },
+             data: { name, description, deadline },
+             include: {project: true} });
         const task = Task.from(taskPrisma);
         return task;
     }

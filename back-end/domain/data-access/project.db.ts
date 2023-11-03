@@ -2,8 +2,8 @@ import { Project } from "../model/project";
 
 
 const projects: Project[] = [
-    new Project({ name: 'Project 1', id: 1, team: null }),
-    new Project({ name: 'Project 2', id: 2, team: null }),
+    new Project({ name: 'Project 1', id: 1 }),
+    new Project({ name: 'Project 2', id: 2}),
 ];
 
 const getAllProjects = (): Project[] => projects;

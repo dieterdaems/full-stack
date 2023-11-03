@@ -1,4 +1,4 @@
-import { Task as TaskPrisma } from "@prisma/client"; 
+import { Task as TaskPrisma, Project as ProjectPrisma } from "@prisma/client"; 
 import { Project } from "./project";
 
 export class Task {
@@ -8,7 +8,7 @@ export class Task {
     readonly deadline: Date;
     readonly project?: Project
 
-    constructor(task: {name: string, id?:number, description:string, deadline:Date, project:Project}) {     
+    constructor(task: {name: string, id?:number, description:string, deadline:Date, project?:Project}) {     
         this.validate(task);
         this.name = task.name;
         this.id = task.id;
@@ -33,5 +33,13 @@ export class Task {
         description,
         deadline,
         project
-    }: TaskPrisma)  { return new Task({ id, name, description, deadline, project }) }
+    }: TaskPrisma & { project: ProjectPrisma})  { 
+        return new Task(
+            { id,
+            name,
+            description,
+            deadline,
+            project: Project.from(project) 
+        })
+    }
 }
