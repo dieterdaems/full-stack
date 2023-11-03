@@ -12,6 +12,7 @@ const getAllTasks = async (): Promise<Task[]> => {
                 }
             }
         );
+        if (!tasksPrisma) throw new Error(`No tasks found.`);
         const tasks = tasksPrisma.map((taskPrisma) => Task.from(taskPrisma));
         return tasks;
     }
@@ -27,7 +28,7 @@ const getTaskById = async (id: number): Promise<Task> => {
                     project: true
               }
             });
-            
+        if (!taskPrisma) throw new Error(`Task with id ${id} does not exist.`);
         const task = Task.from(taskPrisma);
         return task;
     }

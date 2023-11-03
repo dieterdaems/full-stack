@@ -31,7 +31,8 @@ const project1 = await prisma.project.create({
     data: {
         name: "Project 1",
         tasks: {
-                 connect: { id: task1.id } ,
+                 connect: [{ id: task1.id } ,
+                            { id: task2.id } ]
         },
     },
 }); 
