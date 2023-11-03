@@ -3,7 +3,7 @@ import { Team } from "./team";
 export class Project {
     readonly name: string;
     readonly id?: number;
-    readonly team: Team;
+    readonly team?: Team;
 
 
 
