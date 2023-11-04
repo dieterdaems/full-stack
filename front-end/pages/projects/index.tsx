@@ -1,4 +1,4 @@
-import ProjectOverviewTable from "@/components/projects/ProjectOverviewTable";
+import ProjectOverviewTable from "@/components/projects/ProjectsOverviewTable";
 import ProjectService from "@/services/ProjectService";
 import { Project } from "@/types";
 import { Head } from "next/document";

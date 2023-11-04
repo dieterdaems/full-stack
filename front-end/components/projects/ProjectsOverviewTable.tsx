@@ -1,3 +1,5 @@
+import { Project } from "@/types";
+
 type Props = {
     projects: Project[] | undefined;
 };
