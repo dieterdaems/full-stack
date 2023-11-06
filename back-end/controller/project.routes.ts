@@ -6,6 +6,21 @@ const projectRouter = express.Router();
 
 /**
  * @swagger
+ * components:
+ *   schemas:
+ *     Project:
+ *       type: object
+ *       properties:
+ *         id:
+ *           type: integer
+ *         name:
+ *           type: string
+ *       required:
+ *         - name
+ */
+
+/**
+ * @swagger
  * /projects:
  *   get:
  *     summary: Get a list of all projects.
