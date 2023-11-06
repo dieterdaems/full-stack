@@ -1,14 +1,17 @@
+import { fa, faker } from "@faker-js/faker";
 import { Project } from "../domain/model/project";
 import { Task } from "../domain/model/task";
 import { Team } from "../domain/model/team";
 
+const futureDate = new Date();
+futureDate.setDate(futureDate.getDate() + 7);
 
 test('Given: valid data for task, When: task is created, Then: task is created with valid name',() => {
     var validName: string = "task1";
     var validId: number = 1;
     var validDescription: string = "description1";
-    var validDeadline: Date = new Date();
-    var validProject: Project = new Project({name: "project1", id: 1, team: new Team({name: "team1", id: 1, users: []})});
+    var validDeadline: Date = futureDate;
+    var validProject: Project = new Project({name: "project1", id: 1});
     var task: Task = new Task({name: validName, id: validId, description: validDescription, deadline: validDeadline, /*project: validProject*/});
     expect(task.name).toEqual(validName);
     expect(task.id).toEqual(validId);
@@ -48,3 +51,12 @@ expect(() => new Task({name: validName, id: validId, description: validDescripti
 }
 )
 
+test('Given: bad deadline for task, When: task is created, Then: task is not created and error is given',() => {
+    var validName: string = "task1";
+    var validId: number = 1;
+    var validDescription: string = "description1";
+    var invalidDeadline: Date = new Date("2020-01-01");
+    // var validProject: Project = new Project({name: "project1", id: 1, team: new Team({name: "team1", id: 1, users: []})});
+expect(() => new Task({name: validName, id: validId, description: validDescription, deadline: invalidDeadline, /*project: validProject*/})).toThrowError("Task deadline must be in the future.");
+}
+)
