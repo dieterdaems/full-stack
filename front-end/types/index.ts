@@ -13,4 +13,9 @@ type Project = {
     tasks?: Task[];
 }
 
-export type { Project, Task };
+type StatusMessage = {
+    type: 'error' | 'success';
+    message: string
+}
+
+export type { Project, Task, StatusMessage };
