@@ -11,11 +11,17 @@ const getUserByEmail = async (email: string): Promise<User> => {
     return user;
 };
 
-const createUser = ({name, specialisation, email, password}: UserInput): User => {
+const getUserById = async (id: number): Promise<User> => {
+    const user = await userDb.getUserById(id);
+    if (!user) throw new Error(`User with id ${id} does not exist.`);
+    return user;
+}
+
+const createUser = ({name, specialisation, email, password}: UserInput): Promise<User> => {
     const userExists = userDb.getUserByEmail(email);
     if (userExists) throw new Error(`User with email ${email} already exists.`);
     const user = new User({name, specialisation, email, password});
     return userDb.createUser(user);
-}
+};
 
-export default { getAllUsers, getUserByEmail, createUser };
+export default { getAllUsers, getUserByEmail, getUserById, createUser };
