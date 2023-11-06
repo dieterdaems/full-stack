@@ -13,6 +13,7 @@ const Tasks: React.FC = () => {
     const getTaskByProjectId = async () => {
         const response = await TaskService.getByProjectId(id as string);
         const tasks = await response.json();
+        // console.log("test");
         return tasks;
     }
 
@@ -24,7 +25,7 @@ const Tasks: React.FC = () => {
     const {data, isLoading, error} = useSWR('tasksByProjectId', getTaskByProjectId);
 
     useInterval(() => {
-        mutate('taskByProjectId',getTaskByProjectId());
+        mutate('tasksByProjectId',getTaskByProjectId());
     }, 1000);
 
     return (
