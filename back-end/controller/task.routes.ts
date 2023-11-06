@@ -83,4 +83,34 @@ taskRouter.get('/:id', async (req: Request, res: Response) => {
     }
 });
 
+taskRouter.get('/project/:id', async (req: Request, res: Response) => {
+    try {
+        const tasks = await taskService.getTaskByProjectId(parseInt(req.params.id));
+        res.status(200).json(tasks);
+    }
+    catch (error) {
+        res.status(400).json({ status: 'error', errorMessage: error.message });
+    }
+});
+
+taskRouter.post('/', async (req: Request, res: Response) => {
+    try {
+        const task = await taskService.createTask(req.body);
+        res.status(201).json(task);
+    }
+    catch (error) {
+        res.status(400).json({ status: 'error', errorMessage: error.message });
+    }
+});
+
+taskRouter.delete('/:id', async (req: Request, res: Response) => {
+    try {
+        const task = await taskService.deleteById(parseInt(req.params.id));
+        res.status(200).json(task);
+    }
+    catch (error) {
+        res.status(400).json({ status: 'error', errorMessage: error.message });
+    }
+});
+
 export { taskRouter };

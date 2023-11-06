@@ -8,7 +8,6 @@ type UserInput = {
 type ProjectInput = {
     name?: string;
     id?: number;
-    team?: TeamInput;
     };
 
 type TeamInput = {

@@ -7,8 +7,17 @@ const getAll = () => {
     });
 }
 
+const getById = (projectId: string) => {
+    return fetch(process.env.NEXT_PUBLIC_API_URL + '/projects/' + projectId, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    });
+}
 const ProjectService = {
-    getAll
+    getAll,
+    getById
 }
 
 export default ProjectService;

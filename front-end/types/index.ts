@@ -9,7 +9,7 @@ type Task = {
 
 type Project = {
     id: number;
-    name: string;
+    name?: string;
     tasks?: Task[];
 }
 

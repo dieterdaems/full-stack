@@ -7,6 +7,7 @@ export class Task {
     readonly description: string;
     readonly deadline: Date;
     readonly project?: Project
+    // readonly completed?: boolean;
 
     constructor(task: {name: string, id?:number, description:string, deadline:Date, project?:Project}) {     
         this.validate(task);
@@ -15,6 +16,7 @@ export class Task {
         this.description = task.description;
         this.deadline = task.deadline;
         this.project = task.project;
+        // this.completed = false;
     }
 
     equals(id:number): boolean{
@@ -32,14 +34,16 @@ export class Task {
         name,
         description,
         deadline,
-        project
+        project,
+        // completed
     }: TaskPrisma & { project: ProjectPrisma})  { 
         return new Task(
             { id,
             name,
             description,
             deadline,
-            project: Project.from(project) 
+            project: Project.from(project),
+            // completed
         })
     }
 }

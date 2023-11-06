@@ -1,10 +1,13 @@
 import { Project } from "@/types";
+import { useRouter } from "next/router";
 
 type Props = {
     projects: Project[] | undefined;
 };
 
+
 const ProjectOverviewTable: React.FC<Props> = ({ projects }: Props) => {
+    const router = useRouter();
     return (
         <>
         <table>
@@ -12,6 +15,7 @@ const ProjectOverviewTable: React.FC<Props> = ({ projects }: Props) => {
                 <tr>
                     <th>Id</th>
                     <th>Naam</th>
+                    <th>View Tasks</th>
                 </tr>
             </thead>
             <tbody>
@@ -19,6 +23,7 @@ const ProjectOverviewTable: React.FC<Props> = ({ projects }: Props) => {
                     <tr key={index}>
                         <td>{project.id}</td>
                         <td>{project.name}</td>
+                        <td><button onClick={() => router.push('/tasks/project/' + project.id)}>View Tasks</button></td>
                     </tr>
                 ))}
             </tbody>
