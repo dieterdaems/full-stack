@@ -24,8 +24,8 @@ const Tasks: React.FC = () => {
     const {data, isLoading, error} = useSWR('tasksByProjectId', getTaskByProjectId);
 
     useInterval(() => {
-        mutate('taskByProjectId',getTaskByProjectId);
-    }, 5000);
+        mutate('taskByProjectId',getTaskByProjectId());
+    }, 1000);
 
     return (
         <>
