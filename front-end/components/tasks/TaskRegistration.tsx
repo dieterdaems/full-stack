@@ -19,18 +19,17 @@ const TaskRegistrationForm: React.FC<Props> = ({projectId} : Props) => {
     const router = useRouter();
 
     const validate = () => {
-        let errorMessage = '';
-        
+        setErrorMessage('');
         if (name === "" || name.trim() === "") {
-            errorMessage += "Name is required\n";
+            setErrorMessage("Name is required\n");
             return false;
         }
         if (description === "" || description.trim() === "") {
-            errorMessage += "Description is required\n";
+            setErrorMessage("Description is required\n");
             return false;
         }
         if (deadline === null || deadline < new Date()) {
-            errorMessage += "Deadline is required and has to be in the future\n";
+            setErrorMessage("Deadline is required and has to be in the future\n");
             return false;
         }
         return true;
@@ -38,12 +37,14 @@ const TaskRegistrationForm: React.FC<Props> = ({projectId} : Props) => {
 
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
+        if (validate()) {
         const newTask = {name, description, deadline, project: {id: projectId}};
-        console.log(newTask);
+        // console.log(newTask);
         const response = await TaskService.create(newTask);
         const data = await response.json();
 
         router.push('/tasks/project/' + projectId);
+        }
 
     }
 
@@ -60,9 +61,7 @@ const TaskRegistrationForm: React.FC<Props> = ({projectId} : Props) => {
             <button type="submit">Submit</button>
         </form>
         <div>
-        {errorMessage && errorMessage.split('\n').map((line, index) => (
-        <p key={index}>{line}</p>
-      ))}
+        {errorMessage && <p>{errorMessage}</p>}
         </div>
                 
                 </>

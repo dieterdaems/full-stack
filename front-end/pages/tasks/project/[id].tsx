@@ -3,29 +3,38 @@ import TaskService from "@/services/TaskService";
 import { Task } from "@/types";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import useSWR, { mutate } from "swr";
+import useInterval from "use-interval";
 
 const Tasks: React.FC = () => {
-    const [tasks, setTasks] = useState<Task[]>();
     const router = useRouter();
     const { id } = router.query;
 
     const getTaskByProjectId = async () => {
         const response = await TaskService.getByProjectId(id as string);
         const tasks = await response.json();
-        setTasks(tasks);
+        return tasks;
     }
 
-    useEffect(() => {
-        getTaskByProjectId();
-    }
-        , []);
+    // useEffect(() => {
+    //     getTaskByProjectId();
+    // }
+    //     , []);
+    
+    const {data, isLoading, error} = useSWR('tasksByProjectId', getTaskByProjectId);
+
+    useInterval(() => {
+        mutate('taskByProjectId',getTaskByProjectId);
+    }, 5000);
 
     return (
         <>
             <main>
                 <h1>Tasks</h1>
+                {error && <p>{error}</p>}
+                {isLoading && <p>Loading...</p>}
                 <section>
-                    {tasks && (<TasksOverviewTable tasks={tasks} />) || (<p>Loading...</p>)}
+                    {data && (<TasksOverviewTable tasks={data} />)}
                 </section>
                 <button onClick={() => router.push('/projects/')}>Return to project overview</button>
             </main>

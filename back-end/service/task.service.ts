@@ -19,6 +19,7 @@ const createTask = async (task: TaskInput): Promise<Task> => {
     const name = task.name
     const description = task.description
     const deadline = task.deadline
+    if (deadline < new Date()) throw new Error("Task deadline must be in the future.");
     const newTask = new Task({ name, description, deadline, project: newProject });
     const ttask = await taskDb.createTask(newTask);
     return ttask;

@@ -4,27 +4,38 @@ import { Project } from "@/types";
 import { Head } from "next/document";
 import { mainModule } from "process";
 import { useEffect, useState, useDeferredValue } from "react";
+import useSWR, { mutate } from "swr";
+import useInterval from "use-interval";
 
 const Projects: React.FC = () => {
-    const [projects, setProjects] = useState<Project[]>();
 
     const fetchProjects = async () => {
+        
         const response = await ProjectService.getAll();
         const projects = await response.json();
-        setProjects(projects);
+        
+        return projects;
     }
 
-useEffect(() => {
-    fetchProjects();
-}, []);
+// useEffect(() => {
+//     fetchProjects();
+// }, []);
+
+const {data, isLoading, error} = useSWR('projectsFromDb', fetchProjects);
+
+useInterval(() => {
+    mutate('projectsFromDb', fetchProjects());
+}, 5000);
 
 
 return (
     <>
     <main>
         <h1>Projects</h1>
+        {error && <p>{error}</p>}
+        {isLoading && <p>Loading...</p>}
         <section>
-            {projects && (<ProjectOverviewTable projects={projects} />) || (<p>Loading...</p>)}
+            {data && (<ProjectOverviewTable projects={data} />) }
         </section>
     </main>
     

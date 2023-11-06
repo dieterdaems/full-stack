@@ -2,27 +2,37 @@ import TasksOverviewTable from "@/components/tasks/TasksProjectOverviewTable";
 import TaskService from "@/services/TaskService";
 import { Task } from "@/types";
 import { useEffect, useState } from "react";
+import useSWR, { mutate } from "swr";
+import useInterval from "use-interval";
 
 const Tasks: React.FC = () => {
-    const [tasks, setTasks] = useState<Task[]>();
+    
 
     const fetchTasks = async () => {
         const response = await TaskService.getAll();
         const tasks = await response.json();
-        setTasks(tasks);
+        return tasks;
     }
 
-    useEffect(() => {
-        fetchTasks();
-    }, []);
+    // useEffect(() => {
+    //     fetchTasks();
+    // }, []);
+
+    const {data, isLoading, error} = useSWR('getTasks', fetchTasks);
+
+    useInterval(() => {
+        mutate('getTasks', fetchTasks());
+    }, 1000);
 
 
     return (
         <>
             <main>
                 <h1>Tasks</h1>
+                {error && <p>{error}</p>}
+                {isLoading && <p>Loading...</p>}
                 <section>
-                    {tasks && (<TasksOverviewTable tasks={tasks} />) || (<p>Loading...</p>)}
+                    {data && (<TasksOverviewTable tasks={data} />)}
                 </section>
             </main>
 

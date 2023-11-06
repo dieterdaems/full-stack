@@ -7,6 +7,8 @@ import taskService from "../service/task.service";
 
 const futureDate = new Date();
 futureDate.setDate(futureDate.getDate() + 7);
+const pastDate = new Date();
+pastDate.setDate(pastDate.getDate() - 7);
 const project1 = new Project({name: "project1", id: 1});
 const project2 = new Project({name: "project2", id: 2});
 
@@ -57,5 +59,10 @@ test('given valid tasks, when getTaskByProjectId is called, then tasks are retur
     taskDb.getTaskByProject = mockTasksDbGetTaskByProject.mockReturnValue([task1, task3]);
     const tasks = await taskService.getTaskByProjectId(1);
     expect(tasks).toEqual([task1, task3]);
+}
+)
+
+test('given invalid task, when createTask is called, then task is not created and error is given', async () => {
+    await expect(() => taskService.createTask({name: "test", description: "test", deadline: pastDate, project: project1})).rejects.toThrow("Task deadline must be in the future.");
 }
 )
