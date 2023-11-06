@@ -1,4 +1,5 @@
 type UserInput = {
+    id?: number;
     name?: string;
     specialisation?: string;
     email?: string;
