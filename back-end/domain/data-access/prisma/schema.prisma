@@ -8,16 +8,17 @@ url = env( "DATABASE_URL")
 }
 
 model User {
-id Int @id @default(autoincrement())
-name String
-specialisation String
-email String
-password String
-teams Team[]
+    id Int @id @default(autoincrement())
+    name String
+    specialisation String
+    email String  @unique
+    password String
+    teams Team[]
 }
 
 model Team {
     id Int @id @default(autoincrement())
+    name String @unique
     users User[]
 }
 
