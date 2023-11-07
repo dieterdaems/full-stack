@@ -1,7 +1,32 @@
 import teamService from "../service/team.service";
 import express, { Request, Response } from 'express';
 
+
 const teamRouter = express.Router();
+
+/**
+ * @swagger
+ * components:
+ *  schemas:
+ *   Team:
+ *    type: object
+ *    properties:
+ *      id:
+ *        type: number
+ *        format: int64
+ *      name:
+ *        type: string
+ *      users:
+ *       $ref: '#/components/schemas/User'
+ *   TeamInput:
+ *    type: object
+ *    properties:
+ *      name:
+ *        type: string
+ *      users:
+ *       $ref: '#/components/schemas/UserInputTeam'
+*/
+
 
 /**
  * @swagger

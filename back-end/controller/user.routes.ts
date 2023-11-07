@@ -27,6 +27,12 @@
  *              type: string
  *          password:
  *              type: string
+*    UserInputTeam:
+ *      type: object
+ *      properties:
+ *          id:
+ *              type: number
+ *              format: int64
  */
 
 import userService from "../service/user.service";
