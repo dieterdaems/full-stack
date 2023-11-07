@@ -104,7 +104,7 @@ userRouter.get('/', async (req: Request, res: Response) => {
  *                   type: string
  */
 
-userRouter.get('/:email', async (req: Request, res: Response) => {
+userRouter.get('/email/:email', async (req: Request, res: Response) => {
     try {
         const user = await userService.getUserByEmail(req.params.email);
         res.status(200).json(user);
