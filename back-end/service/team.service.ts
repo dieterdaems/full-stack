@@ -12,13 +12,13 @@ const getTeamById = async (id: number): Promise<Team> => {
     return team;
 };
 
-const createTeam = ({name, users}: TeamInput): Team => {
-    const teamExists = teamDb.getTeamByName(name);
-    if (teamExists) throw new Error(`Team with name ${name} already exists.`);
-    const UsersArray: User[] = users?.map((user) => new User({name: user.name, specialisation: user.specialisation, email: user.email, password: user.password, id: user.id}));
-    const team = new Team({name, users: UsersArray}); // to validate in service layer - Not a MUST
-    return teamDb.createTeam(team);
-};
+// const createTeam = ({name, users}: TeamInput): Team => {
+//     const teamExists = teamDb.getTeamByName(name);
+//     if (teamExists) throw new Error(`Team with name ${name} already exists.`);
+//     const UsersArray: User[] = users?.map((user) => new User({name: user.name, specialisation: user.specialisation, email: user.email, password: user.password, id: user.id}));
+//     const team = new Team({name, users: UsersArray}); // to validate in service layer - Not a MUST
+//     return teamDb.createTeam(team);
+// };
 
 
-export default { getAllTeams, getTeamById, createTeam };
+export default { getAllTeams, getTeamById, /*createTeam*/ };
