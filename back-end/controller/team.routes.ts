@@ -82,4 +82,44 @@ teamRouter.get('/:id', async (req: Request, res: Response) => {
     }
 });
 
+/**
+ * @swagger
+ * /teams:
+ *   post:
+ *     summary: Create a new team.
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/TeamInput'
+ *     responses:
+ *       201:
+ *         description: Successful response with the created team.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Team'
+ *       400:
+ *         description: Bad request with an error message.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                 errorMessage:
+ *                   type: string
+ */
+teamRouter.post('/create', async (req: Request, res: Response) => {
+    try {
+        const team = await teamService.createTeam(req.body);
+        res.status(201).json(team);
+    }
+    catch (error) {
+        res.status(400).json({ status: 'error', errorMessage: error.message });
+    }
+});
+
 export { teamRouter };
