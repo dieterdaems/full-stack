@@ -17,8 +17,8 @@ const getUserById = async (id: number): Promise<User> => {
     return user;
 }
 
-const createUser = ({name, specialisation, email, password}: UserInput): Promise<User> => {
-    const userExists = userDb.getUserByEmail(email);
+const createUser = async ({name, specialisation, email, password}: UserInput): Promise<User> => {
+    const userExists = await userDb.getUserByEmail(email);
     if (userExists) throw new Error(`User with email ${email} already exists.`);
     const user = new User({name, specialisation, email, password});
     return userDb.createUser(user);

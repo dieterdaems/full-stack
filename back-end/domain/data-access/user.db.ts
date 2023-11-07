@@ -19,12 +19,10 @@ const getUserByEmail = async (email: string): Promise<User> => {
             where:
             { email: email }
         });
-        if (!userPrisma) throw new Error(`User with email ${email} does not exist.`);
-        const user = User.from(userPrisma);
-        return user;
+        return User.from(userPrisma);
     }
     catch (error) {
-        throw new Error(error);
+        return undefined;
     }
 }
 
