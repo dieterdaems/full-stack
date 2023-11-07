@@ -17,14 +17,31 @@ const taskRouter = express.Router();
  *         description:
  *           type: string
  *         deadline:
- *           type: date
+ *           type: string
+ *           format: date-time
  *         project:
- *           type: Project
+ *           $ref: "#/components/schemas/Project"
  *       required:
  *         - name
  *         - description
  *         - deadline
+ *         - project
+ *     TaskInput:
+ *       type: object
+ *       properties:
+ *         id:
+ *           type: integer
+ *         name:
+ *           type: string
+ *         description:
+ *           type: string
+ *         deadline:
+ *           type: string
+ *           format: date-time
+ *         project:
+ *           $ref: "#/components/schemas/ProjectInputTask"
  */
+
 
 
 
@@ -161,7 +178,7 @@ taskRouter.get('/project/:id', async (req: Request, res: Response) => {
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/Task'
+ *             $ref: '#/components/schemas/TaskInput'
  *     responses:
  *       201:
  *         description: Successful response with the created task.

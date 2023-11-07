@@ -15,8 +15,13 @@ const projectRouter = express.Router();
  *           type: integer
  *         name:
  *           type: string
- *       required:
- *         - name
+ * 
+ *     ProjectInputTask:
+ *       type: object
+ *       properties:
+ *         id:
+ *           type: number
+ *           format: int64
  */
 
 /**
