@@ -17,14 +17,17 @@ const taskRouter = express.Router();
  *         description:
  *           type: string
  *         deadline:
- *           type: date
+ *           type: string
+ *           format: date-time
  *         project:
- *           type: Project
+ *           $ref: "#/components/schemas/Project"
  *       required:
  *         - name
  *         - description
  *         - deadline
+ *         - project
  */
+
 
 
 
