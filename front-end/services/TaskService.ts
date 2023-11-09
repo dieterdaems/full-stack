@@ -42,19 +42,19 @@ const deleteById = (id: string) => {
     });
 }
 
-const completeTask = (task: Task) => {
-    return fetch(process.env.NEXT_PUBLIC_API_URL + '/tasks/' + task.id, {
+const completeTask = ({id,name,description,deadline,completed,project}: Task) => {
+    return fetch(process.env.NEXT_PUBLIC_API_URL + '/tasks/' + id, {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-            name: task.name,
-            description: task.description,
-            deadline: task.deadline,
+            id,
+            name,
+            description,
+            deadline,
             completed: true,
-            project: task.project
-        })
+            project        })
     });
 }
 

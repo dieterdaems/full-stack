@@ -31,7 +31,7 @@ const TasksOverviewTable: React.FC<Props> = ({ tasks }: Props) => {
                     <th>Description</th>
                     <th>Deadline</th>
                     <th>Project</th>
-                    <th>Complete</th>
+                    <th>Completed?</th>
                     <th>Delete</th>
                 </tr>
             </thead>
@@ -40,9 +40,9 @@ const TasksOverviewTable: React.FC<Props> = ({ tasks }: Props) => {
                     <tr key={index}>
                         <td>{task.name}</td>
                         <td>{task.description}</td>
-                        <td>{task.deadline.toString()}</td>
-                        <td>{completebutton(task)}</td>
+                        <td>{task.deadline.toString().slice(0, 10)}</td>
                         <td>{task.project.name}</td>
+                        <td>{completebutton(task)}</td>
 
                         <td><button onClick={() => deleteTask(task.id)}>Delete</button></td>
                     </tr>
