@@ -14,6 +14,14 @@ const TasksOverviewTable: React.FC<Props> = ({ tasks }: Props) => {
         await TaskService.deleteById(id.toString());
         // router.push('/tasks');
     }
+
+    const completebutton = (task: Task) => {
+        if (task.completed) {
+            return <>Completed</>
+        } else {
+            return <button onClick={() => TaskService.completeTask(task)}>Complete</button>
+        }
+    }
     return (
         <>
         <table>
@@ -23,6 +31,7 @@ const TasksOverviewTable: React.FC<Props> = ({ tasks }: Props) => {
                     <th>Description</th>
                     <th>Deadline</th>
                     <th>Project</th>
+                    <th>Complete</th>
                     <th>Delete</th>
                 </tr>
             </thead>
@@ -32,7 +41,9 @@ const TasksOverviewTable: React.FC<Props> = ({ tasks }: Props) => {
                         <td>{task.name}</td>
                         <td>{task.description}</td>
                         <td>{task.deadline.toString()}</td>
+                        <td>{completebutton(task)}</td>
                         <td>{task.project.name}</td>
+
                         <td><button onClick={() => deleteTask(task.id)}>Delete</button></td>
                     </tr>
                 ))}
