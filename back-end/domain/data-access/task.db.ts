@@ -38,16 +38,32 @@ const getTaskById = async (id: number): Promise<Task> => {
     }
 }
 
-const createTask = async ({name, description, deadline, project}: Task): Promise<Task> => {
+const createTask = async ({name, description, deadline, project, completed}: Task): Promise<Task> => {
     try {
         const newTask = new Task({name, description, deadline, project});
         const taskPrisma = await prisma.task.create({
              data: { name, 
                      description, 
                      deadline, 
+                     completed,
                         project: { connect: { id: project.id } }
                     },
                 include: {project: true} });
+        const task = Task.from(taskPrisma);
+        return task;
+    }
+    catch (error) {
+        throw new Error(error);
+    }
+}
+
+const updateTask = async ({name, id, description, deadline, completed}: TaskInput): Promise<Task> => {
+    try {
+        const newTask = new Task({name, id, description, deadline, completed});
+        const taskPrisma = await prisma.task.update({ 
+            where: { id: id },
+             data: { name, description, deadline, completed },
+             include: {project: true} });
         const task = Task.from(taskPrisma);
         return task;
     }
@@ -96,4 +112,4 @@ const deleteById = async (id: number): Promise<Task> => {
     }
 }
 
-export default { getAllTasks, getTaskById, getTaskByProject, createTask, deleteById };
+export default { getAllTasks, getTaskById, getTaskByProject, createTask, deleteById, updateTask };

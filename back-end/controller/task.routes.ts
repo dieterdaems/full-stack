@@ -209,6 +209,16 @@ taskRouter.post('/', async (req: Request, res: Response) => {
     }
 });
 
+taskRouter.put('/:id', async (req: Request, res: Response) => {
+    try {
+        const task = await taskService.updateTask(req.body);
+        res.status(201).json(task);
+    }
+    catch (error) {
+        res.status(400).json({ status: 'error', errorMessage: error.message });
+    }
+});
+
 /**
  * @swagger
  * /tasks/{id}:

@@ -23,6 +23,7 @@ type TaskInput = {
     description?: string;
     deadline?: Date;
     project?: ProjectInput;
+    completed?: boolean;
     };
 
 

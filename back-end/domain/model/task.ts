@@ -7,16 +7,16 @@ export class Task {
     readonly description: string;
     readonly deadline: Date;
     readonly project?: Project
-    // readonly completed?: boolean;
+    readonly completed?: boolean;
 
-    constructor(task: {name: string, id?:number, description:string, deadline:Date, project?:Project}) {     
+    constructor(task: {name: string, id?:number, description:string, deadline:Date, project?:Project, completed?:boolean}) {     
         this.validate(task);
         this.name = task.name;
         this.id = task.id;
         this.description = task.description;
         this.deadline = task.deadline;
         this.project = task.project;
-        // this.completed = false;
+        this.completed = task.completed;
     }
 
     equals(id:number): boolean{
@@ -36,7 +36,7 @@ export class Task {
         description,
         deadline,
         project,
-        // completed
+        completed
     }: TaskPrisma & { project: ProjectPrisma})  { 
         return new Task(
             { id,
@@ -44,7 +44,7 @@ export class Task {
             description,
             deadline,
             project: Project.from(project),
-            // completed
+            completed
         })
     }
 }
