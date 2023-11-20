@@ -14,6 +14,7 @@ const main = async () => {
             name: "Task 1",
             description: "Task 1 description",
             deadline: faker.date.future(),
+            completed: false,
         },
     });
     console.log("Created task 1");
@@ -23,6 +24,7 @@ const main = async () => {
             name: "Task 2",
             description: "Task 2 description",
             deadline: faker.date.future(),
+            completed: false,
         },
     });
     console.log("Created task 2");

@@ -42,11 +42,28 @@ const deleteById = (id: string) => {
     });
 }
 
+const completeTask = ({id,name,description,deadline,completed,project}: Task) => {
+    return fetch(process.env.NEXT_PUBLIC_API_URL + '/tasks/' + id, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            id,
+            name,
+            description,
+            deadline,
+            completed: true,
+            project        })
+    });
+}
+
 const TaskService = {
     getAll,
     getByProjectId,
     create,
-    deleteById
+    deleteById,
+    completeTask
 }
 
 export default TaskService;

@@ -20,7 +20,8 @@ const createTask = async (task: TaskInput): Promise<Task> => {
     const description = task.description
     const deadline = task.deadline
     if (deadline < new Date()) throw new Error("Task deadline must be in the future.");
-    const newTask = new Task({ name, description, deadline, project: newProject });
+    //When creating a task, completed will always be false
+    const newTask = new Task({ name, description, deadline, project: newProject, completed: false });
     const ttask = await taskDb.createTask(newTask);
     return ttask;
 }
@@ -43,4 +44,16 @@ const getTaskByProjectId = async (projectId: number): Promise<Task[]> => {
     return tasks;
 }
 
-export default { getAllTasks, getTaskById, getTaskByProjectId, createTask, deleteById };
+const updateTask = async (task: TaskInput): Promise<Task> => {
+    const id = task.id
+    if (!getTaskById(id)) throw new Error(`Task with id ${id} does not exist.`);
+    const completed = task.completed
+    const name = task.name
+    const description = task.description
+    const deadline = task.deadline
+    const newproject = await projectDb.getProjectById(task.project.id);
+    const newTask = new Task({ id, name, description, deadline, completed, project: newproject });
+    const ttask = await taskDb.updateTask(newTask);
+    return ttask;
+}
+export default { getAllTasks, getTaskById, getTaskByProjectId, createTask, deleteById, updateTask };

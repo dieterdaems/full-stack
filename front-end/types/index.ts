@@ -5,6 +5,7 @@ type Task = {
     description: string;
     deadline: Date;
     project: Project;
+    completed: boolean;
 }
 
 type Project = {
