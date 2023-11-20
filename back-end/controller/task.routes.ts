@@ -38,6 +38,8 @@ const taskRouter = express.Router();
  *         deadline:
  *           type: string
  *           format: date-time
+ *         completed:
+ *           type: boolean
  *         project:
  *           $ref: "#/components/schemas/ProjectInputTask"
  */
@@ -208,6 +210,37 @@ taskRouter.post('/', async (req: Request, res: Response) => {
         res.status(400).json({ status: 'error', errorMessage: error.message });
     }
 });
+
+/**
+ * @swagger
+ * /tasks:
+ *   put:
+ *     summary: Create a new task.
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/TaskInput'
+ *     responses:
+ *       201:
+ *         description: Successful response with the created task.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Task'
+ *       400:
+ *         description: Bad request with an error message.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                 errorMessage:
+ *                   type: string
+ */
 
 taskRouter.put('/:id', async (req: Request, res: Response) => {
     try {
