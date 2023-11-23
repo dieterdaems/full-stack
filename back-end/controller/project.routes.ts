@@ -104,6 +104,38 @@ projectRouter.get('/:id', async (req: Request, res: Response) => {
     }
 });
 
+/**
+ * @swagger
+ * /project:
+ *   post:
+ *     summary: Create a new project.
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/ProjectInput'
+ *     responses:
+ *       201:
+ *         description: Successful response with the created project.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Project'
+ *       400:
+ *         description: Bad request with an error message.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                 errorMessage:
+ *                   type: string
+ */
+
+
 projectRouter.post('/add', async (req: Request, res: Response) => {
     try {
         const project = <ProjectInput>req.body;
