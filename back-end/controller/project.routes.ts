@@ -15,6 +15,8 @@ const projectRouter = express.Router();
  *           type: integer
  *         name:
  *           type: string
+ *       required:
+ *         - name
  * 
  *     ProjectInputTask:
  *       type: object
@@ -22,6 +24,8 @@ const projectRouter = express.Router();
  *         id:
  *           type: number
  *           format: int64
+ *         name:
+ *           type: string
  */
 
 /**
@@ -136,7 +140,7 @@ projectRouter.get('/:id', async (req: Request, res: Response) => {
  */
 
 
-projectRouter.post('/add', async (req: Request, res: Response) => {
+projectRouter.post('/', async (req: Request, res: Response) => {
     try {
         const project = <ProjectInput>req.body;
         const newProject = await projectService.createProject(project);

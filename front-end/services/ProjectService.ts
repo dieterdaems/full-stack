@@ -1,3 +1,5 @@
+import { Project } from "@/types";
+
 const getAll = () => {
     return fetch(process.env.NEXT_PUBLIC_API_URL + '/projects', {
         method: 'GET',
@@ -15,9 +17,20 @@ const getById = (projectId: string) => {
         },
     });
 }
+
+const create = (name : string) => {
+    return fetch(process.env.NEXT_PUBLIC_API_URL + '/projects', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({name}),
+    });
+}
 const ProjectService = {
     getAll,
-    getById
+    getById,
+    create
 }
 
 export default ProjectService;

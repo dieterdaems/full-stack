@@ -25,9 +25,20 @@ const getAllProjects = async (): Promise<Project[]> => {
     }
     }
 const getProjectById = (id: number): Project => projects.find((p) => p.id === id);
-const createProject = (project: Project): Project => {
-    projects.push(project);
-    return project;
+const createProject = async (project: Project): Promise<Project> => {
+    try {
+        const newProject = await prisma.project.create({
+            data: {
+                name: project.name,
+            }
+        });
+        return Project.from(newProject);
+    }
+    catch (error) {
+        throw new Error(error);
+    }
+
 }
+
 
 export default { getAllProjects, getProjectById, createProject };
