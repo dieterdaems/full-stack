@@ -27,10 +27,20 @@ const create = (name : string) => {
         body: JSON.stringify({name}),
     });
 }
+
+const deleteProject = (projectId: string) => {
+    return fetch(process.env.NEXT_PUBLIC_API_URL + '/projects/' + projectId, {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    });
+}
 const ProjectService = {
     getAll,
     getById,
-    create
+    create,
+    deleteProject
 }
 
 export default ProjectService;
