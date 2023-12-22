@@ -10,6 +10,8 @@ type Props = {
 const TasksOverviewTable: React.FC<Props> = ({ tasks }: Props) => {
     const router = useRouter();
 
+    const projectId = router.query.id;
+
     const deleteTask = async (id: any) => {
         await TaskService.deleteById(id.toString());
         // router.push('/tasks');
@@ -49,7 +51,7 @@ const TasksOverviewTable: React.FC<Props> = ({ tasks }: Props) => {
                 ))}
             </tbody>
         </table>
-            <button onClick={() => router.push('/tasks/register/' + tasks[0].project.id)}>Add Task</button>
+            <button onClick={() => router.push('/tasks/register/' + projectId)}>Add Task</button>
         
         </>
     );
