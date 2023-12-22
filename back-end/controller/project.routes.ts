@@ -159,6 +159,47 @@ projectRouter.post('/', async (req: Request, res: Response) => {
 }
 );
 
+/**
+ * @swagger
+ * /projects/{id}:
+ *   delete:
+ *     summary: Delete a project by ID.
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: ID of the project to delete.
+ *         schema:
+ *           type: integer
+ *     responses:
+ *       200:
+ *         description: Successful response with the deleted project.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Project'
+ *       400:
+ *         description: Bad request with an error message.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                 errorMessage:
+ *                   type: string
+ */
+projectRouter.delete('/:id', async (req: Request, res: Response) => {
+    try {
+        const project = await projectService.deleteProject(parseInt(req.params.id));
+        res.status(200).json(project);
+    }
+    catch (error) {
+        res.status(400).json({ status: 'error', errorMessage: error.message });
+    }
+});
+
 //post om toe te voegen
 //put om aan te passen
 //delete om te verwijderen
