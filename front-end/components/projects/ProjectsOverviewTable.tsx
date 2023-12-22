@@ -11,7 +11,7 @@ const ProjectOverviewTable: React.FC<Props> = ({ projects }: Props) => {
     const router = useRouter();
 
     const deleteProject = (id: number) => async () => {
-        const response = await ProjectService.deleteProject(id);
+        const response = await ProjectService.deleteProject(String(id));
     };
 
     return (
