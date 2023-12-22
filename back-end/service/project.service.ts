@@ -14,11 +14,11 @@ const getProjectById = async (id: number): Promise<Project> => {
     return project;
 };
 
-const createProject = async ({name}: ProjectInput): Promise<Project> => {
+const createProject = async (projectin: ProjectInput): Promise<Project> => {
     const projects = await projectDb.getAllProjects();
-    const existingProject = projects.find((project) => project.name === name);
+    const existingProject = projects.find((project) => project.name === projectin.name);
     if (existingProject) throw new Error(`Project with id ${existingProject.id} already exists.`);
-    const newProject = new Project({name});
+    const newProject = new Project({name: projectin.name});
     const project = await projectDb.createProject(newProject);
     return project;
 }

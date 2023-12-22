@@ -21,11 +21,10 @@ const projectRouter = express.Router();
  *     ProjectInputTask:
  *       type: object
  *       properties:
- *         id:
- *           type: number
- *           format: int64
  *         name:
  *           type: string
+ *       required:
+ *          - name
  */
 
 /**
@@ -110,7 +109,7 @@ projectRouter.get('/:id', async (req: Request, res: Response) => {
 
 /**
  * @swagger
- * /project:
+ * /projects:
  *   post:
  *     summary: Create a new project.
  *     requestBody:
@@ -118,7 +117,7 @@ projectRouter.get('/:id', async (req: Request, res: Response) => {
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/ProjectInput'
+ *             $ref: '#/components/schemas/ProjectInputTask'
  *     responses:
  *       201:
  *         description: Successful response with the created project.
@@ -144,7 +143,7 @@ projectRouter.post('/', async (req: Request, res: Response) => {
     try {
         const project = <ProjectInput>req.body;
         const newProject = await projectService.createProject(project);
-        res.status(200).json(project);
+        res.status(200).json(newProject);
     }
     catch (error) {
         res.status(400).json({ status: 'error', errorMessage: error.message });

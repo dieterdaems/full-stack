@@ -51,8 +51,7 @@ return (
             {data && (<ProjectOverviewTable projects={data} />) }
         </section>
         <section>
-            {/* <button onClick={change}>Add new project</button> */}
-            {/* {data2 && <AddProject />} */}
+            <AddProject />
         </section>
     </main>
     
