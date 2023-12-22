@@ -9,9 +9,8 @@ type Task = {
 }
 
 type Project = {
-    id: number;
+    id?: number;
     name?: string;
-    tasks?: Task[];
 }
 
 type StatusMessage = {

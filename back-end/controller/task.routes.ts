@@ -41,7 +41,7 @@ const taskRouter = express.Router();
  *         completed:
  *           type: boolean
  *         project:
- *           $ref: "#/components/schemas/ProjectInputTask"
+ *           $ref: "#/components/schemas/ProjectInput"
  */
 
 
@@ -203,6 +203,7 @@ taskRouter.get('/project/:id', async (req: Request, res: Response) => {
 
 taskRouter.post('/', async (req: Request, res: Response) => {
     try {
+        // console.log(req.body)
         const task = await taskService.createTask(req.body);
         res.status(201).json(task);
     }

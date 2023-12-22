@@ -1,3 +1,4 @@
+import AddProject from "@/components/projects/AddProject";
 import ProjectOverviewTable from "@/components/projects/ProjectsOverviewTable";
 import ProjectService from "@/services/ProjectService";
 import { Project } from "@/types";
@@ -9,6 +10,7 @@ import useInterval from "use-interval";
 
 const Projects: React.FC = () => {
 
+
     const fetchProjects = async () => {
         
         const response = await ProjectService.getAll();
@@ -17,15 +19,26 @@ const Projects: React.FC = () => {
         return projects;
     }
 
+    // const change = () => {
+    //     add = !add;
+    //     toggle();
+    // }
+    
+    // const toggle = () => {
+    //     return add;
+    // }
+
 // useEffect(() => {
 //     fetchProjects();
 // }, []);
 
 const {data, isLoading, error} = useSWR('projectsFromDb', fetchProjects);
+// const {data: data2, error: error2} = useSWR('toggle', toggle);
 
 useInterval(() => {
     mutate('projectsFromDb', fetchProjects());
-}, 5000);
+    // mutate('toggle', toggle());
+}, 1000);
 
 
 return (
@@ -36,6 +49,9 @@ return (
         {isLoading && <p>Loading...</p>}
         <section>
             {data && (<ProjectOverviewTable projects={data} />) }
+        </section>
+        <section>
+            <AddProject />
         </section>
     </main>
     

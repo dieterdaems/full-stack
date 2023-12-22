@@ -15,13 +15,16 @@ const getTaskById = async (id: number): Promise<Task> => {
 };
 
 const createTask = async (task: TaskInput): Promise<Task> => {
+    // console.log('service',task)
     const newProject = await projectDb.getProjectById(task.project.id);
+    // console.log('service',newProject)
     const name = task.name
     const description = task.description
     const deadline = task.deadline
     if (deadline < new Date()) throw new Error("Task deadline must be in the future.");
     //When creating a task, completed will always be false
     const newTask = new Task({ name, description, deadline, project: newProject, completed: false });
+    // console.log('service',newTask)
     const ttask = await taskDb.createTask(newTask);
     return ttask;
 }

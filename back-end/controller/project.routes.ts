@@ -15,13 +15,24 @@ const projectRouter = express.Router();
  *           type: integer
  *         name:
  *           type: string
+ *       required:
+ *         - name
  * 
  *     ProjectInputTask:
  *       type: object
  *       properties:
+ *         name:
+ *           type: string
+ *       required:
+ *          - name
+ * 
+ *     ProjectInput:
+ *       type: object
+ *       properties:
  *         id:
  *           type: number
- *           format: int64
+ *       required:
+ *          - id
  */
 
 /**
@@ -104,11 +115,43 @@ projectRouter.get('/:id', async (req: Request, res: Response) => {
     }
 });
 
-projectRouter.post('/add', async (req: Request, res: Response) => {
+/**
+ * @swagger
+ * /projects:
+ *   post:
+ *     summary: Create a new project.
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/ProjectInputTask'
+ *     responses:
+ *       201:
+ *         description: Successful response with the created project.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Project'
+ *       400:
+ *         description: Bad request with an error message.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                 errorMessage:
+ *                   type: string
+ */
+
+
+projectRouter.post('/', async (req: Request, res: Response) => {
     try {
         const project = <ProjectInput>req.body;
         const newProject = await projectService.createProject(project);
-        res.status(200).json(project);
+        res.status(200).json(newProject);
     }
     catch (error) {
         res.status(400).json({ status: 'error', errorMessage: error.message });
