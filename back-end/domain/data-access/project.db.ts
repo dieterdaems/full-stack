@@ -51,5 +51,20 @@ const createProject = async (project: Project): Promise<Project> => {
 
 }
 
+const deleteById = async (id: number): Promise<Project> => {
+    try {
+        const projectPrisma = await prisma.project.delete({
+            where: { id: id },
+            include: {
+                tasks: true
+            }
+        });
+        return Project.from(projectPrisma);
+    }
+    catch (error) {
+        throw new Error(error);
+    }
+}
 
-export default { getAllProjects, getProjectById, createProject };
+
+export default { getAllProjects, getProjectById, createProject, deleteById };
