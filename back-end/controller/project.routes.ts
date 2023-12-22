@@ -25,6 +25,14 @@ const projectRouter = express.Router();
  *           type: string
  *       required:
  *          - name
+ * 
+ *     ProjectInput:
+ *       type: object
+ *       properties:
+ *         id:
+ *           type: number
+ *       required:
+ *          - id
  */
 
 /**
