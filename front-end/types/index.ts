@@ -1,3 +1,11 @@
+type User = {
+    id?: number;
+    name: string;
+    specialisation: string;
+    email: string;
+    password: string;
+}
+
 
 type Task = {
     id?: number;
@@ -18,4 +26,4 @@ type StatusMessage = {
     message: string
 }
 
-export type { Project, Task, StatusMessage };
+export type { User, Project, Task, StatusMessage };
