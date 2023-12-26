@@ -10,9 +10,16 @@ type Props = {
 const TeamsOverviewTabel: React.FC<Props> = ({ teams, id }: Props) => {
 
     const [statusMessage, setStatusMessage] = useState<string>("");
-    const handleLeaveTeam = async (id: number) => {
-        throw new Error("Function not implemented.");
-    }
+    const handleLeaveTeam = async (teamId: number) => {
+        const response = await TeamService.removeUser(teamId, id);
+        const data = await response.json();
+        if (response.ok) {
+            setStatusMessage("Left team " + teamId + " successfully!");
+        }
+        else {
+            setStatusMessage(data.errorMessage);
+        }
+    };
 
     const handleJoinTeam = async (teamId: number) => {
         const response = await TeamService.addUser(teamId, id);
