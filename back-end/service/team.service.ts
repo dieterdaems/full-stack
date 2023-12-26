@@ -1,6 +1,6 @@
 import teamDb from "../domain/data-access/team.db";
+import UserDb from "../domain/data-access/user.db";
 import { Team } from "../domain/model/team";
-import { User } from "../domain/model/user";
 import { TeamInput } from "../types";
 
 
@@ -12,12 +12,20 @@ const getTeamById = async (id: number): Promise<Team> => {
     return team;
 };
 
-const createTeam = ({name, users}: TeamInput): Promise<Team> => {
+const createTeam = async ({name, users}: TeamInput): Promise<Team> => {
     //const teamExists = teamDb.getTeamByName(name);
     // if (teamExists) throw new Error(`Team with name ${name} already exists.`);
     // const team = new Team({name, users: users}); // to validate in service layer - Not a MUST
     return teamDb.createTeam({name, users});
 };
 
+const addUserToTeam = async (teamId: number, userId: number): Promise<Team> => {
+    const team = await teamDb.getTeamById(teamId);
+    if (!team) throw new Error(`Team with id ${teamId} does not exist.`);
+    const user = await UserDb.getUserById(userId);
+    if (!user) throw new Error(`User with id ${userId} does not exist.`);
+    return teamDb.addUserToTeam(teamId, userId);
+}
 
-export default { getAllTeams, getTeamById, createTeam };
+
+export default { getAllTeams, getTeamById, createTeam, addUserToTeam };
