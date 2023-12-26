@@ -24,4 +24,10 @@ const createUser = async ({name, specialisation, email, password}: UserInput): P
     return userDb.createUser(user);
 };
 
-export default { getAllUsers, getUserByEmail, getUserById, createUser };
+const updateUser = async ({id, name, specialisation, email, password}: UserInput): Promise<User> => {
+    const user = await userDb.getUserById(id);
+    if (!user) throw new Error(`User with id ${id} does not exist.`);
+    return userDb.updateUser({id, name, specialisation, email, password});
+}
+
+export default { getAllUsers, getUserByEmail, getUserById, createUser, updateUser };
