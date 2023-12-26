@@ -95,5 +95,25 @@ const addUserToTeam = async (teamId: number, userId: number): Promise<Team> => {
     }
 }
 
+const removeUserFromTeam = async (teamId: number, userId: number): Promise<Team> => {
+    try {
+        const teamPrisma = await prisma.team.update({
+            where: {id: teamId},
+            data: {
+                users: {
+                    disconnect: {id: userId}
+                }
+            },
+            include: {users: true}
+        });
+        if (!teamPrisma) throw new Error(`Team with id ${teamId} does not exist.`);
+        const team = Team.from(teamPrisma);
+        return team;
+    }
+    catch (error) {
+        throw new Error(error);
+    }
+}
 
-export default { getAllTeams, getTeamById, getTeamByName,  createTeam, addUserToTeam };
+
+export default { getAllTeams, getTeamById, getTeamByName,  createTeam, addUserToTeam, removeUserFromTeam };

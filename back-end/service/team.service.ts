@@ -27,5 +27,13 @@ const addUserToTeam = async (teamId: number, userId: number): Promise<Team> => {
     return teamDb.addUserToTeam(teamId, userId);
 }
 
+const removeUserFromTeam = async (teamId: number, userId: number): Promise<Team> => {
+    const team = await teamDb.getTeamById(teamId);
+    if (!team) throw new Error(`Team with id ${teamId} does not exist.`);
+    const user = await UserDb.getUserById(userId);
+    if (!user) throw new Error(`User with id ${userId} does not exist.`);
+    return teamDb.removeUserFromTeam(teamId, userId);
+}
 
-export default { getAllTeams, getTeamById, createTeam, addUserToTeam };
+
+export default { getAllTeams, getTeamById, createTeam, addUserToTeam, removeUserFromTeam};
