@@ -75,4 +75,25 @@ const createTeam = async ({name, users}: TeamInput): Promise<Team> => {
     }
 }
 
-export default { getAllTeams, getTeamById, getTeamByName,  createTeam };
+const addUserToTeam = async (teamId: number, userId: number): Promise<Team> => {
+    try {
+        const teamPrisma = await prisma.team.update({
+            where: {id: teamId},
+            data: {
+                users: {
+                    connect: {id: userId}
+                }
+            },
+            include: {users: true}
+        });
+        if (!teamPrisma) throw new Error(`Team with id ${teamId} does not exist.`);
+        const team = Team.from(teamPrisma);
+        return team;
+    }
+    catch (error) {
+        throw new Error(error);
+    }
+}
+
+
+export default { getAllTeams, getTeamById, getTeamByName,  createTeam, addUserToTeam };
