@@ -6,6 +6,11 @@ type User = {
     password?: string;
 }
 
+type Team = {
+    id?: number;
+    name: string;
+    users: User[];
+}
 
 type Task = {
     id?: number;
@@ -26,4 +31,4 @@ type StatusMessage = {
     message: string
 }
 
-export type { User, Project, Task, StatusMessage };
+export type { User, Project, Task, StatusMessage, Team };
