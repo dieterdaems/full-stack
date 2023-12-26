@@ -120,6 +120,16 @@ userRouter.get('/email/:email', async (req: Request, res: Response) => {
     }
 });
 
+userRouter.get('/:id', async (req: Request, res: Response) => {
+    try {
+        const user = await userService.getUserById(parseInt(req.params.id));
+        res.status(200).json(user);
+    }
+    catch (error) {
+        res.status(400).json({ status: 'error', errorMessage: error.message });
+    }
+});
+
 /**
  * @swagger
  * /users/add:
@@ -155,6 +165,48 @@ userRouter.post('/add', async (req: Request, res: Response) => {
     try {
         const user = <UserInput>req.body; // cast to DTO
         const result = await userService.createUser(user);
+        res.status(200).json(result);
+    }
+    catch (error) {
+        res.status(400).json({ status: 'error', errorMessage: error.message });
+    }
+});
+
+/**
+ * @swagger
+ * /users/update:
+ *   put:
+ *     summary: Update a user.
+ *     requestBody:
+ *       description: User to update.
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/UserInput'
+ *     responses:
+ *       200:
+ *         description: Successful response with the updated user.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/User'
+ *       400:
+ *         description: Bad request with an error message.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                 errorMessage:
+ *                   type: string
+ */
+userRouter.put('/', async (req: Request, res: Response) => {
+    try {
+        const user = <UserInput>req.body;
+        const result = await userService.updateUser(user);
         res.status(200).json(result);
     }
     catch (error) {
