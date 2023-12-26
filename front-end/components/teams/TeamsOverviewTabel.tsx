@@ -10,19 +10,40 @@ type Props = {
 const TeamsOverviewTabel: React.FC<Props> = ({ teams, id }: Props) => {
 
     const [statusMessage, setStatusMessage] = useState<string>("");
-    const handleLeaveTeam = async (id: number) => {
-        throw new Error("Function not implemented.");
-    }
+    const [cooldownTeamId, setCooldownTeamId] = useState<number | null>(null);
 
-    const handleJoinTeam = async (teamId: number) => {
-        const response = await TeamService.addUser(teamId, id);
+    const handleLeaveTeam = async (team: {id: number, name: string}) => {
+        if (cooldownTeamId !== null) {
+            return;
+        }
+        setCooldownTeamId(team.id);
+
+        const response = await TeamService.removeUser(team.id, id);
         const data = await response.json();
         if (response.ok) {
-            setStatusMessage("Joined team " + teamId + " successfully!");
+            setStatusMessage("Left team " + team.name + " successfully!");
         }
         else {
             setStatusMessage(data.errorMessage);
         }
+        setTimeout(() => setCooldownTeamId(null), 500);
+    };
+
+    const handleJoinTeam = async (team: {id: number, name: string}) => {
+        if (cooldownTeamId !== null) {
+            return;
+        }
+        setCooldownTeamId(team.id);
+
+        const response = await TeamService.addUser(team.id, id);
+        const data = await response.json();
+        if (response.ok) {
+            setStatusMessage("Joined team " + team.name + " successfully!");
+        }
+        else {
+            setStatusMessage(data.errorMessage);
+        }
+        setTimeout(() => setCooldownTeamId(null), 500);
     };
 
     return (
@@ -44,9 +65,13 @@ const TeamsOverviewTabel: React.FC<Props> = ({ teams, id }: Props) => {
                             <td>{team.users.length}</td>
                             <td>
                                 {team.users.some((user) => user.id === id) ? (
-                                    <button onClick={() => handleLeaveTeam(team.id!)}>Leave</button>
+                                    <button
+                                        disabled={cooldownTeamId === team.id}
+                                        onClick={() => handleLeaveTeam({id: team.id!, name: team.name})}>Leave</button>
                                 ) : (
-                                    <button onClick={() => handleJoinTeam(team.id!)}>Join</button>
+                                    <button
+                                        disabled={cooldownTeamId === team.id}
+                                        onClick={() => handleJoinTeam({id: team.id!, name: team.name})}>Join</button>
                                 )}
                             </td>
                         </tr>

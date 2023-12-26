@@ -16,9 +16,19 @@ const addUser = (teamId: number, userId: number) => {
     });
 }
 
+const removeUser = (teamId: number, userId: number) => {
+    return fetch(process.env.NEXT_PUBLIC_API_URL + '/teams/' + teamId + '/user/' + userId, {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    });
+}
+
 const TeamService = {
     getAll,
-    addUser
+    addUser,
+    removeUser
 }
 
 export default TeamService;
