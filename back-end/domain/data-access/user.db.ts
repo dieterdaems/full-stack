@@ -1,5 +1,6 @@
 import { User } from "../model/user";
 import prisma from "../../util/init-db";
+import { UserInput } from "../../types";
 
 const getAllUsers = async (): Promise<User[]> => {
     try {
@@ -59,5 +60,24 @@ const createUser = async ({name, specialisation, email, password}: User): Promis
     }
 }
 
+const updateUser = async ({id, name, specialisation, email, password}: UserInput): Promise<User> => {
+    try {
+        const userPrisma = await prisma.user.update({
+            where: { id: id },
+            data: {
+                name,
+                specialisation,
+                email,
+                password,
+            }
+        });
+        const user = User.from(userPrisma);
+        return user;
+    }
+    catch (error) {
+        throw new Error(error);
+    }
+}
 
-export default { getAllUsers, getUserByEmail, getUserById, createUser };
+
+export default { getAllUsers, getUserByEmail, getUserById, createUser, updateUser };
