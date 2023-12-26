@@ -194,4 +194,52 @@ teamRouter.post('/:id/user/:userId', async (req: Request, res: Response) => {
     }
 });
 
+/**
+ * @swagger
+ * /teams/{id}/user/{userId}:
+ *   delete:
+ *     summary: Remove a user from a team.
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: ID of the team to retrieve.
+ *         schema:
+ *           type: integer
+ *       - in: path
+ *         name: userId
+ *         required: true
+ *         description: ID of the user to retrieve.
+ *         schema:
+ *           type: integer
+ *     responses:
+ *       201:
+ *         description: Successful response with the updated team.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Team'
+ *       400:
+ *         description: Bad request with an error message.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                 errorMessage:
+ *                   type: string
+ */
+teamRouter.delete('/:id/user/:userId', async (req: Request, res: Response) => {
+    try {
+        const team = await teamService.removeUserFromTeam(parseInt(req.params.id), parseInt(req.params.userId));
+        res.status(201).json(team);
+    }
+    catch (error) {
+        res.status(400).json({ status: 'error', errorMessage: error.message });
+    }
+}
+);
+
 export { teamRouter };
