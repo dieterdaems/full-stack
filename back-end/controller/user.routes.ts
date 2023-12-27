@@ -302,7 +302,7 @@ userRouter.post('/login', async (req: Request, res: Response, next: NextFunction
 userRouter.delete('/:id', async (req: Request & { auth: any }, res: Response, next: NextFunction) => {
     try {
         const role = req.auth.role;
-        const result = await userService.deleteUser({ id: parseInt(req.params.id), role });
+        const result = await userService.deleteUserById({ id: parseInt(req.params.id), role });
         res.status(200).json(result);
     }
     catch (error) {

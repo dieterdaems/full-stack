@@ -1,4 +1,5 @@
 import { User as UserPrisma} from "@prisma/client"; 
+import { Role } from "../../types";
 
 export class User {
     readonly id?: number;
@@ -6,8 +7,9 @@ export class User {
     readonly specialisation: string;
     readonly email: string;
     readonly password: string;
+    readonly role:  Role
 
-    constructor(user: {name: string, specialisation:string, email:string, password:string, id?:number}) {
+    constructor(user: {name: string, specialisation:string, email:string, password:string, id?:number, role?:Role}) {
         this.validate(user);
 
         this.name = user.name;
@@ -15,6 +17,7 @@ export class User {
         this.email = user.email;
         this.password = user.password;
         this.id = user.id;
+        this.role = 'user';
     }
 
     isValidEmail = (email: string): boolean => {
@@ -29,7 +32,6 @@ export class User {
         if (!this.isValidEmail(user.email)) throw new Error('Invalid email format');
         if (!user.password?.trim()) throw new Error('Password is required');
         if (user.password.length < 7) throw new Error('Password must be at least 7 characters');
-
     }
 
     
@@ -43,6 +45,7 @@ export class User {
         specialisation,
         email,
         password,
+        role,
     }: UserPrisma ) {
         return new User(
             { id,
@@ -50,6 +53,7 @@ export class User {
             specialisation,
             email,
             password,
+            role: role as Role,
         })
     }
 

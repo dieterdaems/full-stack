@@ -3,8 +3,12 @@ import { User } from "../domain/model/user";
 import { UserInput } from '../types';
 import bcrypt from 'bcrypt';
 import { generateJwtToken } from "../util/jwt";
+import { UnauthorizedError } from "express-jwt";
 
-const getAllUsers = async (): Promise<User[]> => userDb.getAllUsers();
+const getAllUsers = async ({ role }): Promise<User[]> => {
+    if (role !== 'admin') throw new UnauthorizedError('credentials_required', { message: 'You are not authorized to access this resource.' })
+    else return userDb.getAllUsers();
+};
 
 
 const getUserByEmail = async (email: string): Promise<User> => {
@@ -19,17 +23,24 @@ const getUserById = async (id: number): Promise<User> => {
     return user;
 }
 
-const createUser = async ({ name, specialisation, email, password }: UserInput): Promise<User> => {
+const deleteUserById = async ({id, role}): Promise<User> => {
+    if (role !== 'admin') throw new UnauthorizedError('credentials_required', { message: 'You are not authorized to delete a user.' })
+    const user = await userDb.getUserById(id);
+    if (!user) throw new Error(`User with id ${id} does not exist.`);
+    return userDb.deleteUser(id);
+}
+
+const createUser = async ({ name, specialisation, email, password, role }: UserInput): Promise<User> => {
     const existingUser = await userDb.getUserByEmail(email);
     if (existingUser) throw new Error(`User with email ${email} already exists.`);
 
     if (!password?.trim() || password.length < 7) throw new Error('Password must be at least 7 characters');
     const hashedPassword = await bcrypt.hash(password, 12);
-    const user = new User({ name, specialisation, email, password: hashedPassword });
+    const user = new User({ name, specialisation, email, password: hashedPassword, role });
     return userDb.createUser(user);
 };
 
-const updateUser = async ({ id, name, specialisation, email, password }: UserInput): Promise<User> => {
+const updateUser = async ({ id, name, specialisation, email, password, role }: UserInput): Promise<User> => {
     const existingUser = await userDb.getUserById(id);
     if (!existingUser) throw new Error(`User with id ${id} does not exist.`);
     if (existingUser.password != password && password?.trim() && password.length >= 7) {
@@ -37,7 +48,7 @@ const updateUser = async ({ id, name, specialisation, email, password }: UserInp
     } else {
         password = existingUser.password;
     }
-    return userDb.updateUser({ id, name, specialisation, email, password });
+    return userDb.updateUser({ id, name, specialisation, email, password, role });
 }
 
 const authenticate = async ({ email, password }: UserInput): Promise<String> => {
@@ -49,7 +60,7 @@ const authenticate = async ({ email, password }: UserInput): Promise<String> => 
     if (!isValidPassword) {
         throw new Error("Email and/or password not correct.");
     }
-    return generateJwtToken(email);
+    return generateJwtToken({ email, role: user.role });
 }
 
-export default { getAllUsers, getUserByEmail, getUserById, createUser, updateUser, authenticate };
+export default { getAllUsers, getUserByEmail, getUserById, createUser, updateUser, authenticate, deleteUserById };

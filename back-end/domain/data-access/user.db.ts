@@ -42,7 +42,7 @@ const getUserById = async (id: number): Promise<User> => {
     }
 }
 
-const createUser = async ({name, specialisation, email, password}: User): Promise<User> => {
+const createUser = async ({name, specialisation, email, password, role}: User): Promise<User> => {
     try {
         const userPrisma = await prisma.user.create({
             data: {
@@ -50,6 +50,7 @@ const createUser = async ({name, specialisation, email, password}: User): Promis
                 specialisation,
                 email,
                 password,
+                role,
             }
         });
         const user = User.from(userPrisma);
@@ -60,7 +61,7 @@ const createUser = async ({name, specialisation, email, password}: User): Promis
     }
 }
 
-const updateUser = async ({id, name, specialisation, email, password}: UserInput): Promise<User> => {
+const updateUser = async ({id, name, specialisation, email, password, role}: UserInput): Promise<User> => {
     try {
         const userPrisma = await prisma.user.update({
             where: { id: id },
@@ -69,6 +70,7 @@ const updateUser = async ({id, name, specialisation, email, password}: UserInput
                 specialisation,
                 email,
                 password,
+                role,
             }
         });
         const user = User.from(userPrisma);
@@ -79,5 +81,18 @@ const updateUser = async ({id, name, specialisation, email, password}: UserInput
     }
 }
 
+const deleteUser = async (id: number): Promise<User> => {
+    try {
+        const userPrisma = await prisma.user.delete({
+            where: { id: id }
+        });
+        const user = User.from(userPrisma);
+        return user;
+    }
+    catch (error) {
+        throw new Error(error);
+    }
+}
 
-export default { getAllUsers, getUserByEmail, getUserById, createUser, updateUser };
+
+export default { getAllUsers, getUserByEmail, getUserById, createUser, updateUser, deleteUser };
