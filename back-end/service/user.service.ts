@@ -22,6 +22,7 @@ const createUser = async ({ name, specialisation, email, password }: UserInput):
     const existingUser = await userDb.getUserByEmail(email);
     if (existingUser) throw new Error(`User with email ${email} already exists.`);
 
+    if (!password?.trim() || password.length < 7) throw new Error('Password must be at least 7 characters');
     const hashedPassword = await bcrypt.hash(password, 12);
     const user = new User({ name, specialisation, email, password: hashedPassword });
     return userDb.createUser(user);
@@ -30,7 +31,7 @@ const createUser = async ({ name, specialisation, email, password }: UserInput):
 const updateUser = async ({ id, name, specialisation, email, password }: UserInput): Promise<User> => {
     const existingUser = await userDb.getUserById(id);
     if (!existingUser) throw new Error(`User with id ${id} does not exist.`);
-    if (existingUser.password != password && password != null && password != "") {
+    if (existingUser.password != password && password?.trim() && password.length >= 7) {
         password = await bcrypt.hash(password, 12);
     } else {
         password = existingUser.password;
