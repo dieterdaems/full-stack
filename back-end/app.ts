@@ -19,9 +19,9 @@ app.use(cors());
 const jwtSecret = process.env.JWT_SECRET
 app.use(
   expressjwt({
-    secret: jwtSecret || 'default_secret', algorithms: ["HS256"]
+    secret: jwtSecret, algorithms: ["HS256"]
   }).unless({
-    path: ['/api-docs', /^\/api-docs\/.*/, '/users/add'],
+    path: ['/api-docs', /^\/api-docs\/.*/, '/users/add', '/users/login', '/status'],
   })
 );
 
@@ -39,9 +39,23 @@ const swaggerOptions = {
       version: '1.0.0',
       description: 'API for managing projects',
     },
+    components: {
+      securitySchemes: {
+        Authorization: {
+          type: "http",
+          scheme: "bearer",
+          bearerFormat: "JWT",
+          value: `Bearer <${jwtSecret}>`,
+        },
+      }
+    },
+    security: [{
+      Authorization: []
+    }],
   },
   apis: ['./controller/*.routes.ts'],
 };
+
 const swaggerSpec = swaggerJSDoc(swaggerOptions);
 app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerSpec));
 
