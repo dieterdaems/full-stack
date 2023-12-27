@@ -14,7 +14,8 @@ const getAllTeams = async (): Promise<Team[]> => {
         return teams;
     }
     catch (error) {
-        throw new Error(error);
+        console.log(error);
+        throw new Error("Database error. Check logs for more details.");
     }
 }
 
@@ -32,8 +33,8 @@ const getTeamById = async (id: number): Promise<Team> => {
         return team;
     }
     catch (error) {
-        console.log("meow")
-        throw new Error(error);
+        console.log(error);
+        throw new Error("Database error. Check logs for more details.");
     }
 }
 
@@ -51,7 +52,8 @@ const getTeamByName = async (name: string): Promise<Team> => {
         return team;
     }
     catch (error) {
-        throw new Error(error);
+        console.log(error);
+        throw new Error("Database error. Check logs for more details.");
     }
 }
 
@@ -71,7 +73,8 @@ const createTeam = async ({name, users}: TeamInput): Promise<Team> => {
         return team;
     }
     catch (error) {
-        throw new Error(error);
+        console.log(error);
+        throw new Error("Database error. Check logs for more details.");
     }
 }
 
@@ -91,7 +94,8 @@ const addUserToTeam = async (teamId: number, userId: number): Promise<Team> => {
         return team;
     }
     catch (error) {
-        throw new Error(error);
+        console.log(error);
+        throw new Error("Database error. Check logs for more details.");
     }
 }
 
@@ -111,7 +115,8 @@ const removeUserFromTeam = async (teamId: number, userId: number): Promise<Team>
         return team;
     }
     catch (error) {
-        throw new Error(error);
+        console.log(error);
+        throw new Error("Database error. Check logs for more details.");
     }
 }
 
