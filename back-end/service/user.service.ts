@@ -1,6 +1,7 @@
 import userDb from "../domain/data-access/user.db";
 import { User } from "../domain/model/user";
 import { UserInput } from '../types';
+import bcrypt from 'bcrypt';
 
 const getAllUsers = async (): Promise<User[]> => userDb.getAllUsers();
 
@@ -17,17 +18,24 @@ const getUserById = async (id: number): Promise<User> => {
     return user;
 }
 
-const createUser = async ({name, specialisation, email, password}: UserInput): Promise<User> => {
-    const userExists = await userDb.getUserByEmail(email);
-    if (userExists) throw new Error(`User with email ${email} already exists.`);
-    const user = new User({name, specialisation, email, password});
+const createUser = async ({ name, specialisation, email, password }: UserInput): Promise<User> => {
+    const existingUser = await userDb.getUserByEmail(email);
+    if (existingUser) throw new Error(`User with email ${email} already exists.`);
+
+    const hashedPassword = await bcrypt.hash(password, 12);
+    const user = new User({ name, specialisation, email, password: hashedPassword });
     return userDb.createUser(user);
 };
 
-const updateUser = async ({id, name, specialisation, email, password}: UserInput): Promise<User> => {
-    const user = await userDb.getUserById(id);
-    if (!user) throw new Error(`User with id ${id} does not exist.`);
-    return userDb.updateUser({id, name, specialisation, email, password});
+const updateUser = async ({ id, name, specialisation, email, password }: UserInput): Promise<User> => {
+    const existingUser = await userDb.getUserById(id);
+    if (!existingUser) throw new Error(`User with id ${id} does not exist.`);
+    if (existingUser.password != password && password != null && password != "") {
+        password = await bcrypt.hash(password, 12);
+    } else {
+        password = existingUser.password;
+    }
+    return userDb.updateUser({ id, name, specialisation, email, password });
 }
 
 export default { getAllUsers, getUserByEmail, getUserById, createUser, updateUser };
