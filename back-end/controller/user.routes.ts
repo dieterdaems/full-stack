@@ -27,13 +27,20 @@
  *              type: string
  *          password:
  *              type: string
-*    UserInputTeam:
+ *    UserInputTeam:
  *      type: object
  *      properties:
  *          id:
  *              type: number
  *              format: int64
- */
+ *    UserInputLogin:
+ *      type: object
+ *      properties:
+ *          email:
+ *              type: string
+ *          password:
+ *              type: string 
+ * */
 
 import userService from "../service/user.service";
 import express, { Request, Response, NextFunction } from 'express';
@@ -68,9 +75,10 @@ const userRouter = express.Router();
  *                   type: string
  */
 
-userRouter.get('/', async (req: Request, res: Response, next: NextFunction) => {
+userRouter.get('/', async (req: Request & { auth: any }, res: Response, next: NextFunction) => {
     try {
-        const users = await userService.getAllUsers();
+        const role = req.auth.role;
+        const users = await userService.getAllUsers(role);
         res.status(200).json(users);
     }
     catch (error) {
@@ -207,6 +215,94 @@ userRouter.put('/', async (req: Request, res: Response, next: NextFunction) => {
     try {
         const user = <UserInput>req.body;
         const result = await userService.updateUser(user);
+        res.status(200).json(result);
+    }
+    catch (error) {
+        next(error);
+    }
+});
+
+/**
+ * @swagger
+ * /users/login:
+ *   post:
+ *     summary: Authenticate a user.
+ *     requestBody:
+ *       description: User to authenticate.
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/UserInputLogin'
+ *     responses:
+ *       200:
+ *         description: Successful response with the JWT token.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 token:
+ *                   type: string
+ *       400:
+ *         description: Bad request with an error message.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                 errorMessage:
+ *                   type: string
+ */
+userRouter.post('/login', async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const user = <UserInput>req.body;
+        const result = await userService.authenticate(user);
+        res.status(200).json(result);
+    }
+    catch (error) {
+        next(error);
+    }
+});
+
+/**
+ * @swagger
+ * /users/{id}:
+ *   delete:
+ *     summary: Delete a user.
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: id of the user to delete.
+ *         schema:
+ *           type: number
+ *           format: int64
+ *     responses:
+ *       200:
+ *         description: Successful response with the deleted user.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/User'
+ *       400:
+ *         description: Bad request with an error message.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                 errorMessage:
+ *                   type: string
+ */
+userRouter.delete('/:id', async (req: Request & { auth: any }, res: Response, next: NextFunction) => {
+    try {
+        const role = req.auth.role;
+        const result = await userService.deleteUser({ id: parseInt(req.params.id), role });
         res.status(200).json(result);
     }
     catch (error) {
