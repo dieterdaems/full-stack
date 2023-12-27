@@ -7,6 +7,7 @@ export class Team {
     readonly id?: number;
 
     constructor(team: {name: string, users: User[], id? :number}) {
+        if (!team.name?.trim()) throw new Error('Name is required');
         this.name = team.name;
         this.users = team.users;
         this.id = team.id;
@@ -14,14 +15,6 @@ export class Team {
 
     equals(team: Team): boolean{
         return this.name === team.name;
-    }
-
-    addUserToTeam(user: User): void{
-        if (this.users.includes(user))
-        {
-            throw new Error("User already in team");
-        }
-        this.users.push(user);
     }
 
     static from ({

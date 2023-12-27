@@ -8,9 +8,10 @@ export class User {
     readonly password: string;
 
     constructor(user: {name: string, specialisation:string, email:string, password:string, id?:number}) {
+        this.validate(user);
+
         this.name = user.name;
         this.specialisation = user.specialisation;
-        if (!this.isValidEmail(user.email)) throw new Error('Invalid email format');
         this.email = user.email;
         this.password = user.password;
         this.id = user.id;
@@ -21,6 +22,17 @@ export class User {
         return emailRegex.test(email);
     }
 
+    validate(user: {name: string, specialisation:string, email:string, password:string}) {
+        if (!user.name?.trim()) throw new Error('Name is required');
+        if (!user.specialisation?.trim()) throw new Error('Specialisation is required');
+        if (!user.email?.trim()) throw new Error('Email is required');
+        if (!this.isValidEmail(user.email)) throw new Error('Invalid email format');
+        if (!user.password?.trim()) throw new Error('Password is required');
+        if (user.password.length < 7) throw new Error('Password must be at least 7 characters');
+
+    }
+
+    
     equals(email:string): boolean{
         return this.email === email;
     }
