@@ -1,28 +1,37 @@
-import { Project, Task } from "@/types";
+import { Task } from "@/types";
 
 const getAll = () => {
+    const token = sessionStorage.getItem('token');
     return fetch(process.env.NEXT_PUBLIC_API_URL + '/tasks', {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`
+
         },
     });
 }
 
 const getByProjectId = (projectId: string) => {
+    const token = sessionStorage.getItem('token');
     return fetch(process.env.NEXT_PUBLIC_API_URL + '/tasks/project/' + projectId, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`
+
         },
     });
 }
 
-const create = ({name, description, deadline, project} : Task) => {
+const create = ({ name, description, deadline, project }: Task) => {
+    const token = sessionStorage.getItem('token');
     return fetch(process.env.NEXT_PUBLIC_API_URL + '/tasks', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`
+
         },
         body: JSON.stringify({
             name,
@@ -34,19 +43,24 @@ const create = ({name, description, deadline, project} : Task) => {
 }
 
 const deleteById = (id: string) => {
+    const token = sessionStorage.getItem('token');
     return fetch(process.env.NEXT_PUBLIC_API_URL + '/tasks/' + id, {
         method: 'DELETE',
         headers: {
             'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`
+
         },
     });
 }
 
-const completeTask = ({id,name,description,deadline,completed,project}: Task) => {
+const completeTask = ({ id, name, description, deadline, project }: Task) => {
+    const token = sessionStorage.getItem('token');
     return fetch(process.env.NEXT_PUBLIC_API_URL + '/tasks/' + id, {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`
         },
         body: JSON.stringify({
             id,
@@ -54,7 +68,8 @@ const completeTask = ({id,name,description,deadline,completed,project}: Task) =>
             description,
             deadline,
             completed: true,
-            project        })
+            project
+        })
     });
 }
 
