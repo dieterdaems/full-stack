@@ -17,7 +17,7 @@ export class User {
         this.email = user.email;
         this.password = user.password;
         this.id = user.id;
-        this.role = 'user';
+        this.role = user.role;
     }
 
     isValidEmail = (email: string): boolean => {

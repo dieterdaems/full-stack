@@ -12,6 +12,7 @@ const TeamsOverviewTabel: React.FC<Props> = ({ teams }: Props) => {
     const [cooldownTeamId, setCooldownTeamId] = useState<number | null>(null);
 
     const id = sessionStorage.getItem("loggedUser");
+    const role = sessionStorage.getItem("role");
 
 
     const handleLeaveTeam = async (team: {id: number, name: string}) => {
@@ -66,15 +67,19 @@ const TeamsOverviewTabel: React.FC<Props> = ({ teams }: Props) => {
                             <td>{team.name}</td>
                             <td>{team.users.length}</td>
                             <td>
-                                {team.users.some((user) => id && user.id === parseInt(id)) ? (
-                                    <button
-                                        disabled={cooldownTeamId === team.id}
-                                        onClick={() => handleLeaveTeam({id: team.id, name: team.name})}>Leave</button>
+                                {role === 'admin' ? (
+                                    <button>
+                                        Delete</button>
                                 ) : (
-                                    <button
-                                        disabled={cooldownTeamId === team.id}
-                                        onClick={() => handleJoinTeam({id: team.id, name: team.name})}>Join</button>
-                                )}
+                                    team.users.some((user) => id && user.id === parseInt(id)) ? (
+                                        <button
+                                            disabled={cooldownTeamId === team.id}
+                                            onClick={() => handleLeaveTeam({id: team.id, name: team.name})}>Leave</button>
+                                    ) : (
+                                        <button
+                                            disabled={cooldownTeamId === team.id}
+                                            onClick={() => handleJoinTeam({id: team.id, name: team.name})}>Join</button>
+                                    ))}
                             </td>
                         </tr>
                     ))}

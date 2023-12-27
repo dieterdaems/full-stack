@@ -88,7 +88,7 @@ userRouter.get('/', async (req: Request & { auth: any }, res: Response, next: Ne
 
 /**
  * @swagger
- * /users/{email}:
+ * /users/email/{email}:
  *   get:
  *     summary: Get a user by email.
  *     parameters:

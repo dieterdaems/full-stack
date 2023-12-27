@@ -39,6 +39,7 @@ function UserLogin() {
       const data = await user.json();
       sessionStorage.setItem("token", token);
       sessionStorage.setItem("loggedUser", data.id);
+      sessionStorage.setItem("role", data.role);
       setStatusMessage('Login successful, redirecting...');
       setTimeout(() => {
         router.push('/');

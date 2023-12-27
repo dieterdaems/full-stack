@@ -4,6 +4,7 @@ type User = {
     specialisation: string;
     email: string;
     password?: string;
+    role: string;
 }
 
 type UserLogin = {
