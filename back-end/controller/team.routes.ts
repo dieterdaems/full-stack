@@ -1,5 +1,5 @@
 import teamService from "../service/team.service";
-import express, { Request, Response } from 'express';
+import express, { Request, Response, NextFunction } from 'express';
 
 
 const teamRouter = express.Router();
@@ -55,13 +55,13 @@ const teamRouter = express.Router();
  *                   type: string
  */
 
-teamRouter.get('/', async (req: Request, res: Response) => {
+teamRouter.get('/', async (req: Request, res: Response, next: NextFunction) => {
     try {
         const teams = await teamService.getAllTeams();
         res.status(200).json(teams);
     }
     catch (error) {
-        res.status(400).json({ status: 'error', errorMessage: error.message });
+        next(error);
     }
 });
 
@@ -97,13 +97,13 @@ teamRouter.get('/', async (req: Request, res: Response) => {
  *                   type: string
  */
 
-teamRouter.get('/:id', async (req: Request, res: Response) => {
+teamRouter.get('/:id', async (req: Request, res: Response, next: NextFunction) => {
     try {
         const team = await teamService.getTeamById(parseInt(req.params.id));
         res.status(200).json(team);
     }
     catch (error) {
-        res.status(400).json({ status: 'error', errorMessage: error.message });
+        next(error);
     }
 });
 
@@ -137,13 +137,13 @@ teamRouter.get('/:id', async (req: Request, res: Response) => {
  *                 errorMessage:
  *                   type: string
  */
-teamRouter.post('/create', async (req: Request, res: Response) => {
+teamRouter.post('/create', async (req: Request, res: Response, next: NextFunction) => {
     try {
         const team = await teamService.createTeam(req.body);
         res.status(201).json(team);
     }
     catch (error) {
-        res.status(400).json({ status: 'error', errorMessage: error.message });
+        next(error);
     }
 });
 
@@ -184,13 +184,13 @@ teamRouter.post('/create', async (req: Request, res: Response) => {
  *                 errorMessage:
  *                   type: string
  */
-teamRouter.post('/:id/user/:userId', async (req: Request, res: Response) => {
+teamRouter.post('/:id/user/:userId', async (req: Request, res: Response, next: NextFunction) => {
     try {
         const team = await teamService.addUserToTeam(parseInt(req.params.id), parseInt(req.params.userId));
         res.status(201).json(team);
     }
     catch (error) {
-        res.status(400).json({ status: 'error', errorMessage: error.message });
+        next(error);
     }
 });
 
@@ -231,13 +231,13 @@ teamRouter.post('/:id/user/:userId', async (req: Request, res: Response) => {
  *                 errorMessage:
  *                   type: string
  */
-teamRouter.delete('/:id/user/:userId', async (req: Request, res: Response) => {
+teamRouter.delete('/:id/user/:userId', async (req: Request, res: Response, next: NextFunction) => {
     try {
         const team = await teamService.removeUserFromTeam(parseInt(req.params.id), parseInt(req.params.userId));
         res.status(201).json(team);
     }
     catch (error) {
-        res.status(400).json({ status: 'error', errorMessage: error.message });
+        next(error);
     }
 }
 );

@@ -36,7 +36,7 @@
  */
 
 import userService from "../service/user.service";
-import express, { Request, Response } from 'express';
+import express, { Request, Response, NextFunction } from 'express';
 import { UserInput } from "../types";
 
 const userRouter = express.Router();
@@ -68,13 +68,13 @@ const userRouter = express.Router();
  *                   type: string
  */
 
-userRouter.get('/', async (req: Request, res: Response) => {
+userRouter.get('/', async (req: Request, res: Response, next: NextFunction) => {
     try {
         const users = await userService.getAllUsers();
         res.status(200).json(users);
     }
     catch (error) {
-        res.status(400).json({ status: 'error', errorMessage: error.message });
+        next(error);
     }
 });
 
@@ -110,23 +110,23 @@ userRouter.get('/', async (req: Request, res: Response) => {
  *                   type: string
  */
 
-userRouter.get('/email/:email', async (req: Request, res: Response) => {
+userRouter.get('/email/:email', async (req: Request, res: Response, next: NextFunction) => {
     try {
         const user = await userService.getUserByEmail(req.params.email);
         res.status(200).json(user);
     }
     catch (error) {
-        res.status(400).json({ status: 'error', errorMessage: error.message });
+        next(error);
     }
 });
 
-userRouter.get('/:id', async (req: Request, res: Response) => {
+userRouter.get('/:id', async (req: Request, res: Response, next: NextFunction) => {
     try {
         const user = await userService.getUserById(parseInt(req.params.id));
         res.status(200).json(user);
     }
     catch (error) {
-        res.status(400).json({ status: 'error', errorMessage: error.message });
+        next(error);
     }
 });
 
@@ -161,14 +161,14 @@ userRouter.get('/:id', async (req: Request, res: Response) => {
  *                 errorMessage:
  *                   type: string
  */
-userRouter.post('/add', async (req: Request, res: Response) => {
+userRouter.post('/add', async (req: Request, res: Response, next: NextFunction) => {
     try {
         const user = <UserInput>req.body; // cast to DTO
         const result = await userService.createUser(user);
         res.status(200).json(result);
     }
     catch (error) {
-        res.status(400).json({ status: 'error', errorMessage: error.message });
+        next(error);
     }
 });
 
@@ -203,14 +203,14 @@ userRouter.post('/add', async (req: Request, res: Response) => {
  *                 errorMessage:
  *                   type: string
  */
-userRouter.put('/', async (req: Request, res: Response) => {
+userRouter.put('/', async (req: Request, res: Response, next: NextFunction) => {
     try {
         const user = <UserInput>req.body;
         const result = await userService.updateUser(user);
         res.status(200).json(result);
     }
     catch (error) {
-        res.status(400).json({ status: 'error', errorMessage: error.message });
+        next(error);
     }
 });
 

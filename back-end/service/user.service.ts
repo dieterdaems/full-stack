@@ -2,6 +2,7 @@ import userDb from "../domain/data-access/user.db";
 import { User } from "../domain/model/user";
 import { UserInput } from '../types';
 import bcrypt from 'bcrypt';
+import { generateJwtToken } from "../util/jwt";
 
 const getAllUsers = async (): Promise<User[]> => userDb.getAllUsers();
 
@@ -39,4 +40,16 @@ const updateUser = async ({ id, name, specialisation, email, password }: UserInp
     return userDb.updateUser({ id, name, specialisation, email, password });
 }
 
-export default { getAllUsers, getUserByEmail, getUserById, createUser, updateUser };
+const authenticate = async ({ email, password }: UserInput): Promise<String> => {
+    const user = await userDb.getUserByEmail(email);
+    if (!user) {
+        throw new Error("Email and/or password not correct.");
+    }
+    const isValidPassword = await bcrypt.compare(password, user.password);
+    if (!isValidPassword) {
+        throw new Error("Email and/or password not correct.");
+    }
+    return generateJwtToken(email);
+}
+
+export default { getAllUsers, getUserByEmail, getUserById, createUser, updateUser, authenticate };
