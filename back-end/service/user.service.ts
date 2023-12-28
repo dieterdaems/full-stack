@@ -12,14 +12,14 @@ const getAllUsers = async ({ role }): Promise<User[]> => {
 
 
 const getUserByEmail = async ({ email, currentUser, role }): Promise<User> => {
-    if (role !== 'admin' && currentUser !== email) throw new UnauthorizedError('credentials_required', { message: 'You are not authorized to access this resource.' });
-    const user = await userDb.getUserByEmail(email);
+    if (role !== 'admin' && currentUser.toLowerCase() !== email.toLowerCase()) throw new UnauthorizedError('credentials_required', { message: 'You are not authorized to access this resource.' });
+    const user = await userDb.getUserByEmail(email.toLowerCase());
     if (!user) throw new Error(`User with email ${email} does not exist.`);
     return user;
 };
 
 const getUserById = async ({ id, currentUser, role }): Promise<User> => {
-    const user = await userDb.getUserByEmail(currentUser);
+    const user = await userDb.getUserByEmail(currentUser.toLowerCase());
     if (role !== 'admin' && user.id !== id) throw new UnauthorizedError('credentials_required', { message: 'You are not authorized to access this resource.' });
     const existingUser = await userDb.getUserById(id);
     if (!existingUser) throw new Error(`User with id ${id} does not exist.`);
@@ -34,7 +34,7 @@ const deleteUserById = async ({ id, role }): Promise<User> => {
 }
 
 const createUser = async ({ name, specialisation, email, password }: UserInput): Promise<User> => {
-    const existingUser = await userDb.getUserByEmail(email);
+    const existingUser = await userDb.getUserByEmail(email.toLowerCase());
     if (existingUser) throw new Error(`User with email ${email} already exists.`);
 
     if (!password?.trim() || password.length < 7) throw new Error('Password must be at least 7 characters');
@@ -44,12 +44,12 @@ const createUser = async ({ name, specialisation, email, password }: UserInput):
 };
 
 const updateUser = async ({ targetUserId, updatedInfo, currentUser, currentRole }): Promise<User> => {
-    const user = await userDb.getUserByEmail(currentUser);
+    const user = await userDb.getUserByEmail(currentUser.toLowerCase());
     if (currentRole !== 'admin' && user.id !== targetUserId) throw new UnauthorizedError('credentials_required', { message: 'You are not authorized to update this resource.' });
     const targetUser = await userDb.getUserById(targetUserId);
     if (!targetUser) throw new Error(`User with id ${targetUserId} does not exist.`);
     if (targetUser.email !== updatedInfo.email) {
-        const existingUser = await userDb.getUserByEmail(updatedInfo.email);
+        const existingUser = await userDb.getUserByEmail(updatedInfo.email.toLowerCase());
         if (existingUser) throw new Error(`User with email ${updatedInfo.email} already exists.`);
     }
     if (targetUser.password !== updatedInfo.password) {
@@ -62,7 +62,7 @@ const updateUser = async ({ targetUserId, updatedInfo, currentUser, currentRole 
 
 
 const authenticate = async ({ email, password }: UserInput): Promise<String> => {
-    const user = await userDb.getUserByEmail(email);
+    const user = await userDb.getUserByEmail(email.toLowerCase());
     if (!user || !password) {
         throw new Error("Email and/or password not correct.");
     }
