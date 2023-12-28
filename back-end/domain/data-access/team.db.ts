@@ -28,9 +28,7 @@ const getTeamById = async (id: number): Promise<Team> => {
                 users: true,
             }
         });
-        if (!teamPrisma) throw new Error(`Team with id ${id} does not exist.`);
-        const team = Team.from(teamPrisma);
-        return team;
+        return teamPrisma ? Team.from(teamPrisma) : undefined;
     }
     catch (error) {
         console.log(error);
@@ -47,9 +45,7 @@ const getTeamByName = async (name: string): Promise<Team> => {
                 users: true,
             }
         });
-        if (!teamPrisma) throw new Error(`Team with name ${name} does not exist.`);
-        const team = Team.from(teamPrisma);
-        return team;
+        return teamPrisma ? Team.from(teamPrisma) : undefined;
     }
     catch (error) {
         console.log(error);
@@ -68,7 +64,6 @@ const createTeam = async ({name, users}: TeamInput): Promise<Team> => {
             },
             include: {users: true}
         });
-        if (!teamPrisma) throw new Error(`Team with name ${name} already exists.`);
         const team = Team.from(teamPrisma);
         return team;
     }
@@ -89,7 +84,6 @@ const addUserToTeam = async (teamId: number, userId: number): Promise<Team> => {
             },
             include: {users: true}
         });
-        if (!teamPrisma) throw new Error(`Team with id ${teamId} does not exist.`);
         const team = Team.from(teamPrisma);
         return team;
     }
@@ -110,7 +104,6 @@ const removeUserFromTeam = async (teamId: number, userId: number): Promise<Team>
             },
             include: {users: true}
         });
-        if (!teamPrisma) throw new Error(`Team with id ${teamId} does not exist.`);
         const team = Team.from(teamPrisma);
         return team;
     }
