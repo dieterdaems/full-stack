@@ -53,14 +53,13 @@ const create = async ({name, specialisation, email, password} : User) => {
 
 const update = async ({id, name, specialisation, email} : User) => {
     const token = sessionStorage.getItem('token');
-    return fetch(process.env.NEXT_PUBLIC_API_URL + '/users/', {
+    return fetch(process.env.NEXT_PUBLIC_API_URL + '/users/update/' + id, {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${token}`
         },
         body: JSON.stringify({
-            id, 
             name,
             specialisation,
             email,

@@ -18,8 +18,8 @@ const Teams: React.FC = () => {
     }, 1000);
 
     
-    if (error) return <div>Failed to load</div>
-    if (!data) return <div>Loading...</div>
+    if (error) return <>Failed to load</>
+    if (!data) return <>Loading...</>
     return (
         <>
             <Head>
