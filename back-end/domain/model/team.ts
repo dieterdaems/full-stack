@@ -1,15 +1,12 @@
-import { User } from "./user";
-import { Team as TeamPrisma, User as UserPrisma } from "@prisma/client"; 
+import { Team as TeamPrisma } from "@prisma/client"; 
 
 export class Team {
     readonly name: string;
-    readonly users: Array<User>;
     readonly id?: number;
 
-    constructor(team: {name: string, users: User[], id? :number}) {
+    constructor(team: {name: string, id? :number}) {
         if (!team.name?.trim()) throw new Error('Name is required');
         this.name = team.name;
-        this.users = team.users;
         this.id = team.id;
     }
 
@@ -19,13 +16,11 @@ export class Team {
 
     static from ({
         name,
-        users,
         id
-    }: TeamPrisma & {users: UserPrisma[]}) {
+    }: TeamPrisma ) {
         return new Team(
             {
             name,
-            users : users.map((user) => User.from(user)),
             id
         })
     }

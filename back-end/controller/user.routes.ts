@@ -17,6 +17,8 @@
  *              format: email
  *          password:
  *              type: string
+ *          team:
+ *              $ref: '#/components/schemas/Team'
  *    UserInput:
  *      type: object
  *      properties:
@@ -351,5 +353,107 @@ userRouter.delete('/:id', async (req: Request & { auth: any }, res: Response, ne
         next(error);
     }
 });
+
+
+/**
+ * @swagger
+ * /users/team/{teamId}/user/{userId}:
+ *   post:
+ *     summary: Add a user to a team.
+ *     parameters:
+ *       - in: path
+ *         name: teamId
+ *         required: true
+ *         description: ID of the team to retrieve.
+ *         schema:
+ *           type: integer
+ *       - in: path
+ *         name: userId
+ *         required: true
+ *         description: ID of the user to retrieve.
+ *         schema:
+ *           type: integer
+ *     responses:
+ *       201:
+ *         description: Successful response with the updated user.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/User'
+ *       400:
+ *         description: Bad request with an error message.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                 errorMessage:
+ *                   type: string
+ */
+userRouter.post('/team/:teamId/user/:userId', async (req: Request & { auth: any }, res: Response, next: NextFunction) => {
+    try {
+        const currentUser = req.auth.email;
+        const role = req.auth.role;
+        const user = await userService.addUserToTeam({teamId: parseInt(req.params.teamId), userId: parseInt(req.params.userId), currentUser, role });
+        res.status(201).json(user);
+    }
+    catch (error) {
+        next(error);
+    }
+});
+
+/**
+ * @swagger
+ * /users/team/{teamId}/user/{userId}:
+ *   delete:
+ *     summary: Remove a user from a team.
+ *     parameters:
+ *       - in: path
+ *         name: teamId
+ *         required: true
+ *         description: ID of the team to retrieve.
+ *         schema:
+ *           type: integer
+ *       - in: path
+ *         name: userId
+ *         required: true
+ *         description: ID of the user to retrieve.
+ *         schema:
+ *           type: integer
+ *     responses:
+ *       201:
+ *         description: Successful response with the updated user.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/User'
+ *       400:
+ *         description: Bad request with an error message.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                 errorMessage:
+ *                   type: string
+ */
+userRouter.delete('/team/:teamId/user/:userId', async (req: Request & { auth: any }, res: Response, next: NextFunction) => {
+    try {
+        const role = req.auth.role;
+        const currentUser = req.auth.email;
+        const user = await userService.removeUserFromTeam({teamId: parseInt(req.params.teamId), userId: parseInt(req.params.userId), currentUser, role});
+        res.status(201).json(user);
+    }
+    catch (error) {
+        next(error);
+    }
+}
+);
+
+
 
 export { userRouter };

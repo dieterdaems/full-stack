@@ -5,6 +5,7 @@ type UserInput = {
     email?: string;
     password?: string;
     role?: Role;
+    teams?: TeamInput[];
 };
 
 type ProjectInput = {
@@ -15,7 +16,6 @@ type ProjectInput = {
 type TeamInput = {
     name?: string;
     id?: number;
-    users?: UserInput[];
 };
 
 type TaskInput = {

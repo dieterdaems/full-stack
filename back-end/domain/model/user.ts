@@ -1,5 +1,7 @@
 import { User as UserPrisma} from "@prisma/client"; 
 import { Role } from "../../types";
+import { Team } from "./team";
+import { Team as TeamPrisma } from "@prisma/client"; 
 
 export class User {
     readonly id?: number;
@@ -8,8 +10,9 @@ export class User {
     readonly email: string;
     readonly password: string;
     readonly role:  Role
+    readonly teams: Array<Team>;
 
-    constructor(user: {id?:number, name: string, specialisation:string, email:string, password:string, role?:Role}) {
+    constructor(user: {id?:number, name: string, specialisation:string, email:string, password:string, role?:Role, teams?: Array<Team>}) {
         this.validate(user);
 
         this.id = user.id;
@@ -18,6 +21,7 @@ export class User {
         this.email = user.email;
         this.password = user.password;
         this.role = user.role;
+        this.teams = user.teams ? user.teams : new Array<Team>();
     }
 
     isValidEmail = (email: string): boolean => {
@@ -46,7 +50,8 @@ export class User {
         email,
         password,
         role,
-    }: UserPrisma ) {
+        teams,
+    }: UserPrisma & {teams: TeamPrisma[]}) {
         return new User(
             { id,
             name,
@@ -54,6 +59,7 @@ export class User {
             email,
             password,
             role: role as Role,
+            teams : teams.map((team) => Team.from(team)),
         })
     }
 

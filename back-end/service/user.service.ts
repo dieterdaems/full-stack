@@ -4,6 +4,7 @@ import { UserInput } from '../types';
 import bcrypt from 'bcrypt';
 import { generateJwtToken } from "../util/jwt";
 import { UnauthorizedError } from "express-jwt";
+import teamDb from "../domain/data-access/team.db";
 
 const getAllUsers = async ({ role }): Promise<User[]> => {
     if (role !== 'admin') throw new UnauthorizedError('credentials_required', { message: 'You are not authorized to access this resource.' })
@@ -74,4 +75,25 @@ const authenticate = async ({ email, password }: UserInput): Promise<String> => 
     return generateJwtToken({ email, role: user.role });
 }
 
-export default { getAllUsers, getUserByEmail, getUserById, createUser, updateUser, authenticate, deleteUserById };
+const addUserToTeam = async ({teamId, userId, currentUser, role}): Promise<User> => {
+    const user = await userDb.getUserByEmail(currentUser.toLowerCase());
+    if (role !== 'admin' && user.id !== userId) throw new UnauthorizedError('credentials_required', { message: 'You are not authorized to add another user to a team.' });
+    const team = await teamDb.getTeamById(teamId);
+    if (!team) throw new Error(`Team with id ${teamId} does not exist.`);
+    const existingUser = await userDb.getUserById(userId);
+    if (!existingUser) throw new Error(`User with id ${userId} does not exist.`);
+    return userDb.addUserToTeam(teamId, userId);
+}
+
+const removeUserFromTeam = async({teamId, userId, currentUser, role}): Promise<User> => {
+    const user = await userDb.getUserByEmail(currentUser.toLowerCase());
+    if (role !== 'admin' && user.id !== userId) throw new UnauthorizedError('credentials_required', { message: 'You are not authorized to remove another user from a team.' });
+    const team = await teamDb.getTeamById(teamId);
+    if (!team) throw new Error(`Team with id ${teamId} does not exist.`);
+    const existingUser = await userDb.getUserById(userId);
+    if (!existingUser) throw new Error(`User with id ${userId} does not exist.`);
+    return userDb.removeUserFromTeam(teamId, userId);
+}
+
+
+export default { getAllUsers, getUserByEmail, getUserById, createUser, updateUser, authenticate, deleteUserById, addUserToTeam, removeUserFromTeam };

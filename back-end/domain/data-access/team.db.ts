@@ -5,11 +5,7 @@ import { Team } from "../model/team";
 const getAllTeams = async (): Promise<Team[]> => {
     try {
         const teamsPrisma = await prisma.team.findMany( {
-            include: {
-                users: true,
-            }
         });
-        if (!teamsPrisma) throw new Error(`No teams found.`);
         const teams = teamsPrisma.map((teamPrisma) => Team.from(teamPrisma));
         return teams;
     }
@@ -24,9 +20,6 @@ const getTeamById = async (id: number): Promise<Team> => {
         const teamPrisma = await prisma.team.findUnique({
             where :
             { id: id},
-            include: {
-                users: true,
-            }
         });
         return teamPrisma ? Team.from(teamPrisma) : undefined;
     }
@@ -41,9 +34,6 @@ const getTeamByName = async (name: string): Promise<Team> => {
         const teamPrisma = await prisma.team.findUnique({
             where :
             { name: name},
-            include: {
-                users: true,
-            }
         });
         return teamPrisma ? Team.from(teamPrisma) : undefined;
     }
@@ -53,56 +43,12 @@ const getTeamByName = async (name: string): Promise<Team> => {
     }
 }
 
-const createTeam = async ({name, users}: TeamInput): Promise<Team> => {
+const createTeam = async ({name}: TeamInput): Promise<Team> => {
     try {
         const teamPrisma = await prisma.team.create({
             data: {
                 name,
-                users: {
-                    connect: users?.map((user) => ({id: user.id}))
-                }
             },
-            include: {users: true}
-        });
-        const team = Team.from(teamPrisma);
-        return team;
-    }
-    catch (error) {
-        console.log(error);
-        throw new Error("Database error. Check logs for more details.");
-    }
-}
-
-const addUserToTeam = async (teamId: number, userId: number): Promise<Team> => {
-    try {
-        const teamPrisma = await prisma.team.update({
-            where: {id: teamId},
-            data: {
-                users: {
-                    connect: {id: userId}
-                }
-            },
-            include: {users: true}
-        });
-        const team = Team.from(teamPrisma);
-        return team;
-    }
-    catch (error) {
-        console.log(error);
-        throw new Error("Database error. Check logs for more details.");
-    }
-}
-
-const removeUserFromTeam = async (teamId: number, userId: number): Promise<Team> => {
-    try {
-        const teamPrisma = await prisma.team.update({
-            where: {id: teamId},
-            data: {
-                users: {
-                    disconnect: {id: userId}
-                }
-            },
-            include: {users: true}
         });
         const team = Team.from(teamPrisma);
         return team;
@@ -114,4 +60,4 @@ const removeUserFromTeam = async (teamId: number, userId: number): Promise<Team>
 }
 
 
-export default { getAllTeams, getTeamById, getTeamByName,  createTeam, addUserToTeam, removeUserFromTeam };
+export default { getAllTeams, getTeamById, getTeamByName,  createTeam };

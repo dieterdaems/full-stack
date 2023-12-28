@@ -4,6 +4,7 @@ type User = {
     specialisation: string;
     email: string;
     password?: string;
+    teams?: Array<Team>;
 }
 
 type UserLogin = {
@@ -14,13 +15,11 @@ type UserLogin = {
 type Team = {
     id?: number;
     name: string;
-    users: User[];
 }
 
 type TeamUpdate = {
     id: number;
     name: string;
-    users: User[];
 }
 
 type Task = {
