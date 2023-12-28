@@ -11,12 +11,14 @@ const Tasks: React.FC = () => {
     const fetchTasks = async () => {
         const response = await TaskService.getAll();
         const tasks = await response.json();
+        // if(user.role == "admin") {
         return tasks;
+    // }
+    // else {
+        //still to modify
+        // return tasks.filter(task => task.user.id == user.id);
+    // }
     }
-
-    // useEffect(() => {
-    //     fetchTasks();
-    // }, []);
 
     const {data, isLoading, error} = useSWR('getTasks', fetchTasks);
 

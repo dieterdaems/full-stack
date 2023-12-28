@@ -12,32 +12,22 @@ const Projects: React.FC = () => {
 
 
     const fetchProjects = async () => {
-        
         const response = await ProjectService.getAll();
         const projects = await response.json();
-        
+        // if(user.role == "admin") {
         return projects;
+    // }
+    // else {
+        //still to modify
+    //     return projects.filter(project => project.user.id == user.id);
     }
 
-    // const change = () => {
-    //     add = !add;
-    //     toggle();
-    // }
-    
-    // const toggle = () => {
-    //     return add;
-    // }
-
-// useEffect(() => {
-//     fetchProjects();
-// }, []);
-
 const {data, isLoading, error} = useSWR('projectsFromDb', fetchProjects);
-// const {data: data2, error: error2} = useSWR('toggle', toggle);
+
 
 useInterval(() => {
     mutate('projectsFromDb', fetchProjects());
-    // mutate('toggle', toggle());
+
 }, 1000);
 
 
