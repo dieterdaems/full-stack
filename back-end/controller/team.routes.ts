@@ -25,6 +25,12 @@ const teamRouter = express.Router();
  *        type: string
  *      users:
  *       $ref: '#/components/schemas/UserInputTeam'
+ *   ProjectInputTeam:
+ *    type: object
+ *    properties:
+ *      id:
+ *       type: number
+ *       format: int64
 */
 
 
@@ -109,7 +115,7 @@ teamRouter.get('/:id', async (req: Request, res: Response) => {
 
 /**
  * @swagger
- * /teams:
+ * /teams/create:
  *   post:
  *     summary: Create a new team.
  *     requestBody:

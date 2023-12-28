@@ -34,4 +34,6 @@ const deleteProject = async (id: number): Promise<Project> => {
     return project;
 }
 
+//update project
+
 export default { getAllProjects, getProjectById, createProject, deleteProject };
