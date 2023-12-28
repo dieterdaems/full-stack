@@ -17,7 +17,9 @@ const getAllProjects = async (): Promise<Project[]> => {
             }
         );
         if (!projectsPrisma) throw new Error(`No projects found.`);
+        // console.log(projectsPrisma);
         const projects = projectsPrisma.map((projectPrisma) => Project.from(projectPrisma));
+        // console.log(projects);
         return projects;
     }
     catch (error) {
@@ -48,15 +50,20 @@ const getProjectById = async (id: number): Promise<Project> => {
 
 const createProject = async (project: Project): Promise<Project> => {
     try {
-        const newProject = await prisma.project.create({
-            data: {
-                name: project.name,
-                team: {
-                    connect: {
-                        id: project.team?.id
-                    }
+        const data: any = {
+            name: project.name,
+        };
+
+        if (project.team) {
+            data.team = {
+                connect: {
+                    id: project.team.id
                 }
-            },
+            };
+        }
+        console.log(data);
+        const newProject = await prisma.project.create({
+            data,
             include: {
                 team: {
                     include: {
