@@ -154,6 +154,7 @@ projectRouter.get('/:id', async (req: Request, res: Response) => {
 
 projectRouter.post('/', async (req: Request, res: Response) => {
     try {
+        // console.log(req.body);
         const project = <ProjectInput>req.body;
         const newProject = await projectService.createProject(project);
         res.status(200).json(newProject);

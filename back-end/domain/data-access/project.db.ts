@@ -61,7 +61,7 @@ const createProject = async (project: Project): Promise<Project> => {
                 }
             };
         }
-        console.log(data);
+        // console.log(data);
         const newProject = await prisma.project.create({
             data,
             include: {

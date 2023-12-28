@@ -25,7 +25,9 @@ const createProject = async (projectin: ProjectInput): Promise<Project> => {
     const existingProject = projects.find((project) => project.name === projectin.name);
     // console.log(existingProject);
     if (existingProject) throw new Error(`Project with id ${existingProject.id} already exists.`);
-    const newProject = new Project({name: projectin.name});
+    const teams = await teamDb.getAllTeams(); //change to find team by id?
+    const team = teams.find((team) => team.id === projectin.team.id);
+    const newProject = new Project({name: projectin.name, team: team});
     const project = await projectDb.createProject(newProject);
     return project;
 }

@@ -1,4 +1,4 @@
-import { Project } from "@/types";
+import { Project, Team } from "@/types";
 
 const getAll = () => {
     return fetch(process.env.NEXT_PUBLIC_API_URL + '/projects', {
@@ -18,13 +18,13 @@ const getById = (projectId: string) => {
     });
 }
 
-const create = (name : string) => {
+const create = (name : string, team: Team) => {
     return fetch(process.env.NEXT_PUBLIC_API_URL + '/projects', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify({name}),
+        body: JSON.stringify({name, team}),
     });
 }
 
