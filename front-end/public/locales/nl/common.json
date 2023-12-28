@@ -40,5 +40,21 @@
         "complete": "Voltooi Taak",
         "deadline": "Deadline",
         "project": "Project"
+    },
+    "projects": {
+        "title": "Projecten",
+        "loading": "Projecten worden geladen...",
+        "new": "Voeg Project Toe",
+        "edit": "Bewerk Project",
+        "delete": "Verwijder Project",
+        "save": "Opslaan",
+        "cancel": "Annuleren",
+        "name": "Naam",
+        "description": "Beschrijving",
+        "return": "Terug naar Project overzicht",
+        "id": "ID",
+        "tasks": "Taken Bekijken",
+        "submit": "Verstuur"
+
     }
 }

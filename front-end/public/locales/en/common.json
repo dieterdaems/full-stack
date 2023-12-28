@@ -41,6 +41,22 @@
         "complete": "Complete",
         "deadline": "Deadline",
         "project": "Project"
+    },
+    "projects": {
+        "title": "Projects",
+        "loading": "Loading projects...",
+        "new": "Add Project",
+        "edit": "Edit Project",
+        "delete": "Delete Project",
+        "save": "Save",
+        "cancel": "Cancel",
+        "name": "Name",
+        "description": "Description",
+        "return": "Return to project overview",
+        "id": "ID",
+        "tasks": "View Tasks",
+        "submit": "Submit"
+
     }
 }
 
