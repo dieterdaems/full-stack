@@ -14,6 +14,7 @@
  *              type: string
  *          email:
  *              type: string
+ *              format: email
  *          password:
  *              type: string
  *    UserInput:
@@ -25,19 +26,15 @@
  *              type: string
  *          email:
  *              type: string
+ *              format: email
  *          password:
  *              type: string
- *    UserInputTeam:
- *      type: object
- *      properties:
- *          id:
- *              type: number
- *              format: int64
  *    UserInputLogin:
  *      type: object
  *      properties:
  *          email:
  *              type: string
+ *              format: email
  *          password:
  *              type: string 
  * */
@@ -78,7 +75,7 @@ const userRouter = express.Router();
 userRouter.get('/', async (req: Request & { auth: any }, res: Response, next: NextFunction) => {
     try {
         const role = req.auth.role;
-        const users = await userService.getAllUsers(role);
+        const users = await userService.getAllUsers({role});
         res.status(200).json(users);
     }
     catch (error) {
@@ -118,9 +115,11 @@ userRouter.get('/', async (req: Request & { auth: any }, res: Response, next: Ne
  *                   type: string
  */
 
-userRouter.get('/email/:email', async (req: Request, res: Response, next: NextFunction) => {
+userRouter.get('/email/:email', async (req: Request & { auth: any }, res: Response, next: NextFunction) => {
     try {
-        const user = await userService.getUserByEmail(req.params.email);
+        const currentUser = req.auth.email;
+        const role = req.auth.role;
+        const user = await userService.getUserByEmail({email: req.params.email, currentUser, role});
         res.status(200).json(user);
     }
     catch (error) {
@@ -128,9 +127,43 @@ userRouter.get('/email/:email', async (req: Request, res: Response, next: NextFu
     }
 });
 
-userRouter.get('/:id', async (req: Request, res: Response, next: NextFunction) => {
+/**
+ * @swagger
+ * /users/{id}:
+ *   get:
+ *     summary: Get a user by id.
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: id of the user to retrieve.
+ *         schema:
+ *           type: number
+ *           format: int64
+ *     responses:
+ *       200:
+ *         description: Successful response with the project.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/User'
+ *       400:
+ *         description: Bad request with an error message.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                 errorMessage:
+ *                   type: string
+ */
+userRouter.get('/:id', async (req: Request & { auth: any }, res: Response, next: NextFunction) => {
     try {
-        const user = await userService.getUserById(parseInt(req.params.id));
+        const currentUser = req.auth.email;
+        const role = req.auth.role;
+        const user = await userService.getUserById({id: parseInt(req.params.id), currentUser, role});
         res.status(200).json(user);
     }
     catch (error) {
@@ -182,9 +215,16 @@ userRouter.post('/add', async (req: Request, res: Response, next: NextFunction) 
 
 /**
  * @swagger
- * /users/update:
+ * /users/update/{id}:
  *   put:
  *     summary: Update a user.
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: id of the user to update.
+ *         schema:
+ *           type: integer
  *     requestBody:
  *       description: User to update.
  *       required: true
@@ -211,10 +251,12 @@ userRouter.post('/add', async (req: Request, res: Response, next: NextFunction) 
  *                 errorMessage:
  *                   type: string
  */
-userRouter.put('/', async (req: Request, res: Response, next: NextFunction) => {
+userRouter.put('/update/:id', async (req: Request & { auth: any }, res: Response, next: NextFunction) => {
     try {
+        const currentRole = req.auth.role;
+        const currentUser = req.auth.email;
         const user = <UserInput>req.body;
-        const result = await userService.updateUser(user);
+        const result = await userService.updateUser({targetUserId: parseInt(req.params.id), updatedInfo: user, currentUser, currentRole});
         res.status(200).json(result);
     }
     catch (error) {

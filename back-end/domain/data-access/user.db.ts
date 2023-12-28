@@ -5,7 +5,6 @@ import { UserInput } from "../../types";
 const getAllUsers = async (): Promise<User[]> => {
     try {
         const usersPrisma = await prisma.user.findMany();
-        if (!usersPrisma) throw new Error(`No users found.`);
         const users = usersPrisma.map((userPrisma) => User.from(userPrisma));
         return users;
     }
@@ -21,7 +20,7 @@ const getUserByEmail = async (email: string): Promise<User> => {
             where:
                 { email: email }
         });
-        return User.from(userPrisma);
+        return userPrisma ? User.from(userPrisma) : undefined;
     }
     catch (error) {
         console.log(error);
@@ -35,9 +34,7 @@ const getUserById = async (id: number): Promise<User> => {
             where:
                 { id: id }
         });
-        if (!userPrisma) throw new Error(`User with id ${id} does not exist.`);
-        const user = User.from(userPrisma);
-        return user;
+        return userPrisma ? User.from(userPrisma) : undefined;
     }
     catch (error) {
         console.log(error);

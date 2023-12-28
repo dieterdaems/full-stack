@@ -11,49 +11,59 @@ const getAllUsers = async ({ role }): Promise<User[]> => {
 };
 
 
-const getUserByEmail = async (email: string): Promise<User> => {
+const getUserByEmail = async ({ email, currentUser, role }): Promise<User> => {
+    if (role !== 'admin' && currentUser !== email) throw new UnauthorizedError('credentials_required', { message: 'You are not authorized to access this resource.' });
     const user = await userDb.getUserByEmail(email);
     if (!user) throw new Error(`User with email ${email} does not exist.`);
     return user;
 };
 
-const getUserById = async (id: number): Promise<User> => {
-    const user = await userDb.getUserById(id);
-    if (!user) throw new Error(`User with id ${id} does not exist.`);
-    return user;
+const getUserById = async ({ id, currentUser, role }): Promise<User> => {
+    const user = await userDb.getUserByEmail(currentUser);
+    if (role !== 'admin' && user.id !== id) throw new UnauthorizedError('credentials_required', { message: 'You are not authorized to access this resource.' });
+    const existingUser = await userDb.getUserById(id);
+    if (!existingUser) throw new Error(`User with id ${id} does not exist.`);
+    return existingUser;
 }
 
-const deleteUserById = async ({id, role}): Promise<User> => {
+const deleteUserById = async ({ id, role }): Promise<User> => {
     if (role !== 'admin') throw new UnauthorizedError('credentials_required', { message: 'You are not authorized to delete a user.' })
     const user = await userDb.getUserById(id);
     if (!user) throw new Error(`User with id ${id} does not exist.`);
     return userDb.deleteUser(id);
 }
 
-const createUser = async ({ name, specialisation, email, password, role }: UserInput): Promise<User> => {
+const createUser = async ({ name, specialisation, email, password }: UserInput): Promise<User> => {
     const existingUser = await userDb.getUserByEmail(email);
     if (existingUser) throw new Error(`User with email ${email} already exists.`);
 
     if (!password?.trim() || password.length < 7) throw new Error('Password must be at least 7 characters');
     const hashedPassword = await bcrypt.hash(password, 12);
-    const user = new User({ name, specialisation, email, password: hashedPassword, role });
+    const user = new User({ name, specialisation, email, password: hashedPassword });
     return userDb.createUser(user);
 };
 
-const updateUser = async ({ id, name, specialisation, email, password, role }: UserInput): Promise<User> => {
-    const existingUser = await userDb.getUserById(id);
-    if (!existingUser) throw new Error(`User with id ${id} does not exist.`);
-    if (existingUser.password != password && password?.trim() && password.length >= 7) {
-        password = await bcrypt.hash(password, 12);
-    } else {
-        password = existingUser.password;
+const updateUser = async ({ targetUserId, updatedInfo, currentUser, currentRole }): Promise<User> => {
+    const user = await userDb.getUserByEmail(currentUser);
+    if (currentRole !== 'admin' && user.id !== targetUserId) throw new UnauthorizedError('credentials_required', { message: 'You are not authorized to update this resource.' });
+    const targetUser = await userDb.getUserById(targetUserId);
+    if (!targetUser) throw new Error(`User with id ${targetUserId} does not exist.`);
+    if (targetUser.email !== updatedInfo.email) {
+        const existingUser = await userDb.getUserByEmail(updatedInfo.email);
+        if (existingUser) throw new Error(`User with email ${updatedInfo.email} already exists.`);
     }
-    return userDb.updateUser({ id, name, specialisation, email, password, role });
+    if (targetUser.password !== updatedInfo.password) {
+        if (!updatedInfo.password?.trim() || updatedInfo.password.length < 7) throw new Error('Password must be at least 7 characters');
+        updatedInfo.password = await bcrypt.hash(updatedInfo.password, 12);
+    }
+    const updatedUser = new User({ id: targetUserId, ...updatedInfo });
+    return userDb.updateUser({ id: targetUserId, ...updatedUser });
 }
+
 
 const authenticate = async ({ email, password }: UserInput): Promise<String> => {
     const user = await userDb.getUserByEmail(email);
-    if (!user) {
+    if (!user || !password) {
         throw new Error("Email and/or password not correct.");
     }
     const isValidPassword = await bcrypt.compare(password, user.password);
