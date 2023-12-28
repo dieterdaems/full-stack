@@ -1,0 +1,44 @@
+{
+    "app.title": "Planning App",
+    "general error": "Er is een error opgetreden. Probeer het later opnieuw.",
+    "header": {
+        "welcome": "Welkom",
+        "home": "Home",
+        "nav": {
+            "tasks": "Taken",
+            "projects": "Projecten",
+            "teams": "Teams",
+            "logout": "Uitloggen",
+            "login": "Inloggen"
+        }
+    },
+    "main": {
+        "welcome": "Welkom bij de Planning App",
+        "description": "Dit is een simpele applicatie om projecten en taken te beheren."
+    },
+    "login": {
+        "title": "Inloggen",
+        "username": "Gebruikersnaam",
+        "password": "Wachtwoord",
+        "login": "Inloggen",
+        "register": "Registreren",
+        "forgot password": "Wachtwoord vergeten?",
+        "success": "U bent succesvol ingelogd."
+    },
+    "tasks": {
+        "title": "Taken",
+        "loading": "Taken worden geladen...",
+        "new": "Voeg Taak Toe",
+        "edit": "Bewerk Taak",
+        "delete": "Verwijder Taak",
+        "save": "Opslaan",
+        "cancel": "Annuleren",
+        "name": "Naam",
+        "description": "Beschrijving",
+        "return": "Terug naar Project overzicht",
+        "completed": "Voltooid",
+        "complete": "Voltooi Taak",
+        "deadline": "Deadline",
+        "project": "Project"
+    }
+}

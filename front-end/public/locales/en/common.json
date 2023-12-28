@@ -1,0 +1,46 @@
+{
+    "app.title": "Planning App",
+    "general error": "An error occurred while processing your request. Please try again later.",
+    "task": "Tasks",
+    "header": {
+        "welcome": "Welcome",
+        "home": "Home",
+        "nav": {
+            "tasks": "Tasks",
+            "projects": "Projects",
+            "teams": "Teams",
+            "logout": "Logout",
+            "login": "Login"
+        }
+    },
+    "main": {
+        "welcome": "Welcome to the Planning App!",
+        "description": "This is a simple planning app to manage your projects and tasks."
+    },
+    "login": {
+        "title": "Login",
+        "username": "Username",
+        "password": "Password",
+        "login": "Login",
+        "register": "Register",
+        "forgot password": "Forgot password?",
+        "success": "You have been successfully logged in."
+    },
+    "tasks": {
+        "title": "Tasks",
+        "loading": "Loading tasks...",
+        "new": "Add Task",
+        "edit": "Edit Task",
+        "delete": "Delete Task",
+        "save": "Save",
+        "cancel": "Cancel",
+        "name": "Name",
+        "description": "Description",
+        "return": "Return to project overview",
+        "completed": "Completed",
+        "complete": "Complete",
+        "deadline": "Deadline",
+        "project": "Project"
+    }
+}
+

@@ -1,6 +1,7 @@
 import TaskService from "@/services/TaskService";
 import { Task } from "@/types";
 import { useRouter } from "next/router";
+import { useTranslation } from "next-i18next";
 
 type Props = {
     tasks: Task[];
@@ -9,6 +10,7 @@ type Props = {
 
 const TasksOverviewTable: React.FC<Props> = ({ tasks }: Props) => {
     const router = useRouter();
+    const { t } = useTranslation();
 
     const projectId = router.query.id;
 
@@ -19,9 +21,9 @@ const TasksOverviewTable: React.FC<Props> = ({ tasks }: Props) => {
 
     const completebutton = (task: Task) => {
         if (task.completed) {
-            return <>Completed</>
+            return <>{t('tasks.completed')}</>
         } else {
-            return <button onClick={() => TaskService.completeTask(task)}>Complete</button>
+            return <button onClick={() => TaskService.completeTask(task)}>{t('tasks.complete')}</button>
         }
     }
     return (
@@ -29,12 +31,12 @@ const TasksOverviewTable: React.FC<Props> = ({ tasks }: Props) => {
         <table>
             <thead>
                 <tr>
-                    <th>Naam</th>
-                    <th>Description</th>
-                    <th>Deadline</th>
-                    <th>Project</th>
-                    <th>Completed?</th>
-                    <th>Delete</th>
+                    <th>{t('tasks.name')}</th>
+                    <th>{t("tasks.description")}</th>
+                    <th>{t('tasks.deadline')}</th>
+                    <th>{t('tasks.project')}</th>
+                    <th>{t('tasks.completed')}</th>
+                    <th>{t('tasks.delete')}</th>
                 </tr>
             </thead>
             <tbody>
@@ -46,12 +48,12 @@ const TasksOverviewTable: React.FC<Props> = ({ tasks }: Props) => {
                         <td>{task.project.name}</td>
                         <td>{completebutton(task)}</td>
 
-                        <td><button onClick={() => deleteTask(task.id)}>Delete</button></td>
+                        <td><button onClick={() => deleteTask(task.id)}>{t('tasks.completed')}</button></td>
                     </tr>
                 ))}
             </tbody>
         </table>
-            <button onClick={() => router.push('/tasks/register/' + projectId)}>Add Task</button>
+            <button onClick={() => router.push('/tasks/register/' + projectId)}>{t('tasks.new')}</button>
         
         </>
     );
