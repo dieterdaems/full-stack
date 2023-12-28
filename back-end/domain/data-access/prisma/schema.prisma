@@ -13,6 +13,7 @@ model User {
     specialisation String
     email String  @unique
     password String
+    role String
     teams Team[]
 }
 

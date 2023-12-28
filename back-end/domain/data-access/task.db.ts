@@ -18,7 +18,8 @@ const getAllTasks = async (): Promise<Task[]> => {
         return tasks;
     }
     catch (error) {
-        throw new Error(error);
+        console.log(error);
+        throw new Error("Database error. Check logs for more details.");
     }
 }
 const getTaskById = async (id: number): Promise<Task> => {
@@ -34,7 +35,8 @@ const getTaskById = async (id: number): Promise<Task> => {
         return task;
     }
     catch (error) {
-        throw new Error(error);
+        console.log(error);
+        throw new Error("Database error. Check logs for more details.");
     }
 }
 
@@ -53,7 +55,8 @@ const createTask = async ({name, description, deadline, project, completed}: Tas
         return task;
     }
     catch (error) {
-        throw new Error(error);
+        console.log(error);
+        throw new Error("Database error. Check logs for more details.");
     }
 }
 
@@ -68,7 +71,8 @@ const updateTask = async ({name, id, description, deadline, completed}: TaskInpu
         return task;
     }
     catch (error) {
-        throw new Error(error);
+        console.log(error);
+        throw new Error("Database error. Check logs for more details.");
     }
 }
 
@@ -95,7 +99,8 @@ const getTaskByProject = async (projectId: number): Promise<Task[]> => {
         return tasks;
     }
     catch (error) {
-        throw new Error(error);
+        console.log(error);
+        throw new Error("Database error. Check logs for more details.");
     }
 }
 
@@ -108,7 +113,8 @@ const deleteById = async (id: number): Promise<Task> => {
         return task;
     }
     catch (error) {
-        throw new Error(error);
+        console.log(error);
+        throw new Error("Database error. Check logs for more details.");
     }
 }
 

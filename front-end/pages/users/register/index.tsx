@@ -2,7 +2,7 @@ import UserRegistrationForm from "@/components/users/UserRegistrationForm";
 import Head from "next/head";
 
 
-const Users: React.FC = () => {
+const UserRegistration: React.FC = () => {
     return (
         <>
             <Head>
@@ -21,4 +21,4 @@ const Users: React.FC = () => {
 
 }
 
-export default Users;
+export default UserRegistration;

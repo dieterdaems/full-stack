@@ -67,7 +67,7 @@ const UserRegistrationForm: React.FC = () => {
             }
         }
         else {
-            setErrorMessage("Can't process registration. Please fill in with falid input.");
+            setErrorMessage("Can't process registration. Please fill in with valid input.");
         }
 
     }
@@ -84,7 +84,7 @@ const UserRegistrationForm: React.FC = () => {
 
                 <div>
                     <label htmlFor="email">Email *</label>
-                    <input type="text" id="email" onChange={(e) => setEmail(e.target.value)} />
+                    <input type="email" id="email" onChange={(e) => setEmail(e.target.value)} />
                     {emailError && <p>{emailError}</p>}
                 </div>
 

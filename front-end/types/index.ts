@@ -6,8 +6,19 @@ type User = {
     password?: string;
 }
 
+type UserLogin = {
+    email: string;
+    password: string;
+}
+
 type Team = {
     id?: number;
+    name: string;
+    users: User[];
+}
+
+type TeamUpdate = {
+    id: number;
     name: string;
     users: User[];
 }
@@ -31,4 +42,4 @@ type StatusMessage = {
     message: string
 }
 
-export type { User, Project, Task, StatusMessage, Team };
+export type { User, UserLogin, Project, Task, StatusMessage, Team, TeamUpdate};

@@ -1,4 +1,5 @@
 import { User as UserPrisma} from "@prisma/client"; 
+import { Role } from "../../types";
 
 export class User {
     readonly id?: number;
@@ -6,14 +7,17 @@ export class User {
     readonly specialisation: string;
     readonly email: string;
     readonly password: string;
+    readonly role:  Role
 
-    constructor(user: {name: string, specialisation:string, email:string, password:string, id?:number}) {
+    constructor(user: {id?:number, name: string, specialisation:string, email:string, password:string, role?:Role}) {
+        this.validate(user);
+
+        this.id = user.id;
         this.name = user.name;
         this.specialisation = user.specialisation;
-        if (!this.isValidEmail(user.email)) throw new Error('Invalid email format');
         this.email = user.email;
         this.password = user.password;
-        this.id = user.id;
+        this.role = user.role;
     }
 
     isValidEmail = (email: string): boolean => {
@@ -21,6 +25,16 @@ export class User {
         return emailRegex.test(email);
     }
 
+    validate(user: {name: string, specialisation:string, email:string, password:string}) {
+        if (!user.name?.trim()) throw new Error('Name is required');
+        if (!user.specialisation?.trim()) throw new Error('Specialisation is required');
+        if (!user.email?.trim()) throw new Error('Email is required');
+        if (!this.isValidEmail(user.email)) throw new Error('Invalid email format');
+        if (!user.password?.trim()) throw new Error('Password is required');
+        if (user.password.length < 7) throw new Error('Password must be at least 7 characters');
+    }
+
+    
     equals(email:string): boolean{
         return this.email === email;
     }
@@ -31,6 +45,7 @@ export class User {
         specialisation,
         email,
         password,
+        role,
     }: UserPrisma ) {
         return new User(
             { id,
@@ -38,6 +53,7 @@ export class User {
             specialisation,
             email,
             password,
+            role: role as Role,
         })
     }
 
