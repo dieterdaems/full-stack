@@ -1,5 +1,6 @@
-import TeamsOverviewTabel from "@/components/teams/TeamsOverviewTabel";
+import TeamsOverviewTable from "@/components/teams/TeamsOverviewTable";
 import TeamService from "@/services/TeamService";
+import UserService from "@/services/UserService";
 import Head from "next/head";
 import useSWR, { mutate } from "swr";
 import useInterval from "use-interval";
@@ -11,15 +12,26 @@ const Teams: React.FC = () => {
         return response.json();
     }
 
+    const getUserTeams = async () => {
+        const id = sessionStorage.getItem("loggedUser");
+        if (!id) return;
+
+        const response = await UserService.getById(parseInt(id));
+        const user = await response.json();
+        return user.teams;
+    }
+
+    const { data: currentTeamsData, error: currentTeamsError } = useSWR('currentTeams', getUserTeams);
     const { data, error } = useSWR('allTeams', getAllTeams);
 
     useInterval(() => {
         mutate('allTeams', getAllTeams());
+        mutate('currentTeams', getUserTeams());
     }, 1000);
 
     
-    if (error) return <>Failed to load</>
-    if (!data) return <>Loading...</>
+    if (error || currentTeamsError) return <>Failed to load</>
+    if (!data || !currentTeamsData) return <>Loading...</>
     return (
         <>
             <Head>
@@ -27,7 +39,7 @@ const Teams: React.FC = () => {
             </Head>
             <main>
                 <h1>Teams</h1>
-                {<TeamsOverviewTabel teams={data}/>}
+                {<TeamsOverviewTable teams={data} currentTeams={currentTeamsData}/>}
             </main>
         </>
     )

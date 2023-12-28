@@ -82,6 +82,28 @@ const login = async ({email, password}: UserLogin) => {
     });
 }
 
+const addUserToTeam = (teamId: number, userId: number) => {
+    const token = sessionStorage.getItem('token');
+    return fetch(process.env.NEXT_PUBLIC_API_URL + '/users/team/' + teamId + '/user/' + userId, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`
+        },
+    });
+}
+
+const removeUserFromTeam = (teamId: number, userId: number) => {
+    const token = sessionStorage.getItem('token');
+    return fetch(process.env.NEXT_PUBLIC_API_URL + '/users/team/' + teamId + '/user/' + userId, {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`
+        },
+    });
+}
+
 const UserService = {
     getAll,
     getById,
@@ -89,6 +111,8 @@ const UserService = {
     create,
     update,
     login,
+    addUserToTeam,
+    removeUserFromTeam
 }
 
 export default UserService;

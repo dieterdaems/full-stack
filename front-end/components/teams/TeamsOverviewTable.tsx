@@ -1,12 +1,13 @@
-import TeamService from "@/services/TeamService";
-import { TeamUpdate } from "@/types";
+import UserService from "@/services/UserService";
+import { Team, TeamUpdate } from "@/types";
 import { useState } from "react";
 
 type Props = {
-    teams: TeamUpdate[]
+    teams: TeamUpdate[],
+    currentTeams: Team[]
 };
 
-const TeamsOverviewTabel: React.FC<Props> = ({ teams }: Props) => {
+const TeamsOverviewTable: React.FC<Props> = ({ teams, currentTeams }: Props) => {
 
     const [statusMessage, setStatusMessage] = useState<string>("");
     const [cooldownTeamId, setCooldownTeamId] = useState<number | null>(null);
@@ -14,14 +15,13 @@ const TeamsOverviewTabel: React.FC<Props> = ({ teams }: Props) => {
     const id = sessionStorage.getItem("loggedUser");
     const role = sessionStorage.getItem("role");
 
-
     const handleLeaveTeam = async (team: {id: number, name: string}) => {
         if (cooldownTeamId || !id) {
             return;
         }
         setCooldownTeamId(team.id);
 
-        const response = await TeamService.removeUser(team.id, parseInt(id));
+        const response = await UserService.removeUserFromTeam(team.id, parseInt(id));
         const data = await response.json();
         if (response.ok) {
             setStatusMessage("Left team " + team.name + " successfully!");
@@ -38,7 +38,7 @@ const TeamsOverviewTabel: React.FC<Props> = ({ teams }: Props) => {
         }
         setCooldownTeamId(team.id);
 
-        const response = await TeamService.addUser(team.id, parseInt(id));
+        const response = await UserService.addUserToTeam(team.id, parseInt(id));
         const data = await response.json();
         if (response.ok) {
             setStatusMessage("Joined team " + team.name + " successfully!");
@@ -54,24 +54,20 @@ const TeamsOverviewTabel: React.FC<Props> = ({ teams }: Props) => {
             <table>
                 <thead>
                     <tr>
-                        <th>Id</th>
                         <th>Name</th>
-                        <th>Total members</th>
                         <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
                     {teams && teams.map((team, index) => (
                         <tr key={index}>
-                            <td>{team.id}</td>
                             <td>{team.name}</td>
-                            <td>{team.users.length}</td>
                             <td>
                                 {role === 'admin' ? (
                                     <button>
                                         Delete</button>
                                 ) : (
-                                    team.users.some((user) => id && user.id === parseInt(id)) ? (
+                                    currentTeams.some((currentTeam) => currentTeam.id == team.id) ? (
                                         <button
                                             disabled={cooldownTeamId === team.id}
                                             onClick={() => handleLeaveTeam({id: team.id, name: team.name})}>Leave</button>
@@ -90,4 +86,4 @@ const TeamsOverviewTabel: React.FC<Props> = ({ teams }: Props) => {
     );
 };
 
-export default TeamsOverviewTabel;
+export default TeamsOverviewTable;
