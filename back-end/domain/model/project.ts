@@ -1,18 +1,20 @@
 import { Team } from "./team";
 import { Project as ProjectPrisma } from "@prisma/client";
+import { Team as TeamPrisma } from "@prisma/client";
+import { User as UserPrisma } from "@prisma/client";
 
 export class Project {
     readonly name: string;
     readonly id?: number;
-    // readonly team?: Team;
+    readonly team?: Team;
 
 
 
-    constructor(project: {name: string, id?:number}) {
+    constructor(project: {name: string, id?:number, team?: Team}) {
         this.validate(project); 
         this.name = project.name;
         this.id = project.id;
-        // this.team = project.team;
+        this.team = project.team;
     }
 
     equals(pproject: Project): boolean{
@@ -26,8 +28,8 @@ export class Project {
     static from({
         id,
         name,
-        // team
-    }: ProjectPrisma)  { return new Project({ id, name }) }
+        team
+    }: ProjectPrisma & {team: TeamPrisma & {users: UserPrisma[]}})  { return new Project({ id, name, team: Team.from(team) }) }
         
 
   }

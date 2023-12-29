@@ -9,7 +9,16 @@ const getAllTasks = async (): Promise<Task[]> => {
         const tasksPrisma = await prisma.task.findMany(
             {
                 include: {
-                    project: true
+                    project: {
+                        include: {
+                            team: {
+                                include: {
+                                    users: true
+                                }
+                            }
+                        }
+                    
+                    }
                 }
             }
         );
@@ -27,7 +36,15 @@ const getTaskById = async (id: number): Promise<Task> => {
         const taskPrisma = await prisma.task.findUnique({
              where: { id: id },
              include: {
-                    project: true
+                    project: {
+                        include: {
+                            team: {
+                                include: {
+                                    users: true
+                                }
+                            }
+                        }
+                    }
               }
             });
         if (!taskPrisma) throw new Error(`Task with id ${id} does not exist.`);
@@ -50,7 +67,15 @@ const createTask = async ({name, description, deadline, project, completed}: Tas
                      completed,
                         project: { connect: { id: project.id } }
                     },
-                include: {project: true} });
+                include: {project: {
+                    include: {
+                        team: {
+                            include: {
+                                users: true
+                            }
+                        }
+                    }
+                }} });
         const task = Task.from(taskPrisma);
         return task;
     }
@@ -66,7 +91,15 @@ const updateTask = async ({name, id, description, deadline, completed}: TaskInpu
         const taskPrisma = await prisma.task.update({ 
             where: { id: id },
              data: { name, description, deadline, completed },
-             include: {project: true} });
+             include: {project: {
+                include: {
+                    team: {
+                        include: {
+                            users: true
+                        }
+                    }
+                }
+            }} });
         const task = Task.from(taskPrisma);
         return task;
     }
@@ -93,7 +126,15 @@ const updateTask = async ({name, id, description, deadline, completed}: TaskInpu
 const getTaskByProject = async (projectId: number): Promise<Task[]> => {
     try {
         const tasksPrisma = await prisma.task.findMany({ where: { projectId: projectId },
-             include: {project: true} });
+             include: {project: {
+                include: {
+                    team: {
+                        include: {
+                            users: true
+                        }
+                    }
+                }
+            }} });
         if (!tasksPrisma) throw new Error(`No tasks found.`);
         const tasks = tasksPrisma.map((taskPrisma) => Task.from(taskPrisma));
         return tasks;
@@ -107,7 +148,15 @@ const getTaskByProject = async (projectId: number): Promise<Task[]> => {
 const deleteById = async (id: number): Promise<Task> => {
     try {
         const taskPrisma = await prisma.task.delete({ where: { id: id },
-             include: {project: true} });
+             include: {project: {
+                include: {
+                    team: {
+                        include: {
+                            users: true
+                        }
+                    }
+                }
+            }} });
         if (!taskPrisma) throw new Error(`Task with id ${id} does not exist.`);
         const task = Task.from(taskPrisma);
         return task;

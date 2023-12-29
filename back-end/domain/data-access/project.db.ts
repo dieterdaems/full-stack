@@ -7,12 +7,19 @@ const getAllProjects = async (): Promise<Project[]> => {
         const projectsPrisma = await prisma.project.findMany(
             {
                 include: {
-                    tasks: true
+                    tasks: true,
+                    team: {
+                        include: {
+                            users: true
+                        }
+                    }
                 }
             }
         );
         if (!projectsPrisma) throw new Error(`No projects found.`);
+        // console.log(projectsPrisma);
         const projects = projectsPrisma.map((projectPrisma) => Project.from(projectPrisma));
+        // console.log(projects);
         return projects;
     }
     catch (error) {
@@ -25,6 +32,11 @@ const getProjectById = async (id: number): Promise<Project> => {
         const projectPrisma = await prisma.project.findUnique({
             where: { id: id },
             include: {
+                team: {
+                    include: {
+                        users: true
+                    }
+                },
                 tasks: true
             }
         });
@@ -40,9 +52,27 @@ const getProjectById = async (id: number): Promise<Project> => {
 
 const createProject = async (project: Project): Promise<Project> => {
     try {
+        const data: any = {
+            name: project.name,
+        };
+
+        if (project.team) {
+            data.team = {
+                connect: {
+                    id: project.team.id
+                }
+            };
+        }
+        // console.log(data);
         const newProject = await prisma.project.create({
-            data: {
-                name: project.name,
+            data,
+            include: {
+                team: {
+                    include: {
+                        users: true
+                    }
+                },
+                tasks: true
             }
         });
         return Project.from(newProject);
@@ -59,7 +89,12 @@ const deleteById = async (id: number): Promise<Project> => {
         const projectPrisma = await prisma.project.delete({
             where: { id: id },
             include: {
-                tasks: true
+                tasks: true,
+                team: {
+                    include: {
+                        users: true
+                    }
+                }
             }
         });
         return Project.from(projectPrisma);

@@ -15,6 +15,8 @@ const projectRouter = express.Router();
  *           type: integer
  *         name:
  *           type: string
+ *         team:
+ *          $ref: '#/components/schemas/Team'
  *       required:
  *         - name
  * 
@@ -23,6 +25,9 @@ const projectRouter = express.Router();
  *       properties:
  *         name:
  *           type: string
+*           format: int64
+ *         team:
+ *           $ref: '#/components/schemas/ProjectInputTeam'
  *       required:
  *          - name
  * 
@@ -149,6 +154,7 @@ projectRouter.get('/:id', async (req: Request, res: Response) => {
 
 projectRouter.post('/', async (req: Request, res: Response) => {
     try {
+        // console.log(req.body);
         const project = <ProjectInput>req.body;
         const newProject = await projectService.createProject(project);
         res.status(200).json(newProject);

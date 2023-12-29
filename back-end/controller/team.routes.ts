@@ -22,6 +22,14 @@ const teamRouter = express.Router();
  *    properties:
  *      name:
  *        type: string
+ *      users:
+ *       $ref: '#/components/schemas/UserInputTeam'
+ *   ProjectInputTeam:
+ *    type: object
+ *    properties:
+ *      id:
+ *       type: number
+ *       format: int64
 */
 
 
