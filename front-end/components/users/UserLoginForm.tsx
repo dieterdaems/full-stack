@@ -33,21 +33,17 @@ function UserLogin() {
     if (!validate()) return;
 
     const response = await UserService.login({ email, password });
-    const token = await response.json();
+    const user = await response.json();
     if (response.ok) {
-      sessionStorage.setItem("token", token);
-      const user = await UserService.getByEmail(email);
-      const data = await user.json();
-
-      sessionStorage.setItem("loggedUser", data.id);
-      sessionStorage.setItem("role", data.role);
-
+      sessionStorage.setItem('token', user.token);
+      sessionStorage.setItem('loggedInUser', user.id);
+      sessionStorage.setItem('role', user.role);
       setStatusMessage('Login successful, redirecting...');
       setTimeout(() => {
         router.push('/');
       }, 2500)
     } else {
-      setStatusMessage(token.errorMessage);
+      setStatusMessage(user.errorMessage);
     }
   };
 
