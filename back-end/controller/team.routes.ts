@@ -146,4 +146,46 @@ teamRouter.post('/create', async (req: Request & { auth: any }, res: Response, n
     }
 });
 
+/**
+ * @swagger
+ * /teams/delete/{id}:
+ *   delete:
+ *     summary: Delete a team by ID.
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: ID of the team to delete.
+ *         schema:
+ *           type: integer
+ *     responses:
+ *       200:
+ *         description: Successful response with the deleted team.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Team'
+ *       400:
+ *         description: Bad request with an error message.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                 errorMessage:
+ *                   type: string
+ */
+teamRouter.delete('/delete/:id', async (req: Request & { auth: any }, res: Response, next: NextFunction) => {
+    try {
+        const role = req.auth.role;
+        const result = await teamService.deleteTeam(parseInt(req.params.id), role);
+        res.status(200).json(result);
+    }
+    catch (error) {
+        next(error);
+    }
+});
+
 export { teamRouter };

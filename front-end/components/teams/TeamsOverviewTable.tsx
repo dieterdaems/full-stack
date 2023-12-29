@@ -53,6 +53,17 @@ const TeamsOverviewTable: React.FC<Props> = ({ teams, currentTeams }: Props) => 
         setTimeout(() => setCooldownTeamId(null), 500);
     };
 
+    const handleDeleteTeam = async (id: number) => {
+        const response = await TeamService.deleteById(id);
+        const data = await response.json();
+        if (response.ok) {
+            setStatusMessage("Deleted team successfully!");
+        }
+        else {
+            setStatusMessage(data.errorMessage);
+        }
+    };
+
     const handleAddTeam = async () => {
         if (newTeamName.trim() === "") { setStatusMessage("Team name cannot be empty!"); return; }
 
@@ -86,8 +97,8 @@ const TeamsOverviewTable: React.FC<Props> = ({ teams, currentTeams }: Props) => 
                             <td>{team.name}</td>
                             <td>
                                 {role === 'admin' ? (
-                                    <button>
-                                        Delete</button>
+                                    <button onClick={() => handleDeleteTeam(team.id)}>
+                                        🗑️</button>
                                 ) : (
                                     currentTeams.some((currentTeam) => currentTeam.id == team.id) ? (
                                         <button

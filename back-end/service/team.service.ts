@@ -20,6 +20,13 @@ const createTeam = async ({name}: TeamInput, role: Role): Promise<Team> => {
     return teamDb.createTeam(team);
 };
 
+const deleteTeam = async (id: number, role: Role): Promise<Team> => {
+    if (role !== 'admin') throw new UnauthorizedError('credentials_required', { message: 'You are not authorized to delete a team.' })
+    const team = await teamDb.getTeamById(id);
+    if (!team) throw new Error(`Team with id ${id} does not exist.`);
+    return teamDb.deleteTeam(id);
+}
 
 
-export default { getAllTeams, getTeamById, createTeam};
+
+export default { getAllTeams, getTeamById, createTeam, deleteTeam};
