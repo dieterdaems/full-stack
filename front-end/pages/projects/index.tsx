@@ -27,9 +27,9 @@ const Projects: React.FC = () => {
                 return projects;
             }
         else {
+            //TODO add translation
             setStatusMessage("You are not logged in!");
            return
-
         }
     // }
     // else {
