@@ -1,6 +1,6 @@
 import userDb from "../domain/data-access/user.db";
 import { User } from "../domain/model/user";
-import { UserInput } from '../types';
+import { AuthenticationResponse, UserInput } from '../types';
 import bcrypt from 'bcrypt';
 import { generateJwtToken } from "../util/jwt";
 import { UnauthorizedError } from "express-jwt";
@@ -64,7 +64,7 @@ const updateUser = async ({ targetUserId, updatedInfo, currentUser, currentRole 
 }
 
 
-const authenticate = async ({ email, password }: UserInput): Promise<String> => {
+const authenticate = async ({ email, password }: UserInput): Promise<AuthenticationResponse> => {
     const user = await userDb.getUserByEmail(email.toLowerCase());
     if (!user || !password) {
         throw new Error("Email and/or password not correct.");
@@ -73,7 +73,11 @@ const authenticate = async ({ email, password }: UserInput): Promise<String> => 
     if (!isValidPassword) {
         throw new Error("Email and/or password not correct.");
     }
-    return generateJwtToken({ email, role: user.role });
+    return {
+        token: generateJwtToken({ email, role: user.role }),
+        id: user.id,
+        role: user.role,
+    };
 }
 
 const addUserToTeam = async ({teamId, userId, currentUser, role}): Promise<User> => {
