@@ -1,5 +1,6 @@
 import ProjectService from "@/services/ProjectService";
 import { Project } from "@/types";
+import { useTranslation } from "next-i18next";
 import { useRouter } from "next/router";
 
 type Props = {
@@ -9,6 +10,7 @@ type Props = {
 
 const ProjectOverviewTable: React.FC<Props> = ({ projects }: Props) => {
     const router = useRouter();
+    const { t } = useTranslation();
 
     const deleteProject = (id: number) => async () => {
         const response = await ProjectService.deleteProject(String(id));
@@ -19,10 +21,10 @@ const ProjectOverviewTable: React.FC<Props> = ({ projects }: Props) => {
         <table>
             <thead>
                 <tr>
-                    <th>Id</th>
-                    <th>Naam</th>
-                    <th>View Tasks</th>
-                    <th>Delete Project</th>
+                    <th>{t('projects.id')}</th>
+                    <th>{t('projects.name')}</th>
+                    <th>{t('projects.tasks')}</th>
+                    <th>{t('projects.delete')}</th>
                 </tr>
             </thead>
             <tbody>
@@ -30,8 +32,8 @@ const ProjectOverviewTable: React.FC<Props> = ({ projects }: Props) => {
                     <tr key={index}>
                         <td>{project.id}</td>
                         <td>{project.name}</td>
-                        <td><button onClick={() => router.push('/tasks/project/' + project.id)}>View Tasks</button></td>
-                        {project.id && <td><button onClick={deleteProject(project.id)}>Delete</button></td>}
+                        <td><button onClick={() => router.push('/tasks/project/' + project.id)}>{t('projects.tasks')}</button></td>
+                        {project.id && <td><button onClick={deleteProject(project.id)}>{t('projects.delete')}</button></td>}
                     </tr>
                 ))}
             </tbody>
