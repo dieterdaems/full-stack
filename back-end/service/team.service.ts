@@ -14,10 +14,10 @@ const getTeamById = async (id: number): Promise<Team> => {
 
 const createTeam = async ({name}: TeamInput, role: Role): Promise<Team> => {
     if (role !== 'admin') throw new UnauthorizedError('credentials_required', { message: 'You are not authorized to create a team.' });
-    //const teamExists = teamDb.getTeamByName(name);
-    // if (teamExists) throw new Error(`Team with name ${name} already exists.`);
-    // const team = new Team({name, users: users}); // to validate in service layer - Not a MUST
-    return teamDb.createTeam({name});
+    const teamExists = await teamDb.getTeamByName(name);
+    if (teamExists) throw new Error(`Team with name ${name} already exists.`);
+    const team = new Team({name}); // to validate in service layer
+    return teamDb.createTeam(team);
 };
 
 
