@@ -115,6 +115,18 @@ const deleteUser = (id: number) => {
     });
 }
 
+const getAuth = async () => {
+    const id = sessionStorage.getItem('loggedUser');
+    if (id === undefined) return false;
+    if (id) {
+        const res = await UserService.getById(parseInt(id));
+        if (res.status === 200) {
+            return true;
+        }
+    }
+    return false;
+}
+
 const UserService = {
     getAll,
     getById,
@@ -124,7 +136,8 @@ const UserService = {
     login,
     addUserToTeam,
     removeUserFromTeam,
-    deleteUser
+    deleteUser,
+    getAuth
 }
 
 export default UserService;
