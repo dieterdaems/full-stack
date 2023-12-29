@@ -1,28 +1,46 @@
-import { User } from "@/types";
+import { User, UserLogin } from "@/types";
 
-const getAll = () => {
+const getAll = async () => {
+    const token = sessionStorage.getItem('token');
     return fetch(process.env.NEXT_PUBLIC_API_URL + '/users', {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`
         },
     });
 }
 
-const getById = (id: number) => {
+const getById = async (id: number) => {
+    const token = sessionStorage.getItem('token');
     return fetch(process.env.NEXT_PUBLIC_API_URL + '/users/' + id, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`
         },
     });
 }
 
-const create = ({name, specialisation, email, password} : User) => {
+const getByEmail = async (email: string) => {
+    const token = sessionStorage.getItem('token');
+    return fetch(process.env.NEXT_PUBLIC_API_URL + '/users/email/' + email, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`
+        },
+    });
+}
+
+
+const create = async ({name, specialisation, email, password} : User) => {
+    const token = sessionStorage.getItem('token');
     return fetch(process.env.NEXT_PUBLIC_API_URL + '/users/add', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`
         },
         body: JSON.stringify({
             name,
@@ -33,14 +51,15 @@ const create = ({name, specialisation, email, password} : User) => {
     });
 }
 
-const update = ({id, name, specialisation, email} : User) => {
-    return fetch(process.env.NEXT_PUBLIC_API_URL + '/users/', {
+const update = async ({id, name, specialisation, email} : User) => {
+    const token = sessionStorage.getItem('token');
+    return fetch(process.env.NEXT_PUBLIC_API_URL + '/users/update/' + id, {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`
         },
         body: JSON.stringify({
-            id, 
             name,
             specialisation,
             email,
@@ -48,11 +67,64 @@ const update = ({id, name, specialisation, email} : User) => {
     });
 }
 
+const login = async ({email, password}: UserLogin) => {
+    const token = sessionStorage.getItem('token');
+    return fetch(process.env.NEXT_PUBLIC_API_URL + '/users/login', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify({
+            email,
+            password
+        })
+    });
+}
+
+const addUserToTeam = (teamId: number, userId: number) => {
+    const token = sessionStorage.getItem('token');
+    return fetch(process.env.NEXT_PUBLIC_API_URL + '/users/team/' + teamId + '/user/' + userId, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`
+        },
+    });
+}
+
+const removeUserFromTeam = (teamId: number, userId: number) => {
+    const token = sessionStorage.getItem('token');
+    return fetch(process.env.NEXT_PUBLIC_API_URL + '/users/team/' + teamId + '/user/' + userId, {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`
+        },
+    });
+}
+
+const deleteUser = (id: number) => {
+    const token = sessionStorage.getItem('token');
+    return fetch(process.env.NEXT_PUBLIC_API_URL + '/users/' + id, {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`
+        },
+    });
+}
+
 const UserService = {
     getAll,
     getById,
+    getByEmail,
     create,
-    update
+    update,
+    login,
+    addUserToTeam,
+    removeUserFromTeam,
+    deleteUser
 }
 
 export default UserService;

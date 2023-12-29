@@ -13,6 +13,7 @@ model User {
     specialisation String
     email String  @unique
     password String
+    role String
     teams Team[]
 }
 
@@ -20,12 +21,14 @@ model Team {
     id Int @id @default(autoincrement())
     name String @unique
     users User[]
+    projects Project[]
 }
 
 model Project {
     id      Int     @id @default(autoincrement())
     name    String
-
+    team    Team?    @relation(fields: [teamId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+    teamId  Int?
     tasks   Task[]
 }
 

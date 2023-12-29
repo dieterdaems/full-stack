@@ -4,13 +4,19 @@ import { UserInput } from "../../types";
 
 const getAllUsers = async (): Promise<User[]> => {
     try {
-        const usersPrisma = await prisma.user.findMany();
-        if (!usersPrisma) throw new Error(`No users found.`);
+        const usersPrisma = await prisma.user.findMany(
+            {
+                include: {
+                    teams: true
+                }
+            }
+        );
         const users = usersPrisma.map((userPrisma) => User.from(userPrisma));
         return users;
     }
     catch (error) {
-        throw new Error(error);
+        console.log(error);
+        throw new Error("Database error. Check logs for more details.");
     }
 }
 
@@ -18,12 +24,16 @@ const getUserByEmail = async (email: string): Promise<User> => {
     try {
         const userPrisma = await prisma.user.findUnique({
             where:
-            { email: email }
+                { email: email },
+            include: {
+                teams: true
+            }
         });
-        return User.from(userPrisma);
+        return userPrisma ? User.from(userPrisma) : undefined;
     }
     catch (error) {
-        return undefined;
+        console.log(error);
+        throw new Error("Database error. Check logs for more details.");
     }
 }
 
@@ -31,18 +41,21 @@ const getUserById = async (id: number): Promise<User> => {
     try {
         const userPrisma = await prisma.user.findUnique({
             where:
-            { id: id }
+                { id: id },
+            include: {
+                teams: true
+            }
+
         });
-        if (!userPrisma) throw new Error(`User with id ${id} does not exist.`);
-        const user = User.from(userPrisma);
-        return user;
+        return userPrisma ? User.from(userPrisma) : undefined;
     }
     catch (error) {
-        throw new Error(error);
+        console.log(error);
+        throw new Error("Database error. Check logs for more details.");
     }
 }
 
-const createUser = async ({name, specialisation, email, password}: User): Promise<User> => {
+const createUser = async ({ name, specialisation, email, password }: User): Promise<User> => {
     try {
         const userPrisma = await prisma.user.create({
             data: {
@@ -50,17 +63,20 @@ const createUser = async ({name, specialisation, email, password}: User): Promis
                 specialisation,
                 email,
                 password,
-            }
+                role: 'user',
+            },
+            include: { teams: true }
         });
         const user = User.from(userPrisma);
         return user;
     }
     catch (error) {
-        throw new Error(error);
+        console.log(error);
+        throw new Error("Database error. Check logs for more details.");
     }
 }
 
-const updateUser = async ({id, name, specialisation, email, password}: UserInput): Promise<User> => {
+const updateUser = async ({ id, name, specialisation, email, password, role }: UserInput): Promise<User> => {
     try {
         const userPrisma = await prisma.user.update({
             where: { id: id },
@@ -69,15 +85,73 @@ const updateUser = async ({id, name, specialisation, email, password}: UserInput
                 specialisation,
                 email,
                 password,
-            }
+                role,
+            },
+            include: { teams: true }
         });
         const user = User.from(userPrisma);
         return user;
     }
     catch (error) {
-        throw new Error(error);
+        console.log(error);
+        throw new Error("Database error. Check logs for more details.");
+    }
+}
+
+const deleteUser = async (id: number): Promise<User> => {
+    try {
+        const userPrisma = await prisma.user.delete({
+            where: { id: id },
+            include: { teams: true }
+        });
+        const user = User.from(userPrisma);
+        return user;
+    }
+    catch (error) {
+        console.log(error);
+        throw new Error("Database error. Check logs for more details.");
+    }
+}
+
+const addUserToTeam = async (teamId: number, userId: number): Promise<User> => {
+    try {
+        const userPrisma = await prisma.user.update({
+            where: {id: userId},
+            data: {
+                teams: {
+                    connect: {id: teamId}
+                }
+            },
+            include: {teams: true}
+        });
+        const user = User.from(userPrisma);
+        return user;
+    }
+    catch (error) {
+        console.log(error);
+        throw new Error("Database error. Check logs for more details.");
+    }
+}
+
+const removeUserFromTeam = async (teamId: number, userId: number): Promise<User> => {
+    try {
+        const userPrisma = await prisma.user.update({
+            where: {id: userId},
+            data: {
+                teams: {
+                    disconnect: {id: teamId}
+                }
+            },
+            include: {teams: true}
+        });
+        const user = User.from(userPrisma);
+        return user;
+    }
+    catch (error) {
+        console.log(error);
+        throw new Error("Database error. Check logs for more details.");
     }
 }
 
 
-export default { getAllUsers, getUserByEmail, getUserById, createUser, updateUser };
+export default { getAllUsers, getUserByEmail, getUserById, createUser, updateUser, deleteUser, addUserToTeam, removeUserFromTeam };

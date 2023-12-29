@@ -1,4 +1,6 @@
 import { Task as TaskPrisma, Project as ProjectPrisma } from "@prisma/client"; 
+import { Team as TeamPrisma } from "@prisma/client";
+import { User as UserPrisma } from "@prisma/client";
 import { Project } from "./project";
 
 export class Task {
@@ -37,7 +39,7 @@ export class Task {
         deadline,
         project,
         completed
-    }: TaskPrisma & { project: ProjectPrisma})  { 
+    }: TaskPrisma & { project: ProjectPrisma & { team: TeamPrisma & { users: UserPrisma[] } }})  { 
         return new Task(
             { id,
             name,
