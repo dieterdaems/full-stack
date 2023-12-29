@@ -119,7 +119,7 @@ userRouter.get('/', async (req: Request & { auth: any }, res: Response, next: Ne
 
 userRouter.get('/email/:email', async (req: Request & { auth: any }, res: Response, next: NextFunction) => {
     try {
-        const currentUser = req.auth.email;
+        const currentUser = req.auth.id;
         const role = req.auth.role;
         const user = await userService.getUserByEmail({email: req.params.email, currentUser, role});
         res.status(200).json(user);
@@ -163,7 +163,7 @@ userRouter.get('/email/:email', async (req: Request & { auth: any }, res: Respon
  */
 userRouter.get('/:id', async (req: Request & { auth: any }, res: Response, next: NextFunction) => {
     try {
-        const currentUser = req.auth.email;
+        const currentUser = req.auth.id;
         const role = req.auth.role;
         const user = await userService.getUserById({id: parseInt(req.params.id), currentUser, role});
         res.status(200).json(user);
@@ -256,7 +256,7 @@ userRouter.post('/add', async (req: Request, res: Response, next: NextFunction) 
 userRouter.put('/update/:id', async (req: Request & { auth: any }, res: Response, next: NextFunction) => {
     try {
         const currentRole = req.auth.role;
-        const currentUser = req.auth.email;
+        const currentUser = req.auth.id;
         const user = <UserInput>req.body;
         const result = await userService.updateUser({targetUserId: parseInt(req.params.id), updatedInfo: user, currentUser, currentRole});
         res.status(200).json(result);
@@ -394,7 +394,7 @@ userRouter.delete('/:id', async (req: Request & { auth: any }, res: Response, ne
  */
 userRouter.post('/team/:teamId/user/:userId', async (req: Request & { auth: any }, res: Response, next: NextFunction) => {
     try {
-        const currentUser = req.auth.email;
+        const currentUser = req.auth.id;
         const role = req.auth.role;
         const user = await userService.addUserToTeam({teamId: parseInt(req.params.teamId), userId: parseInt(req.params.userId), currentUser, role });
         res.status(201).json(user);
@@ -444,7 +444,7 @@ userRouter.post('/team/:teamId/user/:userId', async (req: Request & { auth: any 
 userRouter.delete('/team/:teamId/user/:userId', async (req: Request & { auth: any }, res: Response, next: NextFunction) => {
     try {
         const role = req.auth.role;
-        const currentUser = req.auth.email;
+        const currentUser = req.auth.id;
         const user = await userService.removeUserFromTeam({teamId: parseInt(req.params.teamId), userId: parseInt(req.params.userId), currentUser, role});
         res.status(201).json(user);
     }
