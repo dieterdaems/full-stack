@@ -5,6 +5,7 @@ type User = {
     email: string;
     password?: string;
     teams?: Array<Team>;
+    role: string;
 }
 
 type UserLogin = {
@@ -14,11 +15,6 @@ type UserLogin = {
 
 type Team = {
     id?: number;
-    name: string;
-}
-
-type TeamUpdate = {
-    id: number;
     name: string;
 }
 
@@ -41,4 +37,4 @@ type StatusMessage = {
     message: string
 }
 
-export type { User, UserLogin, Project, Task, StatusMessage, Team, TeamUpdate};
+export type { User, UserLogin, Project, Task, StatusMessage, Team};
