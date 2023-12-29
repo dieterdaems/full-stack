@@ -2,6 +2,7 @@ import TaskService from "@/services/TaskService";
 import { Task } from "@/types";
 import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next";
+import { useState } from "react";
 
 type Props = {
     tasks: Task[];
@@ -9,14 +10,35 @@ type Props = {
 
 
 const TasksOverviewTable: React.FC<Props> = ({ tasks }: Props) => {
+
+    const [statusMessage, setStatusMessage] = useState<string>("");
+    const [showConfirmation, setShowConfirmation] = useState<boolean>(false);
+    const [taskToDelete, setTaskToDelete] = useState<any>();
+
     const router = useRouter();
     const { t } = useTranslation();
 
     const projectId = router.query.id;
 
-    const deleteTask = async (id: any) => {
-        await TaskService.deleteById(id.toString());
-        // router.push('/tasks');
+    const handleDeleteButton = async (id: any) => {
+        setTaskToDelete(String(id));
+        setShowConfirmation(true);
+    };
+
+    const handleDeleteConfirm = async () => {
+        const response = await TaskService.deleteById(taskToDelete);
+        const data = await response.json();
+        if (response.ok) {
+            setStatusMessage("Deleted task successfully!");
+        }
+        else {
+            setStatusMessage(data.errorMessage);
+        }
+        setShowConfirmation(false);
+    };
+
+    const handleDeleteCancel = () => {
+        setShowConfirmation(false);
     }
 
     const completebutton = (task: Task) => {
@@ -48,13 +70,20 @@ const TasksOverviewTable: React.FC<Props> = ({ tasks }: Props) => {
                         <td>{task.project.name}</td>
                         <td>{completebutton(task)}</td>
 
-                        <td><button onClick={() => deleteTask(task.id)}>{t('tasks.completed')}</button></td>
+                        <td><button onClick={() => handleDeleteButton(task.id)}>{t('tasks.completed')}</button></td>
                     </tr>
                 ))}
             </tbody>
         </table>
             <button onClick={() => router.push('/tasks/register/' + projectId)}>{t('tasks.new')}</button>
-        
+            {showConfirmation && (
+                            <>
+                                <p>Are you sure you want to delete this user?</p>
+                                <button onClick={handleDeleteConfirm}>Confirm</button>
+                                <button onClick={handleDeleteCancel}>Cancel</button>
+                            </>
+                        )}
+            <p>{statusMessage}</p>
         </>
     );
 };
