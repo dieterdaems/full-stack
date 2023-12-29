@@ -6,7 +6,7 @@ import { FormEvent, useState } from "react";
 
 type Props = {
     user: User;
-  };
+};
 
 const EditProfileForm: React.FC<Props> = ({ user }: Props) => {
 
@@ -14,7 +14,7 @@ const EditProfileForm: React.FC<Props> = ({ user }: Props) => {
     const [email, setEmail] = useState<string>(user?.email);
     const [specialisation, setSpecialisation] = useState<string>(user?.specialisation);
     const [errorMessage, setErrorMessage] = useState("");
-    
+
     const [nameError, setNameError] = useState<string>("");
     const [emailError, setEmailError] = useState<string>("");
     const [specialisationError, setSpecialisationError] = useState<string>("");
@@ -53,19 +53,18 @@ const EditProfileForm: React.FC<Props> = ({ user }: Props) => {
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
         if (validate()) {
-            const response = await UserService.update({id: user.id, name, specialisation, email });
+            const response = await UserService.update({ id: user.id, name, specialisation, email });
             const data = await response.json();
-            if (response.status !== 200) {
+            if (!response.ok) {
                 setErrorMessage(data.errorMessage);
             }
             else {
-                setErrorMessage("");
                 // ToDO: Redirect to home page instead
-                window.location.href = "/users/profile/" + user.id;
+                setErrorMessage("Profile updated successfully");
             }
         }
         else {
-            setErrorMessage("Can't process Editing. Please fill in with valid input.");
+            setErrorMessage("Cannot update information. Please fill in with valid input.");
         }
 
     }

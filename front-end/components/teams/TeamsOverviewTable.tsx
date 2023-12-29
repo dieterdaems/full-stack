@@ -19,6 +19,10 @@ const TeamsOverviewTable: React.FC<Props> = ({ teams, currentTeams }: Props) => 
     const id = sessionStorage.getItem("loggedUser");
     const role = sessionStorage.getItem("role");
 
+
+    /* ---------------------------------------------- */
+    // Join&Leave handling
+    
     const handleLeaveTeam = async (team: {id: any, name: string}) => {
         if (cooldownTeamId || !id) {
             return;
@@ -53,6 +57,10 @@ const TeamsOverviewTable: React.FC<Props> = ({ teams, currentTeams }: Props) => 
         setTimeout(() => setCooldownTeamId(null), 500);
     };
 
+
+    /* ---------------------------------------------- */
+    // Create handling
+
     const handleAddTeam = async () => {
         if (newTeamName.trim() === "") { setStatusMessage("Team name cannot be empty!"); return; }
 
@@ -76,6 +84,9 @@ const TeamsOverviewTable: React.FC<Props> = ({ teams, currentTeams }: Props) => 
     const [teamToDelete, setTeamToDelete] = useState<any>();
     const [showConfirmation, setShowConfirmation] = useState<boolean>(false);
 
+    /* ---------------------------------------------- */
+    // Delete handling
+
     const handleDeleteButton = async (id: any) => {
         setTeamToDelete(id);
         setShowConfirmation(true);
@@ -97,7 +108,6 @@ const TeamsOverviewTable: React.FC<Props> = ({ teams, currentTeams }: Props) => 
     const handleDeleteCancel = () => {
         setShowConfirmation(false);
     }
-
 
     return (
         <>

@@ -36,7 +36,7 @@ function UserLogin() {
     const user = await response.json();
     if (response.ok) {
       sessionStorage.setItem('token', user.token);
-      sessionStorage.setItem('loggedInUser', user.id);
+      sessionStorage.setItem('loggedUser', user.id);
       sessionStorage.setItem('role', user.role);
       setStatusMessage('Login successful, redirecting...');
       setTimeout(() => {
