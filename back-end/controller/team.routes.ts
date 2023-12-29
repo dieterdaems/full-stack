@@ -1,5 +1,6 @@
 import teamService from "../service/team.service";
-import express, { Request, Response } from 'express';
+import express, { Request, Response, NextFunction } from 'express';
+import { TeamInput } from "../types";
 
 
 const teamRouter = express.Router();
@@ -16,8 +17,6 @@ const teamRouter = express.Router();
  *        format: int64
  *      name:
  *        type: string
- *      users:
- *       $ref: '#/components/schemas/User'
  *   TeamInput:
  *    type: object
  *    properties:
@@ -61,13 +60,13 @@ const teamRouter = express.Router();
  *                   type: string
  */
 
-teamRouter.get('/', async (req: Request, res: Response) => {
+teamRouter.get('/', async (req: Request, res: Response, next: NextFunction) => {
     try {
         const teams = await teamService.getAllTeams();
         res.status(200).json(teams);
     }
     catch (error) {
-        res.status(400).json({ status: 'error', errorMessage: error.message });
+        next(error);
     }
 });
 
@@ -103,13 +102,13 @@ teamRouter.get('/', async (req: Request, res: Response) => {
  *                   type: string
  */
 
-teamRouter.get('/:id', async (req: Request, res: Response) => {
+teamRouter.get('/:id', async (req: Request, res: Response, next: NextFunction) => {
     try {
         const team = await teamService.getTeamById(parseInt(req.params.id));
         res.status(200).json(team);
     }
     catch (error) {
-        res.status(400).json({ status: 'error', errorMessage: error.message });
+        next(error);
     }
 });
 
@@ -143,84 +142,33 @@ teamRouter.get('/:id', async (req: Request, res: Response) => {
  *                 errorMessage:
  *                   type: string
  */
-teamRouter.post('/create', async (req: Request, res: Response) => {
+teamRouter.post('/create', async (req: Request & { auth: any }, res: Response, next: NextFunction) => {
     try {
-        const team = await teamService.createTeam(req.body);
-        res.status(201).json(team);
+        const role = req.auth.role;
+        const team = <TeamInput>req.body;
+        const result = await teamService.createTeam(team, role);
+        res.status(201).json(result);
     }
     catch (error) {
-        res.status(400).json({ status: 'error', errorMessage: error.message });
+        next(error);
     }
 });
 
 /**
  * @swagger
- * /teams/{id}/user/{userId}:
- *   post:
- *     summary: Add a user to a team.
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         description: ID of the team to retrieve.
- *         schema:
- *           type: integer
- *       - in: path
- *         name: userId
- *         required: true
- *         description: ID of the user to retrieve.
- *         schema:
- *           type: integer
- *     responses:
- *       201:
- *         description: Successful response with the updated team.
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/Team'
- *       400:
- *         description: Bad request with an error message.
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 status:
- *                   type: string
- *                 errorMessage:
- *                   type: string
- */
-teamRouter.post('/:id/user/:userId', async (req: Request, res: Response) => {
-    try {
-        const team = await teamService.addUserToTeam(parseInt(req.params.id), parseInt(req.params.userId));
-        res.status(201).json(team);
-    }
-    catch (error) {
-        res.status(400).json({ status: 'error', errorMessage: error.message });
-    }
-});
-
-/**
- * @swagger
- * /teams/{id}/user/{userId}:
+ * /teams/delete/{id}:
  *   delete:
- *     summary: Remove a user from a team.
+ *     summary: Delete a team by ID.
  *     parameters:
  *       - in: path
  *         name: id
  *         required: true
- *         description: ID of the team to retrieve.
- *         schema:
- *           type: integer
- *       - in: path
- *         name: userId
- *         required: true
- *         description: ID of the user to retrieve.
+ *         description: ID of the team to delete.
  *         schema:
  *           type: integer
  *     responses:
- *       201:
- *         description: Successful response with the updated team.
+ *       200:
+ *         description: Successful response with the deleted team.
  *         content:
  *           application/json:
  *             schema:
@@ -237,15 +185,15 @@ teamRouter.post('/:id/user/:userId', async (req: Request, res: Response) => {
  *                 errorMessage:
  *                   type: string
  */
-teamRouter.delete('/:id/user/:userId', async (req: Request, res: Response) => {
+teamRouter.delete('/delete/:id', async (req: Request & { auth: any }, res: Response, next: NextFunction) => {
     try {
-        const team = await teamService.removeUserFromTeam(parseInt(req.params.id), parseInt(req.params.userId));
-        res.status(201).json(team);
+        const role = req.auth.role;
+        const result = await teamService.deleteTeam(parseInt(req.params.id), role);
+        res.status(200).json(result);
     }
     catch (error) {
-        res.status(400).json({ status: 'error', errorMessage: error.message });
+        next(error);
     }
-}
-);
+});
 
 export { teamRouter };

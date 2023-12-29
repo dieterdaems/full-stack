@@ -54,9 +54,9 @@ const EditProfileForm: React.FC<Props> = ({ user }: Props) => {
         e.preventDefault();
         if (validate()) {
             const response = await UserService.update({id: user.id, name, specialisation, email });
-
+            const data = await response.json();
             if (response.status !== 200) {
-                setErrorMessage('Something went wrong. Please try again or contact the system adminstration.')
+                setErrorMessage(data.errorMessage);
             }
             else {
                 setErrorMessage("");

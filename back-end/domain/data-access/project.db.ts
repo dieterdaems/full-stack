@@ -23,7 +23,8 @@ const getAllProjects = async (): Promise<Project[]> => {
         return projects;
     }
     catch (error) {
-        throw new Error(error);
+        console.log(error);
+        throw new Error("Database error. Check logs for more details.");
     }
     }
 const getProjectById = async (id: number): Promise<Project> => {
@@ -44,7 +45,8 @@ const getProjectById = async (id: number): Promise<Project> => {
         return project;
     }
     catch (error) {
-        throw new Error(error);
+        console.log(error);
+        throw new Error("Database error. Check logs for more details.");
     }
 }
 
@@ -76,7 +78,8 @@ const createProject = async (project: Project): Promise<Project> => {
         return Project.from(newProject);
     }
     catch (error) {
-        throw new Error(error);
+        console.log(error);
+        throw new Error("Database error. Check logs for more details.");
     }
 
 }
@@ -97,7 +100,8 @@ const deleteById = async (id: number): Promise<Project> => {
         return Project.from(projectPrisma);
     }
     catch (error) {
-        throw new Error(error);
+        console.log(error);
+        throw new Error("Database error. Check logs for more details.");
     }
 }
 

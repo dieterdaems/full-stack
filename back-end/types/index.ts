@@ -4,19 +4,20 @@ type UserInput = {
     specialisation?: string;
     email?: string;
     password?: string;
-    };
+    role?: Role;
+    teams?: TeamInput[];
+};
 
 type ProjectInput = {
     name?: string;
     id?: number;
     team?: TeamInput;
-    };
+};
 
 type TeamInput = {
     name?: string;
     id?: number;
-    users?: UserInput[];
-    };
+};
 
 type TaskInput = {
     name?: string;
@@ -25,7 +26,7 @@ type TaskInput = {
     deadline?: Date;
     project?: ProjectInput;
     completed?: boolean;
-    };
+};
 
-
-export { UserInput, ProjectInput, TeamInput, TaskInput };
+type Role = 'admin' | 'user';
+export { UserInput, ProjectInput, TeamInput, TaskInput, Role};

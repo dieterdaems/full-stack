@@ -1,34 +1,45 @@
 const getAll = () => {
+    const token = sessionStorage.getItem('token');
     return fetch(process.env.NEXT_PUBLIC_API_URL + '/teams', {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`
+
         },
     });
 }
 
-const addUser = (teamId: number, userId: number) => {
-    return fetch(process.env.NEXT_PUBLIC_API_URL + '/teams/' + teamId + '/user/' + userId, {
+const create = (name: string) => {
+    const token = sessionStorage.getItem('token');
+    return fetch(process.env.NEXT_PUBLIC_API_URL + '/teams/create', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`
+
         },
+        body: JSON.stringify({ name })
     });
 }
 
-const removeUser = (teamId: number, userId: number) => {
-    return fetch(process.env.NEXT_PUBLIC_API_URL + '/teams/' + teamId + '/user/' + userId, {
+const deleteById = (id: number) => {
+    const token = sessionStorage.getItem('token');
+    return fetch(process.env.NEXT_PUBLIC_API_URL + '/teams/delete/' + id, {
         method: 'DELETE',
         headers: {
             'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`
+
         },
     });
-}
+};
+
 
 const TeamService = {
     getAll,
-    addUser,
-    removeUser
+    create,
+    deleteById
 }
 
 export default TeamService;

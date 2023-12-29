@@ -4,12 +4,18 @@ type User = {
     specialisation: string;
     email: string;
     password?: string;
+    teams?: Array<Team>;
+    role: string;
+}
+
+type UserLogin = {
+    email: string;
+    password: string;
 }
 
 type Team = {
     id?: number;
     name: string;
-    users: User[];
 }
 
 type Task = {
@@ -31,4 +37,4 @@ type StatusMessage = {
     message: string
 }
 
-export type { User, Project, Task, StatusMessage, Team };
+export type { User, UserLogin, Project, Task, StatusMessage, Team};
