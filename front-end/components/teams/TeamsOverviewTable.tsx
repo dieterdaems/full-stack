@@ -53,17 +53,6 @@ const TeamsOverviewTable: React.FC<Props> = ({ teams, currentTeams }: Props) => 
         setTimeout(() => setCooldownTeamId(null), 500);
     };
 
-    const handleDeleteTeam = async (id: any) => {
-        const response = await TeamService.deleteById(id);
-        const data = await response.json();
-        if (response.ok) {
-            setStatusMessage("Deleted team successfully!");
-        }
-        else {
-            setStatusMessage(data.errorMessage);
-        }
-    };
-
     const handleAddTeam = async () => {
         if (newTeamName.trim() === "") { setStatusMessage("Team name cannot be empty!"); return; }
 
@@ -79,10 +68,36 @@ const TeamsOverviewTable: React.FC<Props> = ({ teams, currentTeams }: Props) => 
         }
     }
 
-    function abortCreateButton(): void {
+    const abortCreateButton = () => {
         setShowAddTeam(false);
         setNewTeamName("");
     }
+
+    const [teamToDelete, setTeamToDelete] = useState<any>();
+    const [showConfirmation, setShowConfirmation] = useState<boolean>(false);
+
+    const handleDeleteButton = async (id: any) => {
+        setTeamToDelete(id);
+        setShowConfirmation(true);
+    };
+
+    const handleDeleteConfirm = async () => {
+        const response = await TeamService.deleteById(teamToDelete);
+        const data = await response.json();
+        if (response.ok) {
+            setStatusMessage("Deleted team successfully!");
+        }
+        else {
+            setStatusMessage(data.errorMessage);
+        }
+        setShowConfirmation(false);
+    };
+
+
+    const handleDeleteCancel = () => {
+        setShowConfirmation(false);
+    }
+
 
     return (
         <>
@@ -98,7 +113,7 @@ const TeamsOverviewTable: React.FC<Props> = ({ teams, currentTeams }: Props) => 
                             <td>{team.name}</td>
                             <td>
                                 {role === 'admin' ? (
-                                    <button onClick={() => handleDeleteTeam(team.id)}>
+                                    <button onClick={() => handleDeleteButton(team.id)}>
                                         🗑️</button>
                                 ) : (
                                     currentTeams.some((currentTeam) => currentTeam.id == team.id) ? (
@@ -118,7 +133,13 @@ const TeamsOverviewTable: React.FC<Props> = ({ teams, currentTeams }: Props) => 
             {role === 'admin' && !showAddTeam && (
                 <button onClick={() => setShowAddTeam(true)}>➕</button>
             )}
-
+            {showConfirmation && (
+                            <>
+                                <p>Are you sure you want to delete this team?</p>
+                                <button onClick={handleDeleteConfirm}>Confirm</button>
+                                <button onClick={handleDeleteCancel}>Cancel</button>
+                            </>
+                        )}
             {showAddTeam && (
                 <>
                     <input

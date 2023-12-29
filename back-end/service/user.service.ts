@@ -31,6 +31,7 @@ const deleteUserById = async ({ id, role }): Promise<User> => {
     if (role !== 'admin') throw new UnauthorizedError('credentials_required', { message: 'You are not authorized to delete a user.' })
     const user = await userDb.getUserById(id);
     if (!user) throw new Error(`User with id ${id} does not exist.`);
+    if (user.role === 'admin') throw new Error(`You cannot delete an admin user.`);
     return userDb.deleteUser(id);
 }
 
