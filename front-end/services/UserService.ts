@@ -104,6 +104,17 @@ const removeUserFromTeam = (teamId: number, userId: number) => {
     });
 }
 
+const deleteUser = (id: number) => {
+    const token = sessionStorage.getItem('token');
+    return fetch(process.env.NEXT_PUBLIC_API_URL + '/users/' + id, {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`
+        },
+    });
+}
+
 const UserService = {
     getAll,
     getById,
@@ -112,7 +123,8 @@ const UserService = {
     update,
     login,
     addUserToTeam,
-    removeUserFromTeam
+    removeUserFromTeam,
+    deleteUser
 }
 
 export default UserService;

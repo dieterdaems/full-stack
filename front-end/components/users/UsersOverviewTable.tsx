@@ -1,3 +1,4 @@
+import UserService from "@/services/UserService";
 import { User } from "@/types";
 import { useState } from "react";
 
@@ -9,9 +10,16 @@ const UsersOverviewTable: React.FC<Props> = ({ users }: Props) => {
 
     const [statusMessage, setStatusMessage] = useState<string>("");
     const handleDeleteUser = async (id: any) => {
-        throw new Error("Not implemented");
+        const response = await UserService.deleteUser(id);
+        const data = await response.json();
+        if (response.ok) {
+            setStatusMessage("Deleted user successfully!");
+        }
+        else {
+            setStatusMessage(data.errorMessage);
+        }
     };
-    
+
     return (
         <>
             <table>
