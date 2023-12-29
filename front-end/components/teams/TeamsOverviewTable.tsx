@@ -1,3 +1,4 @@
+import TeamService from "@/services/TeamService";
 import UserService from "@/services/UserService";
 import { Team, TeamUpdate } from "@/types";
 import { useState } from "react";
@@ -11,6 +12,9 @@ const TeamsOverviewTable: React.FC<Props> = ({ teams, currentTeams }: Props) => 
 
     const [statusMessage, setStatusMessage] = useState<string>("");
     const [cooldownTeamId, setCooldownTeamId] = useState<number | null>(null);
+
+    const [newTeamName, setNewTeamName] = useState<string>("");
+    const [showAddTeam, setShowAddTeam] = useState<boolean>(false);
 
     const id = sessionStorage.getItem("loggedUser");
     const role = sessionStorage.getItem("role");
@@ -49,6 +53,24 @@ const TeamsOverviewTable: React.FC<Props> = ({ teams, currentTeams }: Props) => 
         setTimeout(() => setCooldownTeamId(null), 500);
     };
 
+    const handleAddTeam = async () => {
+        if (newTeamName.trim() === "") { setStatusMessage("Team name cannot be empty!"); return; }
+
+        const response = await TeamService.create(newTeamName.trim());
+        const data = await response.json();
+        if (response.ok) {
+            setStatusMessage("Created team " + newTeamName + " successfully!");
+        }
+        else {
+            setStatusMessage(data.errorMessage);
+        }
+    }
+
+    function abortCreateButton(): void {
+        setShowAddTeam(false);
+        setNewTeamName("");
+    }
+
     return (
         <>
             <table>
@@ -81,6 +103,22 @@ const TeamsOverviewTable: React.FC<Props> = ({ teams, currentTeams }: Props) => 
                     ))}
                 </tbody>
             </table>
+            {role === 'admin' && !showAddTeam && (
+                <button onClick={() => setShowAddTeam(true)}>➕</button>
+            )}
+
+            {showAddTeam && (
+                <>
+                    <input
+                        type="text"
+                        placeholder="The avengers"
+                        value={newTeamName}
+                        onChange={(e) => setNewTeamName(e.target.value)}
+                    />
+                    <button onClick={() => handleAddTeam()}>💾</button>
+                    <button onClick={() => abortCreateButton()}>🗑️</button>
+                </>
+            )}
             <p>{statusMessage}</p>
         </>
     );

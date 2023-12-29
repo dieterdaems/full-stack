@@ -35,15 +35,17 @@ function UserLogin() {
     const response = await UserService.login({ email, password });
     const token = await response.json();
     if (response.ok) {
+      sessionStorage.setItem("token", token);
       const user = await UserService.getByEmail(email);
       const data = await user.json();
-      sessionStorage.setItem("token", token);
+
       sessionStorage.setItem("loggedUser", data.id);
       sessionStorage.setItem("role", data.role);
+
       setStatusMessage('Login successful, redirecting...');
       setTimeout(() => {
         router.push('/');
-      }, 2000)
+      }, 2500)
     } else {
       setStatusMessage(token.errorMessage);
     }

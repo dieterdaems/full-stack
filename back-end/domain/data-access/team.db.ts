@@ -1,4 +1,3 @@
-import { TeamInput } from "../../types";
 import prisma from "../../util/init-db";
 import { Team } from "../model/team";
 
@@ -33,7 +32,7 @@ const getTeamByName = async (name: string): Promise<Team> => {
     try {
         const teamPrisma = await prisma.team.findUnique({
             where :
-            { name: name},
+            { name: name.trim().toLowerCase()},
         });
         return teamPrisma ? Team.from(teamPrisma) : undefined;
     }
@@ -43,11 +42,11 @@ const getTeamByName = async (name: string): Promise<Team> => {
     }
 }
 
-const createTeam = async ({name}: TeamInput): Promise<Team> => {
+const createTeam = async ({name}: Team): Promise<Team> => {
     try {
         const teamPrisma = await prisma.team.create({
             data: {
-                name,
+                name: name.trim().toLowerCase(),
             },
         });
         const team = Team.from(teamPrisma);

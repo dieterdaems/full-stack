@@ -106,7 +106,7 @@ teamRouter.get('/:id', async (req: Request, res: Response, next: NextFunction) =
 
 /**
  * @swagger
- * /teams:
+ * /teams/create:
  *   post:
  *     summary: Create a new team.
  *     requestBody:
