@@ -9,8 +9,16 @@ type Props = {
 const UsersOverviewTable: React.FC<Props> = ({ users }: Props) => {
 
     const [statusMessage, setStatusMessage] = useState<string>("");
-    const handleDeleteUser = async (id: any) => {
-        const response = await UserService.deleteUser(id);
+    const [showConfirmation, setShowConfirmation] = useState<boolean>(false);
+    const [userToDelete, setUserToDelete] = useState<any>();
+
+    const handleDeleteButton = async (id: any) => {
+        setUserToDelete(id);
+        setShowConfirmation(true);
+    };
+
+    const handleDeleteConfirm = async () => {
+        const response = await UserService.deleteUser(userToDelete);
         const data = await response.json();
         if (response.ok) {
             setStatusMessage("Deleted user successfully!");
@@ -18,7 +26,15 @@ const UsersOverviewTable: React.FC<Props> = ({ users }: Props) => {
         else {
             setStatusMessage(data.errorMessage);
         }
+        setShowConfirmation(false);
     };
+
+
+    const handleDeleteCancel = () => {
+        setShowConfirmation(false);
+    }
+
+
 
     return (
         <>
@@ -39,13 +55,20 @@ const UsersOverviewTable: React.FC<Props> = ({ users }: Props) => {
                             <td>{user.email}</td>
                             <td>{user.role}</td>
                             <td>
-                                <button onClick={() => handleDeleteUser(user.id)}>
+                                <button onClick={() => handleDeleteButton(user.id)}>
                                     🗑️</button>
                             </td>
                         </tr>
                     ))}
                 </tbody>
             </table>
+            {showConfirmation && (
+                            <>
+                                <p>Are you sure you want to delete this user?</p>
+                                <button onClick={handleDeleteConfirm}>Confirm</button>
+                                <button onClick={handleDeleteCancel}>Cancel</button>
+                            </>
+                        )}
             <p>{statusMessage}</p>
         </>
     );
