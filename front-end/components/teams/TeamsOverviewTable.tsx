@@ -1,10 +1,10 @@
 import TeamService from "@/services/TeamService";
 import UserService from "@/services/UserService";
-import { Team, TeamUpdate } from "@/types";
+import { Team } from "@/types";
 import { useState } from "react";
 
 type Props = {
-    teams: TeamUpdate[],
+    teams: Team[],
     currentTeams: Team[]
 };
 
@@ -19,7 +19,7 @@ const TeamsOverviewTable: React.FC<Props> = ({ teams, currentTeams }: Props) => 
     const id = sessionStorage.getItem("loggedUser");
     const role = sessionStorage.getItem("role");
 
-    const handleLeaveTeam = async (team: {id: number, name: string}) => {
+    const handleLeaveTeam = async (team: {id: any, name: string}) => {
         if (cooldownTeamId || !id) {
             return;
         }
@@ -36,7 +36,7 @@ const TeamsOverviewTable: React.FC<Props> = ({ teams, currentTeams }: Props) => 
         setTimeout(() => setCooldownTeamId(null), 500);
     };
 
-    const handleJoinTeam = async (team: {id: number, name: string}) => {
+    const handleJoinTeam = async (team: {id: any, name: string}) => {
         if (cooldownTeamId || !id) {
             return;
         }
@@ -53,7 +53,7 @@ const TeamsOverviewTable: React.FC<Props> = ({ teams, currentTeams }: Props) => 
         setTimeout(() => setCooldownTeamId(null), 500);
     };
 
-    const handleDeleteTeam = async (id: number) => {
+    const handleDeleteTeam = async (id: any) => {
         const response = await TeamService.deleteById(id);
         const data = await response.json();
         if (response.ok) {
@@ -71,6 +71,8 @@ const TeamsOverviewTable: React.FC<Props> = ({ teams, currentTeams }: Props) => 
         const data = await response.json();
         if (response.ok) {
             setStatusMessage("Created team " + newTeamName + " successfully!");
+            setShowAddTeam(false);
+            setNewTeamName("");
         }
         else {
             setStatusMessage(data.errorMessage);
@@ -88,7 +90,6 @@ const TeamsOverviewTable: React.FC<Props> = ({ teams, currentTeams }: Props) => 
                 <thead>
                     <tr>
                         <th>Name</th>
-                        <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
