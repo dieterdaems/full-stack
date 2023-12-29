@@ -18,7 +18,7 @@ const getTeamById = async (id: number): Promise<Team> => {
     try {
         const teamPrisma = await prisma.team.findUnique({
             where :
-            { id: id},
+                { id: id},
         });
         return teamPrisma ? Team.from(teamPrisma) : undefined;
     }
@@ -32,7 +32,7 @@ const getTeamByName = async (name: string): Promise<Team> => {
     try {
         const teamPrisma = await prisma.team.findUnique({
             where :
-            { name: name.trim().toLowerCase()},
+                { name: name.trim().toLowerCase()},
         });
         return teamPrisma ? Team.from(teamPrisma) : undefined;
     }
@@ -58,5 +58,18 @@ const createTeam = async ({name}: Team): Promise<Team> => {
     }
 }
 
+const deleteTeam = async (id: number): Promise<Team> => {
+    try {
+        const teamPrisma = await prisma.team.delete({
+            where: { id }
+        });
+        return Team.from(teamPrisma);
+    }
+    catch (error) {
+        console.log(error);
+        throw new Error("Database error. Check logs for more details.");
+    }
+}
 
-export default { getAllTeams, getTeamById, getTeamByName,  createTeam };
+
+export default { getAllTeams, getTeamById, getTeamByName, createTeam, deleteTeam};
