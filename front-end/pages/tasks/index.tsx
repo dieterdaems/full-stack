@@ -14,21 +14,29 @@ const Tasks: React.FC = () => {
     const fetchTasks = async () => {
         setStatusMessage("")
         const auth = await UserService.getAuth();
+
         if(auth) {
-        const response = await TaskService.getAll();
-        const tasks = await response.json();
-        // if(user.role == "admin") {
-        return tasks;
+        const role = sessionStorage.getItem("role");
+
+            if (role == "admin") {
+            const response = await TaskService.getAll();
+            const tasks = await response.json();
+            return tasks;
+            }
+
+            else {
+                const id = sessionStorage.getItem("loggedUser");
+                if (!id) return;
+                const response = await TaskService.getTaskByUserId(id)
+                const tasks = await response.json();
+                return tasks;
+            }
         }
+
         else {
             setStatusMessage("You are not logged in!");
            return
         }
-    // }
-    // else {
-        //still to modify
-        // return tasks.filter(task => task.project.team.id == user.team.id);
-    // }
     }
 
     const {data, isLoading, error} = useSWR('getTasks', fetchTasks);
