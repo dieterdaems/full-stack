@@ -55,7 +55,7 @@ const ProjectOverviewTable: React.FC<Props> = ({ projects }: Props) => {
                     <tr key={index}>
                         <td>{project.id}</td>
                         <td>{project.name}</td>
-                        <td>{project.team?.name ? 'no team' : project.team?.name}</td>
+                        <td>{project.team?.name}</td>
                         <td><button onClick={() => router.push('/tasks/project/' + project.id)}>{t('projects.tasks')}</button></td>
                         {project.id && <td><button onClick={() => handleDeleteButton(project.id)}>{t('projects.delete')}</button></td>}
                     </tr>

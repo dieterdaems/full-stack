@@ -4,7 +4,6 @@ import ProjectService from "@/services/ProjectService";
 import { Project } from "@/types";
 import { GetServerSideProps } from "next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
-import { Head } from "next/document";
 import { mainModule } from "process";
 import { useEffect, useState, useDeferredValue } from "react";
 import { useTranslation } from "next-i18next";
@@ -12,6 +11,7 @@ import useSWR, { mutate } from "swr";
 import useInterval from "use-interval";
 import UserService from "@/services/UserService";
 import Header from "@/components/header";
+import Head from "next/head";
 
 const Projects: React.FC = () => {
 
@@ -55,7 +55,7 @@ useInterval(() => {
 return (
     <>
     <Head>
-        <title>{t('app.title')}</title>
+                <title>{t('app.title')}</title>
     </Head>
     <Header />
     <main>

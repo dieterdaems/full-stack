@@ -3,6 +3,7 @@ import Language from "./language/Language";
 
 const Header: React.FC = () => {
     const [loggedIn, setLoggedIn] = useState<string | null>(null);
+    const [role, setRole] = useState<string | null>(null);
  
     const handleLogout = () => {
         sessionStorage.removeItem("loggedUser");
@@ -13,6 +14,7 @@ const Header: React.FC = () => {
 
     useEffect(() => {
         setLoggedIn(sessionStorage.getItem("loggedUser"));
+        setRole(sessionStorage.getItem("role"));
     }, []);
 
     return (
@@ -22,7 +24,7 @@ const Header: React.FC = () => {
                     <li>
                         <a href="/">Home</a>
                     </li>
-                    {loggedIn && (
+                    {loggedIn && (role === "admin") && (
                     <li>
                         <a href="/users">Users</a>
                     </li>
