@@ -1,9 +1,12 @@
+import Header from "@/components/header";
 import TasksOverviewTable from "@/components/tasks/TasksProjectOverviewTable";
 import TaskService from "@/services/TaskService";
 import UserService from "@/services/UserService";
 import { Task } from "@/types";
 import { GetServerSideProps } from "next";
+import { useTranslation } from "next-i18next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import Head from "next/head";
 import { useEffect, useState } from "react";
 import useSWR, { mutate } from "swr";
 import useInterval from "use-interval";
@@ -11,6 +14,7 @@ import useInterval from "use-interval";
 const Tasks: React.FC = () => {
 
     const [statusMessage, setStatusMessage] = useState<string>("");
+    const { t } = useTranslation();
     
 
     const fetchTasks = async () => {
@@ -50,6 +54,10 @@ const Tasks: React.FC = () => {
 
     return (
         <>
+            <Head>
+                <title>{t('app.title')}</title>
+            </Head>
+            <Header />
             <main>
                 <h1>Tasks</h1>
                 {statusMessage && <p>{statusMessage}</p>}

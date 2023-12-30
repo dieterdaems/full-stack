@@ -1,3 +1,4 @@
+import Header from "@/components/header";
 import UsersOverviewTable from "@/components/users/UsersOverviewTable";
 import UserService from "@/services/UserService";
 import Head from "next/head";
@@ -41,6 +42,7 @@ const Users: React.FC = () => {
             <Head>
                 <title>Users</title>
             </Head>
+            <Header />
             <main>
                 <h1>Users</h1>
                 {statusMessage && <p>{statusMessage}</p>}

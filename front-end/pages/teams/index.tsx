@@ -1,3 +1,4 @@
+import Header from "@/components/header";
 import TeamsOverviewTable from "@/components/teams/TeamsOverviewTable";
 import TeamService from "@/services/TeamService";
 import UserService from "@/services/UserService";
@@ -60,6 +61,7 @@ const Teams: React.FC = () => {
             <Head>
                 <title>Teams</title>
             </Head>
+            <Header />
             <main>
                 <h1>Teams</h1>
                 {statusMessage && <p>{statusMessage}</p>}

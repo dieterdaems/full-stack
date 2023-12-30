@@ -11,6 +11,7 @@ import { useTranslation } from "next-i18next";
 import useSWR, { mutate } from "swr";
 import useInterval from "use-interval";
 import UserService from "@/services/UserService";
+import Header from "@/components/header";
 
 const Projects: React.FC = () => {
 
@@ -53,6 +54,10 @@ useInterval(() => {
 
 return (
     <>
+    <Head>
+        <title>{t('app.title')}</title>
+    </Head>
+    <Header />
     <main>
         <h1>{t('projects.title')}</h1>
         {statusMessage && <p>{statusMessage}</p>}
