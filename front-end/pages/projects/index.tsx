@@ -21,20 +21,25 @@ const Projects: React.FC = () => {
         setStatusMessage("")
         const auth = await UserService.getAuth();
         if(auth) {
-            const response = await ProjectService.getAll();
-            const projects = await response.json();
-            // if(user.role == "admin") {
+            const role = sessionStorage.getItem("role");
+            if (role == "admin") {
+                const response = await ProjectService.getAll();
+                const projects = await response.json();
                 return projects;
             }
+            else {
+                const id = sessionStorage.getItem("loggedUser");
+                if (!id) return;
+                const reposnse = await ProjectService.getProjectsByUserId(id)
+                const projects = await reposnse.json();
+                return projects;
+            }
+        }
         else {
             //TODO add translation
             setStatusMessage("You are not logged in!");
            return
         }
-    // }
-    // else {
-        //still to modify
-    //     return projects.filter(project => project.user.id == user.id);
     }
 
 const {data, isLoading, error} = useSWR('projectsFromDb', fetchProjects);

@@ -45,11 +45,24 @@ const deleteProject = (projectId: string) => {
         },
     });
 }
+
+const getProjectsByUserId = (userId: string) => {
+    const token = sessionStorage.getItem('token');
+    return fetch(process.env.NEXT_PUBLIC_API_URL + '/projects/user/' + userId, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`
+        },
+    });
+}
+
 const ProjectService = {
     getAll,
     getById,
     create,
-    deleteProject
+    deleteProject,
+    getProjectsByUserId
 }
 
 export default ProjectService;
