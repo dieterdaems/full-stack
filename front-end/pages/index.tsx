@@ -21,10 +21,12 @@ const Welcome: React.FC = () => {
     )
 };
 
-export const getServerSideProps: GetServerSideProps = async ({locale}) =>({
+export const getServerSideProps: GetServerSideProps = async (context) =>{
+    const { locale } = context;
+    return {
     props: {
-      ...(await serverSideTranslations(locale ?? 'en' ,["common"])),
+      ...(await serverSideTranslations(locale ?? "en" ,["common"])),
     },
-  })
-
+  }
+}
 export default Welcome;

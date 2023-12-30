@@ -2,6 +2,8 @@ import TasksOverviewTable from "@/components/tasks/TasksProjectOverviewTable";
 import TaskService from "@/services/TaskService";
 import UserService from "@/services/UserService";
 import { Task } from "@/types";
+import { GetServerSideProps } from "next";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useEffect, useState } from "react";
 import useSWR, { mutate } from "swr";
 import useInterval from "use-interval";
@@ -64,5 +66,14 @@ const Tasks: React.FC = () => {
     )
 
 };
+
+export const getServerSideProps: GetServerSideProps = async (context) =>{
+    const { locale } = context;
+    return {
+    props: {
+      ...(await serverSideTranslations(locale ?? "en" ,["common"])),
+    },
+  }
+}
 
 export default Tasks;
