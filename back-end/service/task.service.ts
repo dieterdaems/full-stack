@@ -74,6 +74,12 @@ const getTaskByUserId = async (userId: number): Promise<Task[]> => {
         projects.push(...project);
     }));
 
+    // alternative way:
+    // for (const team of user.teams) {
+    //     const project = await projectDb.getProjectByTeamId(team.id);
+    //     projects.push(...project);
+    // }
+
 
     await Promise.all(projects.map(async (project) => {
         const task = await taskDb.getTaskByProject(project.id);
