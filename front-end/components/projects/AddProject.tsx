@@ -53,7 +53,8 @@ const AddProject: React.FC = () => {
 
     return (
         <>  
-        <button onClick={(e) => setButton(!button)}>{t('projects.new')}</button>
+        {!button && <button onClick={(e) => setButton(!button)}>{t('projects.new')}</button>}
+        {button && <button onClick={(e) => setButton(!button)}>{t('projects.cancel')}</button>}
         {button && <form onSubmit={handleSubmit}>
             <label htmlFor="name">{t('projects.name')}</label>
             <input type="text" id="name" onChange={(e) => setName(e.target.value)} />
