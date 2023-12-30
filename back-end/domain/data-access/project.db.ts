@@ -16,10 +16,8 @@ const getAllProjects = async (): Promise<Project[]> => {
                 }
             }
         );
-        if (!projectsPrisma) throw new Error(`No projects found.`);
-        // console.log(projectsPrisma);
+
         const projects = projectsPrisma.map((projectPrisma) => Project.from(projectPrisma));
-        // console.log(projects);
         return projects;
     }
     catch (error) {
@@ -40,7 +38,6 @@ const getProjectById = async (id: number): Promise<Project> => {
                 tasks: true
             }
         });
-        if (!projectPrisma) throw new Error(`Project with id ${id} does not exist.`);
         const project = Project.from(projectPrisma);
         return project;
     }
@@ -105,5 +102,27 @@ const deleteById = async (id: number): Promise<Project> => {
     }
 }
 
+const getProjectByTeamId = async (teamId: number): Promise<Project[]> => {
+    try {
+        const projectsPrisma = await prisma.project.findMany({
+            where: { teamId: teamId },
+            include: {
+                team: {
+                    include: {
+                        users: true
+                    }
+                },
+                tasks: true
+            }
+        });
+        const projects = projectsPrisma.map((projectPrisma) => Project.from(projectPrisma));
+        return projects;
+    }
+    catch (error) {
+        console.log(error);
+        throw new Error("Database error. Check logs for more details.");
+    }
+}
 
-export default { getAllProjects, getProjectById, createProject, deleteById };
+
+export default { getAllProjects, getProjectById, createProject, deleteById, getProjectByTeamId };
