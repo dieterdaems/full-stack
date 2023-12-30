@@ -63,21 +63,24 @@ const updateTask = async (task: TaskInput): Promise<Task> => {
 
 
 const getTaskByUserId = async (userId: number): Promise<Task[]> => {
-    let projects = [];
-    let tasks = [];
-    const user = await userDb.getUserById(userId);
-    user.teams.forEach(async team =>{ 
-        const project = await projectDb.getProjectByTeamId(team.id);
-        projects.push(project);
-    });
-    projects.forEach(async project => {
-        const task = await taskDb.getTaskByProject(project.id);
-        tasks.push(task);
-    });
+    const projects = [];
+    const tasks = [];
     
-    // const tasks2 = await taskDb.getTaskByUserId(userId);
-    // return tasks2;
+    const user = await userDb.getUserById(userId);
+
+
+    await Promise.all(user.teams.map(async (team) => {
+        const project = await projectDb.getProjectByTeamId(team.id);
+        projects.push(...project);
+    }));
+
+
+    await Promise.all(projects.map(async (project) => {
+        const task = await taskDb.getTaskByProject(project.id);
+        tasks.push(...task);
+    }));
+
     return tasks;
-}
+};
 
 export default { getAllTasks, getTaskById, getTaskByProjectId, createTask, deleteById, updateTask, getTaskByUserId };

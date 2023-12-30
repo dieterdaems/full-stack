@@ -44,12 +44,13 @@ const deleteProject = async (id: number): Promise<Project> => {
 }
 
 const getProjectsByUserId = async (userId: number): Promise<Project[]> => {
-    let projects = [];
+    const projects = [];
     const user = await userDb.getUserById(userId);
-    user.teams.forEach(async team =>{ 
+    await Promise.all(user.teams.map(async team =>{ 
         const project = await projectDb.getProjectByTeamId(team.id);
-        projects.push(project);
-    });
+        projects.push(...project);
+    })
+    );
     return projects;
 }
 
