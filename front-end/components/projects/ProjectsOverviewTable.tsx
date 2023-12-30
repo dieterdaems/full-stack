@@ -22,6 +22,8 @@ const ProjectOverviewTable: React.FC<Props> = ({ projects }: Props) => {
         setShowConfirmation(true);
     };
 
+    const role = sessionStorage.getItem("role");
+
     const handleDeleteConfirm = async () => {
         const response = await ProjectService.deleteProject(projectToDelete);
         const data = await response.json();
@@ -47,7 +49,7 @@ const ProjectOverviewTable: React.FC<Props> = ({ projects }: Props) => {
                     <th>{t('projects.name')}</th>
                     <th>Team assigned</th>
                     <th>{t('projects.tasks')}</th>
-                    <th>{t('projects.delete')}</th>
+                    <th>{role === "admin" && t('projects.delete')}</th>
                 </tr>
             </thead>
             <tbody>
@@ -57,7 +59,7 @@ const ProjectOverviewTable: React.FC<Props> = ({ projects }: Props) => {
                         <td>{project.name}</td>
                         <td>{project.team?.name}</td>
                         <td><button onClick={() => router.push('/tasks/project/' + project.id)}>{t('projects.tasks')}</button></td>
-                        {project.id && <td><button onClick={() => handleDeleteButton(project.id)}>{t('projects.delete')}</button></td>}
+                        {project.id && role === "admin" && <td><button onClick={() => handleDeleteButton(project.id)}>{t('projects.delete')}</button></td>}
                     </tr>
                 ))}
             </tbody>
