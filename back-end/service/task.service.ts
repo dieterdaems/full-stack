@@ -1,5 +1,6 @@
 import projectDb from "../domain/data-access/project.db";
 import taskDb from "../domain/data-access/task.db";
+import userDb from "../domain/data-access/user.db";
 import { Task } from "../domain/model/task";
 import { TaskInput } from "../types";
 
@@ -59,4 +60,24 @@ const updateTask = async (task: TaskInput): Promise<Task> => {
     const ttask = await taskDb.updateTask(newTask);
     return ttask;
 }
-export default { getAllTasks, getTaskById, getTaskByProjectId, createTask, deleteById, updateTask };
+
+
+const getTaskByUserId = async (userId: number): Promise<Task[]> => {
+    let projects = [];
+    let tasks = [];
+    const user = await userDb.getUserById(userId);
+    user.teams.forEach(async team =>{ 
+        const project = await projectDb.getProjectByTeamId(team.id);
+        projects.push(project);
+    });
+    projects.forEach(async project => {
+        const task = await taskDb.getTaskByProject(project.id);
+        tasks.push(task);
+    });
+    
+    // const tasks2 = await taskDb.getTaskByUserId(userId);
+    // return tasks2;
+    return tasks;
+}
+
+export default { getAllTasks, getTaskById, getTaskByProjectId, createTask, deleteById, updateTask, getTaskByUserId };
