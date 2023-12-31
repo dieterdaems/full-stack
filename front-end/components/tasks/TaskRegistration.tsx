@@ -54,7 +54,6 @@ const TaskRegistrationForm: React.FC<Props> = ({projectId} : Props) => {
             <input type="text" id="description" onChange={(e) => setDescription(e.target.value)} />
             <label htmlFor="deadline">Deadline</label>
             <input type="date" id="deadline" onChange={(e) => setDeadline(new Date(e.target.value))} />
-            <label htmlFor="project">Project</label>
             <button type="submit">Submit</button>
         </form>
         <div>

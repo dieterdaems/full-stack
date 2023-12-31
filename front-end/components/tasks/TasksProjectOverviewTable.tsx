@@ -19,12 +19,8 @@ const TasksOverviewTable: React.FC<Props> = ({ tasks }: Props) => {
         // router.push('/tasks');
     }
 
-    const completebutton = (task: Task) => {
-        if (task.completed) {
-            return <>{t('tasks.completed')}</>
-        } else {
-            return <button onClick={() => TaskService.completeTask(task.id)}>{t('tasks.complete')}</button>
-        }
+    const completebutton = async (id: any) => {
+        const response = await TaskService.completeTask(id);
     }
     return (
         <>
@@ -36,6 +32,7 @@ const TasksOverviewTable: React.FC<Props> = ({ tasks }: Props) => {
                     <th>{t('tasks.deadline')}</th>
                     <th>{t('tasks.completed')}</th>
                     <th>{t('tasks.delete')}</th>
+
                 </tr>
             </thead>
             <tbody>
@@ -44,9 +41,8 @@ const TasksOverviewTable: React.FC<Props> = ({ tasks }: Props) => {
                         <td>{task.name}</td>
                         <td>{task.description}</td>
                         <td>{task.deadline.toString().slice(0, 10)}</td>
-                        <td>{completebutton(task)}</td>
-
-                        <td><button onClick={() => deleteTask(task.id)}>{t('tasks.completed')}</button></td>
+                        <td>{task.completed ? <>{t('tasks.completed')}</> : <button onClick={() => completebutton(task.id)}>{t('tasks.complete')}</button>}</td>
+                        <td><button onClick={() => deleteTask(task.id)}>{t('tasks.delete')}</button></td>
                     </tr>
                 ))}
             </tbody>

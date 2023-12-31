@@ -55,7 +55,7 @@ const deleteById = (id: string) => {
 
 const completeTask = (id: any) => {
     const token = sessionStorage.getItem('token');
-    return fetch(process.env.NEXT_PUBLIC_API_URL + '/tasks/completeTask' + id, {
+    return fetch(process.env.NEXT_PUBLIC_API_URL + '/tasks/completeTask/' + id, {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json',

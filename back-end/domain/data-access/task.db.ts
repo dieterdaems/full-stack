@@ -31,7 +31,7 @@ const getAllTasks = async (): Promise<Task[]> => {
 const getTaskById = async (id: number): Promise<Task> => {
     try {
         const taskPrisma = await prisma.task.findUnique({
-            where: { id: id },
+            where: { id },
             include: {
                 project: {
                     include: {
@@ -62,7 +62,7 @@ const createTask = async ({ name, description, deadline, projectId, userId }: Ta
                 name,
                 description,
                 deadline,
-                completed: true,
+                completed: false,
                 project: { connect: { id: projectId } },
                 user: { connect: { id: userId } }
             },
