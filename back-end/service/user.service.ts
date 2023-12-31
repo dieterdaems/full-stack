@@ -6,12 +6,24 @@ import { generateJwtToken } from "../util/jwt";
 import { UnauthorizedError } from "express-jwt";
 import teamDb from "../domain/data-access/team.db";
 
+
+/*
+Parameters: role of the user logged in, so role saved in JWT token
+Return: all users
+Authorization Error: if inlogged user is not admin
+*/
 const getAllUsers = async ({ role }): Promise<User[]> => {
     if (role !== 'admin') throw new UnauthorizedError('credentials_required', { message: 'You are not authorized to access this resource.' })
     else return userDb.getAllUsers();
 };
 
 
+/*
+Parameters: id of user to be retrieved, role saved in JWT token, id of user logged in, so id saved in JWT token
+Return: user
+Authorization Error: if inlogged user is not admin nor the same as the one to be retrieved
+Application Error: if user does not exist
+*/
 const getUserById = async ({ id, currentUser, role }): Promise<User> => {
     if (role !== 'admin' && currentUser !== id) throw new UnauthorizedError('credentials_required', { message: 'You are not authorized to access this resource.' });
     const existingUser = await userDb.getUserById(id);
@@ -19,6 +31,13 @@ const getUserById = async ({ id, currentUser, role }): Promise<User> => {
     return existingUser;
 }
 
+/*
+Parameters: id of user to be deleted, role saved in JWT token
+Return: deleted user
+Authorization Error: if inlogged user is not admin
+Application Error: if user does not exist
+                   if user is admin
+*/
 const deleteUserById = async ({ id, role }): Promise<User> => {
     if (role !== 'admin') throw new UnauthorizedError('credentials_required', { message: 'You are not authorized to delete a user.' })
     const user = await userDb.getUserById(id);
@@ -27,6 +46,14 @@ const deleteUserById = async ({ id, role }): Promise<User> => {
     return userDb.deleteUser(id);
 }
 
+/*
+Parameters: name, specialisation, email, password of user to be created
+Return: created user with hashed password
+Application Error: 
+            if user already exists
+            if password is too short
+            if domain validation failed
+*/
 const createUser = async ({ name, specialisation, email, password }: UserInput): Promise<User> => {
     const existingUser = await userDb.getUserByEmail(email);
     if (existingUser) throw new Error(`User with email ${email} already exists.`);
@@ -37,6 +64,15 @@ const createUser = async ({ name, specialisation, email, password }: UserInput):
     return userDb.createUser(user);
 };
 
+/*
+Parameters: id of user to be updated, updated info, id of user logged in, role saved in JWT token
+Return: updated user
+Authorization Errorr: if inlogged user is not admin nor the same as the one to be updated
+Application Error: if user does not exist
+                   if the new email is already taken
+                   if password is too short
+                   if domain validation failed
+*/
 const updateUser = async ({ targetUserId, updatedInfo, currentUser, currentRole }): Promise<User> => {
     if (currentRole !== 'admin' && currentUser !== targetUserId) throw new UnauthorizedError('credentials_required', { message: 'You are not authorized to update this resource.' });
 
@@ -59,6 +95,12 @@ const updateUser = async ({ targetUserId, updatedInfo, currentUser, currentRole 
 }
 
 
+/*
+Parameters: email, password of user to be authenticated
+Return: token, id and role of user
+Application Error: if email does not belong to a user
+                   if password is incorrect
+*/
 const authenticate = async ({ email, password }: UserInput): Promise<AuthenticationResponse> => {
     const user = await userDb.getUserByEmail(email);
     if (!user || !password) {
@@ -75,6 +117,12 @@ const authenticate = async ({ email, password }: UserInput): Promise<Authenticat
     };
 }
 
+/*
+Parameters: id of team to be added to, id of user to be added, id of user logged in, role of user logged in
+Return: updated user with the team the user was added to
+Authorization Error: if inlogged user is not admin nor the same as the one to be added to a team
+Application Error: if team or user does not exist
+*/
 const addUserToTeam = async ({teamId, userId, currentUser, role}): Promise<User> => {
     if (role !== 'admin' && currentUser !== userId) throw new UnauthorizedError('credentials_required', { message: 'You are not authorized to add another user to a team.' });
 
@@ -86,6 +134,12 @@ const addUserToTeam = async ({teamId, userId, currentUser, role}): Promise<User>
     return userDb.addUserToTeam(teamId, userId);
 }
 
+/*
+Parameters: id of team to be removed from, id of user to be removed, id of user logged in, role of user logged in
+Return: updated user without the team the user was removed from
+Authorization Error: if inlogged user is not admin nor the same as the one to be removed from a team
+Application Error: if team or user does not exist
+*/
 const removeUserFromTeam = async({teamId, userId, currentUser, role}): Promise<User> => {
     if (role !== 'admin' && currentUser !== userId) throw new UnauthorizedError('credentials_required', { message: 'You are not authorized to remove another user from a team.' });
 
