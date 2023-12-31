@@ -9,7 +9,7 @@ const UserRegistrationForm: React.FC = () => {
     const [email, setEmail] = useState<string>("");
     const [password, setPassword] = useState<string>("");
     const [specialisation, setSpecialisation] = useState<string>("");
-    const [errorMessage, setErrorMessage] = useState("");
+    const [statusMessage, setStatusMessage] = useState("");
 
     const [nameError, setNameError] = useState<string>("");
     const [emailError, setEmailError] = useState<string>("");
@@ -41,7 +41,7 @@ const UserRegistrationForm: React.FC = () => {
         }
 
         if (password === "" || password.trim() === "" || password.length < 7) {
-            setPasswordError("Password is required and should be at least 7 characters");
+            setPasswordError("Password should be at least 7 characters");
             valid = false;
         }
 
@@ -58,16 +58,31 @@ const UserRegistrationForm: React.FC = () => {
         e.preventDefault();
         if (validate()) {
             const response = await UserService.create({ name, specialisation, email, password });
-
-            if (response.status === 200) {
-                // ToDo: log in user instead of overview
-                router.push('/users/');
+            const user = await response.json();
+            if (response.ok) {
+                setStatusMessage('Registration successful, logging in...');
+                const response = await UserService.login({ email, password });
+                const user = await response.json();
+                if (response.ok) {
+                    sessionStorage.setItem('token', user.token);
+                    sessionStorage.setItem('loggedUser', user.id);
+                    sessionStorage.setItem('role', user.role);
+                    setStatusMessage('Login successful, redirecting...');
+                    setTimeout(() => {
+                        router.push('/');
+                    }, 2500)
+                } else {
+                    setStatusMessage('Something went wrong with auto login, please login manually. Redirecting...');
+                    setTimeout(() => {
+                        router.push('/login/');
+                    }, 2500)
+                }
             } else {
-                setErrorMessage('Something went wrong. Please try again or contact the system adminstration.')
+                setStatusMessage("Couldn't register user, " + user.errorMessage); 
             }
         }
         else {
-            setErrorMessage("Can't process registration. Please fill in with valid input.");
+            setStatusMessage("Please fill in with valid input.");
         }
 
     }
@@ -79,32 +94,32 @@ const UserRegistrationForm: React.FC = () => {
                 <div>
                     <label htmlFor="name">Name *</label>
                     <input type="text" id="name" onChange={(e) => setName(e.target.value)} />
-                    {nameError && <p>{nameError}</p>}
+                    {nameError}
                 </div>
 
                 <div>
                     <label htmlFor="email">Email *</label>
-                    <input type="email" id="email" onChange={(e) => setEmail(e.target.value)} />
-                    {emailError && <p>{emailError}</p>}
+                    <input type="text" id="email" onChange={(e) => setEmail(e.target.value)} />
+                    {emailError}
                 </div>
 
                 <div>
                     <label htmlFor="specialisation">Specialisation *</label>
                     <input type="text" id="specialisation" onChange={(e) => setSpecialisation(e.target.value)} />
-                    {specialisationError && <p>{specialisationError}</p>}
+                    {specialisationError}
                 </div>
 
                 <div>
                     <label htmlFor="password">Password *</label>
                     <input type="text" id="password" onChange={(e) => setPassword(e.target.value)} />
-                    {passwordError && <p>{passwordError}</p>}
+                    {passwordError}
                 </div>
 
 
                 <button type="submit">Register</button>
             </form>
             <div>
-                {errorMessage && <p>{errorMessage}</p>}
+                <p>{statusMessage}</p>
             </div>
         </>
     );
