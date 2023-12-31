@@ -1,6 +1,6 @@
 import UserService from "@/services/UserService";
 import { User } from "@/types";
-import { useRouter } from "next/router";
+import router, { useRouter } from "next/router";
 import { FormEvent, useState } from "react";
 
 
@@ -54,13 +54,14 @@ const EditProfileForm: React.FC<Props> = ({ user }: Props) => {
         e.preventDefault();
         if (validate()) {
             const response = await UserService.update({ id: user.id, name, specialisation, email });
-            const data = await response.json();
             if (!response.ok) {
-                setErrorMessage(data.errorMessage);
+                setErrorMessage(response.statusText);
             }
             else {
-                // ToDO: Redirect to home page instead
+                const data = await response.json();
                 setErrorMessage("Profile updated successfully");
+                // Refresh the page (/users/profile after a second
+                setTimeout(() => router.reload(), 1000);
             }
         }
         else {
@@ -76,19 +77,19 @@ const EditProfileForm: React.FC<Props> = ({ user }: Props) => {
                 <div>
                     <label htmlFor="name">Name</label>
                     <input type="text" id="name" value={name} onChange={(e) => setName(e.target.value)} />
-                    {nameError && <p>{nameError}</p>}
+                    {nameError}
                 </div>
 
                 <div>
                     <label htmlFor="email">Email</label>
                     <input type="text" id="email" value={email} onChange={(e) => setEmail(e.target.value)} />
-                    {emailError && <p>{emailError}</p>}
+                    {emailError}
                 </div>
 
                 <div>
                     <label htmlFor="specialisation">Specialisation</label>
                     <input type="text" id="specialisation" name={specialisation} value={specialisation} onChange={(e) => setSpecialisation(e.target.value)} />
-                    {specialisationError && <p>{specialisationError}</p>}
+                    {specialisationError}
                 </div>
 
 
@@ -96,7 +97,7 @@ const EditProfileForm: React.FC<Props> = ({ user }: Props) => {
                 <button type="submit">Update</button>
             </form>
             <div>
-                {errorMessage && <p>{errorMessage}</p>}
+                {errorMessage}
             </div>
         </>
     );
