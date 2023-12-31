@@ -22,6 +22,10 @@ const taskRouter = express.Router();
  *           format: date-time
  *         project:
  *           $ref: "#/components/schemas/Project"
+ *         completed:
+ *           type: boolean
+ *         user:
+ *           $ref: "#/components/schemas/User"
  *       required:
  *         - name
  *         - description
@@ -204,10 +208,11 @@ taskRouter.get('/project/:id', async (req: Request, res: Response) => {
  *                   type: string
  */
 
-taskRouter.post('/', async (req: Request, res: Response) => {
+taskRouter.post('/', async (req: Request & {auth: any}, res: Response) => {
     try {
         const task = <TaskInput>req.body;
-        const response = await taskService.createTask(task);
+        const currentUser = req.auth.id;
+        const response = await taskService.createTask({task, currentUser});
         res.status(200).json(response);
     }
     catch (error) {
@@ -250,6 +255,16 @@ taskRouter.put('/:id', async (req: Request, res: Response) => {
     try {
         const task = <TaskInput>req.body;
         const response = await taskService.updateTask({targetTaskId: parseInt(req.params.id), updatedInfo: task});
+        res.status(200).json(response);
+    }
+    catch (error) {
+        res.status(400).json({ status: 'error', errorMessage: error.message });
+    }
+});
+
+taskRouter.put('/completeTask/:id', async (req: Request, res: Response) => {
+    try {
+        const response = await taskService.completeTask(parseInt(req.params.id));
         res.status(200).json(response);
     }
     catch (error) {

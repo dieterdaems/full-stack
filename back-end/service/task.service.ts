@@ -1,4 +1,3 @@
-import projectDb from "../domain/data-access/project.db";
 import taskDb from "../domain/data-access/task.db";
 import { Task } from "../domain/model/task";
 import { TaskInput } from "../types";
@@ -14,15 +13,12 @@ const getTaskById = async (id: number): Promise<Task> => {
     return task;
 };
 
-const createTask = async (task: TaskInput): Promise<Task> => {
-    const newProject = await projectDb.getProjectById(task.projectId);
+const createTask = async ({task, currentUser}): Promise<Task> => {
     const name = task.name
     const description = task.description
     const deadline = task.deadline
-    if (deadline < new Date()) throw new Error("Task deadline must be in the future.");
-    //When creating a task, completed will always be false
-    const newTask = new Task({ name, description, deadline, project: newProject, completed: false });
-    return taskDb.createTask(newTask);
+    const newTask = new Task({ name, description, deadline }); // Domain validation
+    return taskDb.createTask({name, description, deadline, projectId: task.projectId, userId: currentUser});
 }
 
 const deleteById = async (id: number): Promise<Task> => {
@@ -46,4 +42,10 @@ const updateTask = async ({targetTaskId, updatedInfo}: {targetTaskId: number, up
     const newTask = new Task({ id: targetTaskId, name, description, deadline, completed });
     return taskDb.updateTask(newTask);
 }
-export default { getAllTasks, getTaskById, getTasksByProjectId, createTask, deleteById, updateTask };
+
+const completeTask = async (id: number): Promise<Task> => {
+    const task = await taskDb.getTaskById(id);
+    if (!task) throw new Error(`Task with id ${id} does not exist.`);
+    return taskDb.completeTask(id);
+}
+export default { getAllTasks, getTaskById, getTasksByProjectId, createTask, deleteById, updateTask, completeTask };
