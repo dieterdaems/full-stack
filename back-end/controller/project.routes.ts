@@ -78,6 +78,50 @@ projectRouter.get('/', async (req: Request, res: Response) => {
     }
 });
 
+
+/**
+ * @swagger
+ * /projects/user/{id}:
+ *   get:
+ *     summary: Get a list of all projects by user ID.
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: ID of the user to retrieve projects from.
+ *         schema:
+ *           type: integer
+ *     responses:
+ *       200:
+ *         description: Successful response with a list of projects.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Project'
+ *       400:
+ *         description: Bad request with an error message.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                 errorMessage:
+ *                   type: string
+ */
+projectRouter.get('/user/:id', async (req: Request, res: Response) => {
+    try {
+        const projects = await projectService.getAllProjectsByUserId(parseInt(req.params.id));
+        res.status(200).json(projects);
+    }
+    catch (error) {
+        res.status(400).json({ status: 'error', errorMessage: error.message });
+    }
+});
+
 /**
  * @swagger
  * /projects/{id}:

@@ -42,6 +42,9 @@ const deleteProject = async (id: number): Promise<Project> => {
     return project;
 }
 
-//update project
+const getAllProjectsByUserId = async (userId: number): Promise<Project[]> => {
+    const projects = await projectDb.getAllProjectsByUserId(userId);
+    return projects;
+}
 
-export default { getAllProjects, getProjectById, createProject, deleteProject };
+export default { getAllProjects, getProjectById, createProject, deleteProject, getAllProjectsByUserId };
