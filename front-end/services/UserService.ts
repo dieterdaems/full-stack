@@ -11,7 +11,7 @@ const getAll = async () => {
     });
 }
 
-const getById = async (id: number) => {
+const getById = async (id: any) => {
     const token = sessionStorage.getItem('token');
     return fetch(process.env.NEXT_PUBLIC_API_URL + '/users/' + id, {
         method: 'GET',
@@ -22,25 +22,12 @@ const getById = async (id: number) => {
     });
 }
 
-const getByEmail = async (email: string) => {
-    const token = sessionStorage.getItem('token');
-    return fetch(process.env.NEXT_PUBLIC_API_URL + '/users/email/' + email, {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`
-        },
-    });
-}
-
 
 const create = async ({name, specialisation, email, password} : User) => {
-    const token = sessionStorage.getItem('token');
     return fetch(process.env.NEXT_PUBLIC_API_URL + '/users/add', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`
         },
         body: JSON.stringify({
             name,
@@ -68,12 +55,10 @@ const update = async ({id, name, specialisation, email} : User) => {
 }
 
 const login = async ({email, password}: UserLogin) => {
-    const token = sessionStorage.getItem('token');
     return fetch(process.env.NEXT_PUBLIC_API_URL + '/users/login', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`
         },
         body: JSON.stringify({
             email,
@@ -82,7 +67,7 @@ const login = async ({email, password}: UserLogin) => {
     });
 }
 
-const addUserToTeam = (teamId: number, userId: number) => {
+const addUserToTeam = ({teamId, userId}: {teamId: any, userId: any}) => {
     const token = sessionStorage.getItem('token');
     return fetch(process.env.NEXT_PUBLIC_API_URL + '/users/team/' + teamId + '/user/' + userId, {
         method: 'POST',
@@ -93,7 +78,7 @@ const addUserToTeam = (teamId: number, userId: number) => {
     });
 }
 
-const removeUserFromTeam = (teamId: number, userId: number) => {
+const removeUserFromTeam = ({teamId, userId}: {teamId: any, userId: any}) => {
     const token = sessionStorage.getItem('token');
     return fetch(process.env.NEXT_PUBLIC_API_URL + '/users/team/' + teamId + '/user/' + userId, {
         method: 'DELETE',
@@ -118,7 +103,6 @@ const deleteUser = (id: number) => {
 const UserService = {
     getAll,
     getById,
-    getByEmail,
     create,
     update,
     login,

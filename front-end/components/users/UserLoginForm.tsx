@@ -33,21 +33,22 @@ function UserLogin() {
     if (!validate()) return;
 
     const response = await UserService.login({ email, password });
-    const token = await response.json();
+    const user = await response.json();
     if (response.ok) {
-      sessionStorage.setItem("token", token);
-      const user = await UserService.getByEmail(email);
-      const data = await user.json();
-
-      sessionStorage.setItem("loggedUser", data.id);
-      sessionStorage.setItem("role", data.role);
-
+      sessionStorage.setItem('token', user.token);
+      sessionStorage.setItem('loggedUser', user.id);
+      // Hash roles to give malicious users a challenge :)
+      // admin = SHA256-hash of 4dM1nFullStaCk
+      // user = SHA256-hash of Us3rFullSt4ck
+      if (user.role === 'admin')
+        sessionStorage.setItem('role', '91fb3f8394dead2470aaf953e1bed9d9abf34a41f65ac666cff414ca229245b8');
+      else sessionStorage.setItem('role', '4b975fd8f0ff3e9fe958e701d5053be7dc223b684ec633f3d322d8868d395d33');
       setStatusMessage('Login successful, redirecting...');
       setTimeout(() => {
         router.push('/');
       }, 2500)
     } else {
-      setStatusMessage(token.errorMessage);
+      setStatusMessage(user.errorMessage);
     }
   };
 
@@ -61,7 +62,7 @@ function UserLogin() {
             name="email"
             placeholder="jan.janssens@example.com"
             onChange={(event) => setEmail(event.target.value)}
-          required
+            required
           />
         </div>
         <div >
@@ -71,7 +72,7 @@ function UserLogin() {
             name="password"
             placeholder="********"
             onChange={(event) => setPassword(event.target.value)}
-          required
+            required
           />
           <button type="button" onClick={togglePasswordVisibility}>
             👁️

@@ -1,12 +1,12 @@
 import UserService from "@/services/UserService";
 import { User } from "@/types";
-import { useRouter } from "next/router";
+import router from "next/router";
 import { FormEvent, useState } from "react";
 
 
 type Props = {
     user: User;
-  };
+};
 
 const EditProfileForm: React.FC<Props> = ({ user }: Props) => {
 
@@ -14,7 +14,7 @@ const EditProfileForm: React.FC<Props> = ({ user }: Props) => {
     const [email, setEmail] = useState<string>(user?.email);
     const [specialisation, setSpecialisation] = useState<string>(user?.specialisation);
     const [errorMessage, setErrorMessage] = useState("");
-    
+
     const [nameError, setNameError] = useState<string>("");
     const [emailError, setEmailError] = useState<string>("");
     const [specialisationError, setSpecialisationError] = useState<string>("");
@@ -53,19 +53,18 @@ const EditProfileForm: React.FC<Props> = ({ user }: Props) => {
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
         if (validate()) {
-            const response = await UserService.update({id: user.id, name, specialisation, email });
-            const data = await response.json();
-            if (response.status !== 200) {
-                setErrorMessage(data.errorMessage);
+            const response = await UserService.update({ id: user.id, name, specialisation, email });
+            if (!response.ok) {
+                setErrorMessage(response.statusText);
             }
             else {
-                setErrorMessage("");
-                // ToDO: Redirect to home page instead
-                window.location.href = "/users/profile/" + user.id;
+                setErrorMessage("Profile updated successfully");
+                // Refresh the page (/users/profile after a second
+                setTimeout(() => router.reload(), 1000);
             }
         }
         else {
-            setErrorMessage("Can't process Editing. Please fill in with valid input.");
+            setErrorMessage("Cannot update information. Please fill in with valid input.");
         }
 
     }
@@ -77,19 +76,19 @@ const EditProfileForm: React.FC<Props> = ({ user }: Props) => {
                 <div>
                     <label htmlFor="name">Name</label>
                     <input type="text" id="name" value={name} onChange={(e) => setName(e.target.value)} />
-                    {nameError && <p>{nameError}</p>}
+                    {nameError}
                 </div>
 
                 <div>
                     <label htmlFor="email">Email</label>
                     <input type="text" id="email" value={email} onChange={(e) => setEmail(e.target.value)} />
-                    {emailError && <p>{emailError}</p>}
+                    {emailError}
                 </div>
 
                 <div>
                     <label htmlFor="specialisation">Specialisation</label>
                     <input type="text" id="specialisation" name={specialisation} value={specialisation} onChange={(e) => setSpecialisation(e.target.value)} />
-                    {specialisationError && <p>{specialisationError}</p>}
+                    {specialisationError}
                 </div>
 
 
@@ -97,7 +96,7 @@ const EditProfileForm: React.FC<Props> = ({ user }: Props) => {
                 <button type="submit">Update</button>
             </form>
             <div>
-                {errorMessage && <p>{errorMessage}</p>}
+                {errorMessage}
             </div>
         </>
     );
