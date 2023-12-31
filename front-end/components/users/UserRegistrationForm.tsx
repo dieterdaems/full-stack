@@ -65,7 +65,12 @@ const UserRegistrationForm: React.FC = () => {
                 if (response.ok) {
                     sessionStorage.setItem('token', user.token);
                     sessionStorage.setItem('loggedUser', user.id);
-                    sessionStorage.setItem('role', user.role);
+                    // Hash roles to give malicious users just a bit of a challenge
+                    // admin = SHA256-hash of 4dM1nFullStaCk
+                    // user = SHA256-hash of Us3rFullSt4ck
+                    if (user.role === 'admin')
+                        sessionStorage.setItem('role', '91fb3f8394dead2470aaf953e1bed9d9abf34a41f65ac666cff414ca229245b8');
+                    else sessionStorage.setItem('role', '4b975fd8f0ff3e9fe958e701d5053be7dc223b684ec633f3d322d8868d395d33');
                     setTimeout(() => setStatusMessage('Login successful, redirecting...'), 500);
                     setTimeout(() => {
                         router.push('/');
@@ -77,7 +82,7 @@ const UserRegistrationForm: React.FC = () => {
                     }, 2500)
                 }
             } else {
-                setStatusMessage("Couldn't register user, " + response.statusText); 
+                setStatusMessage("Couldn't register user, " + response.statusText);
             }
         }
         else {

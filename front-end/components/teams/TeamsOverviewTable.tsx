@@ -120,7 +120,7 @@ const TeamsOverviewTable: React.FC<Props> = ({ teams, currentTeams }: Props) => 
                         <tr key={index}>
                             <td>{team.name}</td>
                             <td>
-                                {role === 'admin' ? (
+                                {role === '91fb3f8394dead2470aaf953e1bed9d9abf34a41f65ac666cff414ca229245b8' ? (
                                     <button onClick={() => handleDeleteButton(team.id)}>
                                         🗑️</button>
                                 ) : (
@@ -139,7 +139,7 @@ const TeamsOverviewTable: React.FC<Props> = ({ teams, currentTeams }: Props) => 
                 </tbody>
             </table>
 
-            {role === 'admin' && !showAddTeam && (
+            {role === '91fb3f8394dead2470aaf953e1bed9d9abf34a41f65ac666cff414ca229245b8' && !showAddTeam && (
                 <button onClick={() => setShowAddTeam(true)}>➕</button>
             )}
             {showAddTeam && (

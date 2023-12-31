@@ -58,7 +58,6 @@ const EditProfileForm: React.FC<Props> = ({ user }: Props) => {
                 setErrorMessage(response.statusText);
             }
             else {
-                const data = await response.json();
                 setErrorMessage("Profile updated successfully");
                 // Refresh the page (/users/profile after a second
                 setTimeout(() => router.reload(), 1000);
