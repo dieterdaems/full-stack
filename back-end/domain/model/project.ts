@@ -1,7 +1,6 @@
 import { Team } from "./team";
 import { Project as ProjectPrisma } from "@prisma/client";
 import { Team as TeamPrisma } from "@prisma/client";
-import { User as UserPrisma } from "@prisma/client";
 
 export class Project {
     readonly name: string;
@@ -29,7 +28,7 @@ export class Project {
         id,
         name,
         team
-    }: ProjectPrisma & {team: TeamPrisma & {users: UserPrisma[]}})  { return new Project({ id, name, team: Team.from(team) }) }
+    }: ProjectPrisma & {team: TeamPrisma})  { return new Project({ id, name, team: Team.from(team) }) }
         
 
   }
