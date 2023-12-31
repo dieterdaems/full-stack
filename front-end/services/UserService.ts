@@ -11,7 +11,7 @@ const getAll = async () => {
     });
 }
 
-const getById = async (id: number) => {
+const getById = async (id: any) => {
     const token = sessionStorage.getItem('token');
     return fetch(process.env.NEXT_PUBLIC_API_URL + '/users/' + id, {
         method: 'GET',
@@ -78,7 +78,7 @@ const login = async ({email, password}: UserLogin) => {
     });
 }
 
-const addUserToTeam = (teamId: number, userId: number) => {
+const addUserToTeam = ({teamId, userId}: {teamId: any, userId: any}) => {
     const token = sessionStorage.getItem('token');
     return fetch(process.env.NEXT_PUBLIC_API_URL + '/users/team/' + teamId + '/user/' + userId, {
         method: 'POST',
@@ -89,7 +89,7 @@ const addUserToTeam = (teamId: number, userId: number) => {
     });
 }
 
-const removeUserFromTeam = (teamId: number, userId: number) => {
+const removeUserFromTeam = ({teamId, userId}: {teamId: any, userId: any}) => {
     const token = sessionStorage.getItem('token');
     return fetch(process.env.NEXT_PUBLIC_API_URL + '/users/team/' + teamId + '/user/' + userId, {
         method: 'DELETE',

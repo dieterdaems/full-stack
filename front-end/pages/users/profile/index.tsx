@@ -1,37 +1,38 @@
 import EditProfileForm from "@/components/users/EditProfileForm";
 import UserService from "@/services/UserService";
 import Head from "next/head";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import useSWR, { mutate } from "swr";
 import useInterval from "use-interval";
 
 const UserProfile: React.FC = () => {
 
     const [errorMessage, setErrorMessage] = useState<string>("");
+    const [authError, setAuthError] = useState<string>("");
 
     const getUserById = async () => {
         setErrorMessage("");
-        const id = sessionStorage.getItem("loggedUser");
-        if (!id) return;
+        setAuthError("");
+        const id = sessionStorage.getItem('loggedUser');
+        if (!id) { setAuthError("You must be logged in to view this page."); return; }
 
-        const response = await UserService.getById(parseInt(id));
-        const user = await response.json();
+        const response = await UserService.getById(id);
         if (!response.ok) {
             if (response.status === 401) {
-                setErrorMessage("You are not authorized to view this page.");
+                setAuthError("You are not authorized to view this page.");
             }
-            else setErrorMessage(user.errorMessage);
+            else setErrorMessage(response.statusText);
 
         }
         else {
-            return user;
+            return response.json();
         }
     }
 
     const { data, error } = useSWR('userById', getUserById);
 
     useInterval(() => {
-        if (!errorMessage) mutate('userById', getUserById());
+        if (!authError) mutate('userById', getUserById());
     }, 1000);
 
 
@@ -42,15 +43,15 @@ const UserProfile: React.FC = () => {
                 <title>Profile</title>
             </Head>
             <main>
-                {
-                    errorMessage ?
-                        <p>{errorMessage}</p> :
-                        !data ?
-                            <p>Loading...</p> :
-                            <>
-                                <h1>Profile</h1>
-                                {<EditProfileForm user={data} />}
-                            </>
+                {errorMessage || authError ?
+                    <p>{errorMessage || authError}</p> :
+                    data ?
+                        <>
+                            <h1>Profile</h1>
+                            {<EditProfileForm user={data} />}
+                        </>
+                        :
+                        <p>Loading...</p>
                 }
             </main>
         </>

@@ -9,33 +9,33 @@ import useInterval from "use-interval";
 const Teams: React.FC = () => {
 
     const [errorMessage, setErrorMessage] = useState<string>("");
+    const [authError, setAuthError] = useState<string>("");
 
     const getAllTeams = async () => {
+        setErrorMessage("");
+        setAuthError("");
         const response = await TeamService.getAll();
-        const data = await response.json();
         if (!response.ok) {
             if (response.status === 401) {
-                setErrorMessage("You are not authorized to view this page.");
+                setAuthError("You are not authorized to view this page.");
             }
-            else setErrorMessage(data.errorMessage);
+            else setErrorMessage(response.statusText);
         }
         else {
-            return data;
+            return response.json();
         }
     }
     const getUserTeams = async () => {
-        setErrorMessage("");
         const id = sessionStorage.getItem("loggedUser");
-        if (!id) return;
-        const response = await UserService.getById(parseInt(id));
-        const user = await response.json();
+        const response = await UserService.getById(id);
         if (!response.ok) {
             if (response.status === 401) {
-                setErrorMessage("You are not authorized to view this page.");
+                setAuthError("You are not authorized to view this page.");
             }
-            else setErrorMessage(user.errorMessage);
+            else setErrorMessage(response.statusText);
         }
         else {
+            const user = await response.json();
             return user.teams;
         }
     };
@@ -45,7 +45,7 @@ const Teams: React.FC = () => {
     const { data, error } = useSWR('allTeams', getAllTeams);
 
     useInterval(() => {
-        if (!errorMessage) {
+        if (!authError) {
             mutate('allTeams', getAllTeams());
             mutate('currentTeams', getUserTeams());
         }
@@ -60,13 +60,14 @@ const Teams: React.FC = () => {
             </Head>
             <main>
                 <p>{errorMessage}</p>
+                <p>{authError}</p>
                 {data && currentTeamsData && (
                     <>
                         <h1>Teams</h1>
                         {<TeamsOverviewTable teams={data} currentTeams={currentTeamsData} />}
                     </>
                 )}
-                {!data && !errorMessage && <p>Loading...</p>}
+                {!data && !errorMessage && !authError && <p>Loading...</p>}
             </main>
         </>
     )

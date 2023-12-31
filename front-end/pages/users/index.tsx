@@ -9,26 +9,28 @@ import useInterval from "use-interval";
 const Users: React.FC = () => {
 
     const [statusMessage, setStatusMessage] = useState<string>("");
+    const [authError, setAuthError] = useState<string>("");
 
     const getAllUsers = async () => {
         setStatusMessage("");
+        setAuthError("");
+        
         const response = await UserService.getAll();
-        const users = await response.json();
         if (!response.ok) {
             if (response.status === 401) {
-                setStatusMessage("You are not authorized to view this page.");
+                setAuthError("You are not authorized to view this page.");
             }
-            else setStatusMessage(users.errorMessage);
+            else setStatusMessage(response.statusText);
         }
         else {
-            return users;
+            return response.json();
         }
     }
 
     const { data, error } = useSWR('allUsers', getAllUsers);
 
     useInterval(() => {
-        if (data) mutate('allUsers', getAllUsers());
+        if (!authError) mutate('allUsers', getAllUsers());
     }, 1000);
 
     if (error) return <>Failed to load</>
@@ -38,6 +40,7 @@ const Users: React.FC = () => {
                 <title>Users</title>
             </Head>
             <main>
+                <p>{authError}</p>
                 <p>{statusMessage}</p>
                 {data && (
                     <>
@@ -47,7 +50,7 @@ const Users: React.FC = () => {
                         </section>
                     </>
                 )}
-                {!data && !statusMessage && <p>Loading...</p>}
+                {!data && !statusMessage && !authError && <p>Loading...</p>}
             </main>
         </>
     );
