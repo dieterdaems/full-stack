@@ -22,39 +22,32 @@ const TeamsOverviewTable: React.FC<Props> = ({ teams, currentTeams }: Props) => 
 
     /* ---------------------------------------------- */
     // Join&Leave handling
-    
-    const handleLeaveTeam = async (team: {id: any, name: string}) => {
-        if (cooldownTeamId || !id) {
-            return;
-        }
+
+    const handleLeaveTeam = async (team: { id: any, name: string }) => {
         setCooldownTeamId(team.id);
 
-        const response = await UserService.removeUserFromTeam(team.id, parseInt(id));
-        const data = await response.json();
+        const response = await UserService.removeUserFromTeam({ teamId: team.id, userId: id });
         if (response.ok) {
-            setStatusMessage("Left team " + team.name + " successfully!");
+            setTimeout(() => setStatusMessage("Left team " + team.name + " successfully!"), 1000);
         }
-        else {
-            setStatusMessage(data.errorMessage);
-        }
-        setTimeout(() => setCooldownTeamId(null), 500);
+        else
+            setStatusMessage(response.statusText);
+
+        setTimeout(() => setCooldownTeamId(null), 1000);
     };
 
-    const handleJoinTeam = async (team: {id: any, name: string}) => {
-        if (cooldownTeamId || !id) {
-            return;
-        }
+    const handleJoinTeam = async (team: { id: any, name: string }) => {
         setCooldownTeamId(team.id);
 
-        const response = await UserService.addUserToTeam(team.id, parseInt(id));
-        const data = await response.json();
+        const response = await UserService.addUserToTeam({ teamId: team.id, userId: id });
         if (response.ok) {
-            setStatusMessage("Joined team " + team.name + " successfully!");
+            setTimeout(() => setStatusMessage("Joined team " + team.name + " successfully!"), 1000);
         }
-        else {
-            setStatusMessage(data.errorMessage);
-        }
-        setTimeout(() => setCooldownTeamId(null), 500);
+        else
+            setStatusMessage(response.statusText);
+
+
+        setTimeout(() => setCooldownTeamId(null), 1000);
     };
 
 
@@ -65,20 +58,24 @@ const TeamsOverviewTable: React.FC<Props> = ({ teams, currentTeams }: Props) => 
         if (newTeamName.trim() === "") { setStatusMessage("Team name cannot be empty!"); return; }
 
         const response = await TeamService.create(newTeamName.trim());
-        const data = await response.json();
         if (response.ok) {
-            setStatusMessage("Created team " + newTeamName + " successfully!");
+            setStatusMessage("Created team successfully!");
+            setTimeout(() => setStatusMessage(""), 3000);
             setShowAddTeam(false);
             setNewTeamName("");
         }
         else {
-            setStatusMessage(data.errorMessage);
+            if (response.status === 401)
+                setStatusMessage("You are not authorized to create a team!");
+            else
+                setStatusMessage(response.statusText);
         }
     }
 
-    const abortCreateButton = () => {
+    const abortAddButton = () => {
         setShowAddTeam(false);
         setNewTeamName("");
+        setStatusMessage("");
     }
 
     const [teamToDelete, setTeamToDelete] = useState<any>();
@@ -94,20 +91,21 @@ const TeamsOverviewTable: React.FC<Props> = ({ teams, currentTeams }: Props) => 
 
     const handleDeleteConfirm = async () => {
         const response = await TeamService.deleteById(teamToDelete);
-        const data = await response.json();
         if (response.ok) {
             setStatusMessage("Deleted team successfully!");
+            setTimeout(() => setStatusMessage(""), 3000);
         }
         else {
-            setStatusMessage(data.errorMessage);
+            if (response.status === 401) {
+                setStatusMessage("You are not authorized to delete this team!");
+            }
+            else {
+                setStatusMessage(response.statusText);
+            }
         }
         setShowConfirmation(false);
     };
 
-
-    const handleDeleteCancel = () => {
-        setShowConfirmation(false);
-    }
 
     return (
         <>
@@ -129,27 +127,21 @@ const TeamsOverviewTable: React.FC<Props> = ({ teams, currentTeams }: Props) => 
                                     currentTeams.some((currentTeam) => currentTeam.id == team.id) ? (
                                         <button
                                             disabled={cooldownTeamId === team.id}
-                                            onClick={() => handleLeaveTeam({id: team.id, name: team.name})}>Leave</button>
+                                            onClick={() => handleLeaveTeam({ id: team.id, name: team.name })}>Leave</button>
                                     ) : (
                                         <button
                                             disabled={cooldownTeamId === team.id}
-                                            onClick={() => handleJoinTeam({id: team.id, name: team.name})}>Join</button>
+                                            onClick={() => handleJoinTeam({ id: team.id, name: team.name })}>Join</button>
                                     ))}
                             </td>
                         </tr>
                     ))}
                 </tbody>
             </table>
+
             {role === 'admin' && !showAddTeam && (
                 <button onClick={() => setShowAddTeam(true)}>➕</button>
             )}
-            {showConfirmation && (
-                            <>
-                                <p>Are you sure you want to delete this team?</p>
-                                <button onClick={handleDeleteConfirm}>Confirm</button>
-                                <button onClick={handleDeleteCancel}>Cancel</button>
-                            </>
-                        )}
             {showAddTeam && (
                 <>
                     <input
@@ -159,7 +151,16 @@ const TeamsOverviewTable: React.FC<Props> = ({ teams, currentTeams }: Props) => 
                         onChange={(e) => setNewTeamName(e.target.value)}
                     />
                     <button onClick={() => handleAddTeam()}>💾</button>
-                    <button onClick={() => abortCreateButton()}>🗑️</button>
+                    <button onClick={() => abortAddButton()}>🗑️</button>
+                </>
+            )}
+
+
+            {showConfirmation && (
+                <>
+                    <p>Are you sure you want to delete this team?</p>
+                    <button onClick={handleDeleteConfirm}>Confirm</button>
+                    <button onClick={(() => setShowConfirmation(false))}>Cancel</button>
                 </>
             )}
             <p>{statusMessage}</p>
