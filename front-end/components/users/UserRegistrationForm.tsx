@@ -58,7 +58,6 @@ const UserRegistrationForm: React.FC = () => {
         e.preventDefault();
         if (validate()) {
             const response = await UserService.create({ name, specialisation, email, password });
-            const user = await response.json();
             if (response.ok) {
                 setStatusMessage('Registration successful, logging in...');
                 const response = await UserService.login({ email, password });
@@ -67,10 +66,10 @@ const UserRegistrationForm: React.FC = () => {
                     sessionStorage.setItem('token', user.token);
                     sessionStorage.setItem('loggedUser', user.id);
                     sessionStorage.setItem('role', user.role);
-                    setStatusMessage('Login successful, redirecting...');
+                    setTimeout(() => setStatusMessage('Login successful, redirecting...'), 500);
                     setTimeout(() => {
                         router.push('/');
-                    }, 2500)
+                    }, 3500)
                 } else {
                     setStatusMessage('Something went wrong with auto login, please login manually. Redirecting...');
                     setTimeout(() => {
@@ -78,7 +77,7 @@ const UserRegistrationForm: React.FC = () => {
                     }, 2500)
                 }
             } else {
-                setStatusMessage("Couldn't register user, " + user.errorMessage); 
+                setStatusMessage("Couldn't register user, " + response.statusText); 
             }
         }
         else {
