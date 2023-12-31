@@ -23,8 +23,9 @@ type Task = {
     name: string;
     description: string;
     deadline: Date;
-    project: Project;
-    completed: boolean;
+    projectId: number;
+    completed?: boolean;
+    userId?: number;
 }
 
 type Project = {

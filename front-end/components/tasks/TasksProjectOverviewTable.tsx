@@ -23,7 +23,7 @@ const TasksOverviewTable: React.FC<Props> = ({ tasks }: Props) => {
         if (task.completed) {
             return <>{t('tasks.completed')}</>
         } else {
-            return <button onClick={() => TaskService.completeTask(task)}>{t('tasks.complete')}</button>
+            return <button onClick={() => TaskService.completeTask(task.id)}>{t('tasks.complete')}</button>
         }
     }
     return (
@@ -34,7 +34,6 @@ const TasksOverviewTable: React.FC<Props> = ({ tasks }: Props) => {
                     <th>{t('tasks.name')}</th>
                     <th>{t("tasks.description")}</th>
                     <th>{t('tasks.deadline')}</th>
-                    <th>{t('tasks.project')}</th>
                     <th>{t('tasks.completed')}</th>
                     <th>{t('tasks.delete')}</th>
                 </tr>
@@ -45,7 +44,6 @@ const TasksOverviewTable: React.FC<Props> = ({ tasks }: Props) => {
                         <td>{task.name}</td>
                         <td>{task.description}</td>
                         <td>{task.deadline.toString().slice(0, 10)}</td>
-                        <td>{task.project.name}</td>
                         <td>{completebutton(task)}</td>
 
                         <td><button onClick={() => deleteTask(task.id)}>{t('tasks.completed')}</button></td>

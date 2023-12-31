@@ -24,7 +24,7 @@ const getByProjectId = (projectId: string) => {
     });
 }
 
-const create = ({ name, description, deadline, project }: Task) => {
+const create = ({ name, description, deadline, projectId }: Task) => {
     const token = sessionStorage.getItem('token');
     return fetch(process.env.NEXT_PUBLIC_API_URL + '/tasks', {
         method: 'POST',
@@ -37,7 +37,7 @@ const create = ({ name, description, deadline, project }: Task) => {
             name,
             description,
             deadline,
-            project
+            projectId
         })
     });
 }
@@ -49,27 +49,18 @@ const deleteById = (id: string) => {
         headers: {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${token}`
-
         },
     });
 }
 
-const completeTask = ({ id, name, description, deadline, project }: Task) => {
+const completeTask = (id: any) => {
     const token = sessionStorage.getItem('token');
-    return fetch(process.env.NEXT_PUBLIC_API_URL + '/tasks/' + id, {
+    return fetch(process.env.NEXT_PUBLIC_API_URL + '/tasks/completeTask' + id, {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${token}`
         },
-        body: JSON.stringify({
-            id,
-            name,
-            description,
-            deadline,
-            completed: true,
-            project
-        })
     });
 }
 

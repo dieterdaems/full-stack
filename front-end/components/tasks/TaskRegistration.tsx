@@ -38,11 +38,8 @@ const TaskRegistrationForm: React.FC<Props> = ({projectId} : Props) => {
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
         if (validate()) {
-        const newTask = {name, description, deadline, project: {id: projectId}, completed: false};
-        // console.log(newTask);
+        const newTask = {name, description, deadline, projectId};
         const response = await TaskService.create(newTask);
-        const data = await response.json();
-
         router.push('/tasks/project/' + projectId);
         }
 
