@@ -22,17 +22,6 @@ const getById = async (id: any) => {
     });
 }
 
-const getByEmail = async (email: string) => {
-    const token = sessionStorage.getItem('token');
-    return fetch(process.env.NEXT_PUBLIC_API_URL + '/users/email/' + email, {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`
-        },
-    });
-}
-
 
 const create = async ({name, specialisation, email, password} : User) => {
     return fetch(process.env.NEXT_PUBLIC_API_URL + '/users/add', {
@@ -114,7 +103,6 @@ const deleteUser = (id: number) => {
 const UserService = {
     getAll,
     getById,
-    getByEmail,
     create,
     update,
     login,

@@ -12,13 +12,6 @@ const getAllUsers = async ({ role }): Promise<User[]> => {
 };
 
 
-const getUserByEmail = async ({ email, currentUser, role }): Promise<User> => {
-    const user = await userDb.getUserByEmail(currentUser);
-    if (role !== 'admin' && currentUser !== user?.id) throw new UnauthorizedError('credentials_required', { message: 'You are not authorized to access this resource.' });
-    if (!user) throw new Error(`User with email ${email} does not exist.`);
-    return user;
-};
-
 const getUserById = async ({ id, currentUser, role }): Promise<User> => {
     if (role !== 'admin' && currentUser !== id) throw new UnauthorizedError('credentials_required', { message: 'You are not authorized to access this resource.' });
     const existingUser = await userDb.getUserById(id);
@@ -106,4 +99,4 @@ const removeUserFromTeam = async({teamId, userId, currentUser, role}): Promise<U
 }
 
 
-export default { getAllUsers, getUserByEmail, getUserById, createUser, updateUser, authenticate, deleteUserById, addUserToTeam, removeUserFromTeam };
+export default { getAllUsers, getUserById, createUser, updateUser, authenticate, deleteUserById, addUserToTeam, removeUserFromTeam };

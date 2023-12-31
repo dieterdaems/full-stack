@@ -1,6 +1,6 @@
 import UserService from "@/services/UserService";
 import { User } from "@/types";
-import router, { useRouter } from "next/router";
+import router from "next/router";
 import { FormEvent, useState } from "react";
 
 

@@ -85,49 +85,6 @@ userRouter.get('/', async (req: Request & { auth: any }, res: Response, next: Ne
     }
 });
 
-/**
- * @swagger
- * /users/email/{email}:
- *   get:
- *     summary: Get a user by email.
- *     parameters:
- *       - in: path
- *         name: email
- *         required: true
- *         description: email of the user to retrieve.
- *         schema:
- *           type: string
- *     responses:
- *       200:
- *         description: Successful response with the project.
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/User'
- *       400:
- *         description: Bad request with an error message.
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 status:
- *                   type: string
- *                 errorMessage:
- *                   type: string
- */
-
-userRouter.get('/email/:email', async (req: Request & { auth: any }, res: Response, next: NextFunction) => {
-    try {
-        const currentUser = req.auth.id;
-        const role = req.auth.role;
-        const user = await userService.getUserByEmail({email: req.params.email, currentUser, role});
-        res.status(200).json(user);
-    }
-    catch (error) {
-        next(error);
-    }
-});
 
 /**
  * @swagger
