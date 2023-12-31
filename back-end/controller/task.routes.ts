@@ -1,5 +1,6 @@
 import taskService from "../service/task.service";
 import express, { Request, Response } from 'express';
+import { TaskInput } from "../types";
 
 const taskRouter = express.Router();
 
@@ -40,8 +41,10 @@ const taskRouter = express.Router();
  *           format: date-time
  *         completed:
  *           type: boolean
- *         project:
- *           $ref: "#/components/schemas/ProjectInput"
+ *         projectId:
+ *           type: integer
+ *         userId:
+ *           type: integer
  */
 
 
@@ -162,7 +165,7 @@ taskRouter.get('/:id', async (req: Request, res: Response) => {
 
 taskRouter.get('/project/:id', async (req: Request, res: Response) => {
     try {
-        const tasks = await taskService.getTaskByProjectId(parseInt(req.params.id));
+        const tasks = await taskService.getTasksByProjectId(parseInt(req.params.id));
         res.status(200).json(tasks);
     }
     catch (error) {
@@ -203,9 +206,9 @@ taskRouter.get('/project/:id', async (req: Request, res: Response) => {
 
 taskRouter.post('/', async (req: Request, res: Response) => {
     try {
-        // console.log(req.body)
-        const task = await taskService.createTask(req.body);
-        res.status(201).json(task);
+        const task = <TaskInput>req.body;
+        const response = await taskService.createTask(task);
+        res.status(200).json(response);
     }
     catch (error) {
         res.status(400).json({ status: 'error', errorMessage: error.message });
@@ -245,8 +248,9 @@ taskRouter.post('/', async (req: Request, res: Response) => {
 
 taskRouter.put('/:id', async (req: Request, res: Response) => {
     try {
-        const task = await taskService.updateTask(req.body);
-        res.status(201).json(task);
+        const task = <TaskInput>req.body;
+        const response = await taskService.updateTask({targetTaskId: parseInt(req.params.id), updatedInfo: task});
+        res.status(200).json(response);
     }
     catch (error) {
         res.status(400).json({ status: 'error', errorMessage: error.message });

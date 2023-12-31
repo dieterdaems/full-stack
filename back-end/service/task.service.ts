@@ -15,7 +15,7 @@ const getTaskById = async (id: number): Promise<Task> => {
 };
 
 const createTask = async (task: TaskInput): Promise<Task> => {
-    const newProject = await projectDb.getProjectById(task.project.id);
+    const newProject = await projectDb.getProjectById(task.projectId);
     const name = task.name
     const description = task.description
     const deadline = task.deadline
@@ -37,15 +37,13 @@ const getTasksByProjectId = async (projectId: number): Promise<Task[]> => {
     return tasks;
 }
 
-const updateTask = async (task: TaskInput): Promise<Task> => {
-    const id = task.id
-    if (!getTaskById(id)) throw new Error(`Task with id ${id} does not exist.`);
-    const completed = task.completed
-    const name = task.name
-    const description = task.description
-    const deadline = task.deadline
-    const newproject = await projectDb.getProjectById(task.project.id);
-    const newTask = new Task({ id, name, description, deadline, completed, project: newproject });
-    return taskDb.updateTask(newTask);;
+const updateTask = async ({targetTaskId, updatedInfo}: {targetTaskId: number, updatedInfo: TaskInput}): Promise<Task> => {
+    if (!getTaskById(targetTaskId)) throw new Error(`Task with id ${targetTaskId} does not exist.`);
+    const completed = updatedInfo.completed
+    const name = updatedInfo.name
+    const description = updatedInfo.description
+    const deadline = updatedInfo.deadline
+    const newTask = new Task({ id: targetTaskId, name, description, deadline, completed });
+    return taskDb.updateTask(newTask);
 }
 export default { getAllTasks, getTaskById, getTasksByProjectId, createTask, deleteById, updateTask };
