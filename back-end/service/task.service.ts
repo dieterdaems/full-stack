@@ -15,18 +15,14 @@ const getTaskById = async (id: number): Promise<Task> => {
 };
 
 const createTask = async (task: TaskInput): Promise<Task> => {
-    // console.log('service',task)
     const newProject = await projectDb.getProjectById(task.project.id);
-    // console.log('service',newProject)
     const name = task.name
     const description = task.description
     const deadline = task.deadline
     if (deadline < new Date()) throw new Error("Task deadline must be in the future.");
     //When creating a task, completed will always be false
     const newTask = new Task({ name, description, deadline, project: newProject, completed: false });
-    // console.log('service',newTask)
-    const ttask = await taskDb.createTask(newTask);
-    return ttask;
+    return taskDb.createTask(newTask);
 }
 
 const deleteById = async (id: number): Promise<Task> => {
@@ -35,15 +31,9 @@ const deleteById = async (id: number): Promise<Task> => {
     return task;
 }
 
-// const updateTask = async ({ name, id, description, deadline }: TaskInput): Promise<Task> => {
-//     if (!getTaskById(id)) throw new Error(`Task with id ${id} does not exist.`);
-//     const newTask = new Task({ id, name, description, deadline });
-//     const task = await taskDb.updateTask(newTask);
-//     return task;
-// }
 
-const getTaskByProjectId = async (projectId: number): Promise<Task[]> => {
-    const tasks = await taskDb.getTaskByProject(projectId);
+const getTasksByProjectId = async (projectId: number): Promise<Task[]> => {
+    const tasks = await taskDb.getTasksByProjectId(projectId);
     return tasks;
 }
 
@@ -56,7 +46,6 @@ const updateTask = async (task: TaskInput): Promise<Task> => {
     const deadline = task.deadline
     const newproject = await projectDb.getProjectById(task.project.id);
     const newTask = new Task({ id, name, description, deadline, completed, project: newproject });
-    const ttask = await taskDb.updateTask(newTask);
-    return ttask;
+    return taskDb.updateTask(newTask);;
 }
-export default { getAllTasks, getTaskById, getTaskByProjectId, createTask, deleteById, updateTask };
+export default { getAllTasks, getTaskById, getTasksByProjectId, createTask, deleteById, updateTask };
