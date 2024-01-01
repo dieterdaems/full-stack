@@ -1,10 +1,10 @@
-import UserLoginForm from "@/components/users/UserLoginForm";
+import UserRegistrationForm from "@/components/users/UserRegistrationForm";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
 
-const UserLogin: React.FC = () => {
+const UserRegistration: React.FC = () => {
 
     const router = useRouter();
     const [loading, setLoading] = useState(true);
@@ -24,24 +24,26 @@ const UserLogin: React.FC = () => {
         }
     }, [router]);
 
-
     return (
         <>
             <Head>
-                <title>Login</title>
+                <title>Registration</title>
             </Head>
             <main>
                 {!loading && (
                     <>
-                        <h1>Login</h1>
+                        <h1>User Registration</h1>
                         <section>
-                            {<UserLoginForm />}
+                            {<UserRegistrationForm />}
                         </section>
                     </>
                 )}
             </main>
+
         </>
+
     )
+
 }
 
-export default UserLogin;
+export default UserRegistration;

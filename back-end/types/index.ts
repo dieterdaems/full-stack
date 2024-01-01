@@ -28,5 +28,11 @@ type TaskInput = {
     completed?: boolean;
 };
 
+type AuthenticationResponse = {
+    token: string;
+    id: number;
+    role: Role;
+}
+
 type Role = 'admin' | 'user';
-export { UserInput, ProjectInput, TeamInput, TaskInput, Role};
+export { UserInput, ProjectInput, TeamInput, TaskInput, Role, AuthenticationResponse};

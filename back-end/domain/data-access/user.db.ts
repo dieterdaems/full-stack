@@ -24,7 +24,7 @@ const getUserByEmail = async (email: string): Promise<User> => {
     try {
         const userPrisma = await prisma.user.findUnique({
             where:
-                { email: email },
+                { email: email.toLowerCase() },
             include: {
                 teams: true
             }
@@ -61,7 +61,7 @@ const createUser = async ({ name, specialisation, email, password }: User): Prom
             data: {
                 name,
                 specialisation,
-                email,
+                email: email.toLowerCase(),
                 password,
                 role: 'user',
             },
@@ -83,7 +83,7 @@ const updateUser = async ({ id, name, specialisation, email, password, role }: U
             data: {
                 name,
                 specialisation,
-                email,
+                email: email.toLowerCase(),
                 password,
                 role,
             },
