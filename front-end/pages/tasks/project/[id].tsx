@@ -9,6 +9,8 @@ import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import useSWR, { mutate } from "swr";
 import useInterval from "use-interval";
 import { GetServerSideProps, GetServerSidePropsContext } from "next";
+import Head from "next/head";
+import Header from "@/components/header";
 
 const Tasks: React.FC = () => {
     const router = useRouter();
@@ -37,6 +39,10 @@ const Tasks: React.FC = () => {
 
     return (
         <>
+            <Head>
+                <title>{t('app.title')}</title>
+            </Head>
+            <Header />
             <main>
                 <h1>{t('tasks.title')}</h1>
                 {error && <p>{error}</p>}

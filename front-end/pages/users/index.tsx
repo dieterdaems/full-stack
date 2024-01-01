@@ -1,3 +1,4 @@
+import Header from "@/components/header";
 import UsersOverviewTable from "@/components/users/UsersOverviewTable";
 import UserService from "@/services/UserService";
 import Head from "next/head";
@@ -27,7 +28,7 @@ const Users: React.FC = () => {
         }
     }
 
-    const { data, error } = useSWR('allUsers', getAllUsers);
+    const { data, isLoading, error } = useSWR('allUsers', getAllUsers);
 
     useInterval(() => {
         if (!authError) mutate('allUsers', getAllUsers());
@@ -39,6 +40,7 @@ const Users: React.FC = () => {
             <Head>
                 <title>Users</title>
             </Head>
+            <Header />
             <main>
                 <p>{authError}</p>
                 <p>{statusMessage}</p>

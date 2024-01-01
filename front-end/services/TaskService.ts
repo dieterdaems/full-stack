@@ -73,12 +73,25 @@ const completeTask = ({ id, name, description, deadline, project }: Task) => {
     });
 }
 
+const getTaskByUserId = (userId: string) => {
+    const token = sessionStorage.getItem('token');
+    return fetch(process.env.NEXT_PUBLIC_API_URL + '/tasks/user/' + userId, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`
+
+        },
+    });
+}
+
 const TaskService = {
     getAll,
     getByProjectId,
     create,
     deleteById,
-    completeTask
+    completeTask,
+    getTaskByUserId
 }
 
 export default TaskService;

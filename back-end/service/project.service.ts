@@ -4,6 +4,7 @@ import { Project } from "../domain/model/project";
 import teamDb from "../domain/data-access/team.db";
 import { ProjectInput } from "../types";
 import taskDb from "../domain/data-access/task.db";
+import userDb from "../domain/data-access/user.db";
 
 
 const getAllProjects = async (): Promise<Project[]> => {
@@ -42,6 +43,15 @@ const deleteProject = async (id: number): Promise<Project> => {
     return project;
 }
 
-//update project
+const getProjectsByUserId = async (userId: number): Promise<Project[]> => {
+    const projects = [];
+    const user = await userDb.getUserById(userId);
+    await Promise.all(user.teams.map(async team =>{ 
+        const project = await projectDb.getProjectByTeamId(team.id);
+        projects.push(...project);
+    })
+    );
+    return projects;
+}
 
-export default { getAllProjects, getProjectById, createProject, deleteProject };
+export default { getAllProjects, getProjectById, createProject, deleteProject, getProjectsByUserId };
