@@ -20,6 +20,7 @@ const getAllTasks = async ({currentUser, role}): Promise<Task[]> => {
 Parameters: id of task to be retrieved, id of logged in user, role of logged in user
 Return: task
 Authorization Error: if role is not admin or user is not owner of task
+Application Error: if task does not exist
 */
 const getTaskById = async ({id, currentUser, role}): Promise<Task> => {
     const task = await taskDb.getTaskById(id);
@@ -74,14 +75,12 @@ const getTasksByProjectId = async ({id, currentUser, role}): Promise<Task[]> => 
 Parameters: id of task to be updated, updated info, id of logged in user, role of logged in user
 Return: updated task
 Authorization Error: if role is not admin or user is not owner of task
-Application Error: if task does not exist
-                   if deadline is in the past
+Application Error: if deadline is in the past
                    if domain validation fails
 */
 const updateTask = async ({targetTaskId, updatedInfo, currentUser, role}): Promise<Task> => {
     const task = await taskDb.getTaskById(targetTaskId);
     if (role !== 'admin' && currentUser !== task?.user.id) throw new UnauthorizedError('credentials_required', { message: 'You are not authorized to update this task.' });
-    if (!task) throw new Error(`Task with id ${targetTaskId} does not exist.`);
     if (new Date(updatedInfo.deadline) < new Date()) throw new Error('Deadline must be in the future.');
     const completed = updatedInfo.completed
     const name = updatedInfo.name
@@ -95,12 +94,10 @@ const updateTask = async ({targetTaskId, updatedInfo, currentUser, role}): Promi
 Parameters: id of task to be completed, id of logged in user
 Return: completed task
 Authorization Error: if user is not owner of task
-Application Error: if task does not exist
 */
 const completeTask = async ({id, currentUser}): Promise<Task> => {
     const task = await taskDb.getTaskById(id);
     if (currentUser !== task?.user.id) throw new UnauthorizedError('credentials_required', { message: 'You are not authorized to complete this task.' });
-    if (!task) throw new Error(`Task with id ${id} does not exist.`);
     return taskDb.completeTask(id);
 }
 
