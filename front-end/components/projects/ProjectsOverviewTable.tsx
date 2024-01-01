@@ -42,27 +42,27 @@ const ProjectOverviewTable: React.FC<Props> = ({ projects }: Props) => {
     
     return (
         <>
-        <div class="bg-gray-100 flex items-start justify-center h-screen">
+        <div className="bg-gray-100 flex items-start justify-center h-screen">
 
-        <div class="container mx-auto my-8" >
+        <div className="container mx-auto my-8" >
 
-            <table class="mx-auto bg-white border border-gray-300">
+            <table className="mx-auto bg-white border border-gray-300">
                 <thead>
                     <tr>
-                        <th class="py-2 px-4 border-b">{t('projects.id')}</th>
-                        <th class="py-2 px-4 border-b">{t('projects.name')}</th>
-                        <th class="py-2 px-4 border-b">{t('projects.team')}</th>
-                        <th class="py-2 px-4 border-b">{t('projects.tasks')}</th>
-                        <th class="py-2 px-4 border-b">{role === "admin" && t('projects.delete')}</th>
+                        <th className="py-2 px-4 border-b">{t('projects.id')}</th>
+                        <th className="py-2 px-4 border-b">{t('projects.name')}</th>
+                        <th className="py-2 px-4 border-b">{t('projects.team')}</th>
+                        <th className="py-2 px-4 border-b">{t('projects.tasks')}</th>
+                        <th className="py-2 px-4 border-b">{role === "admin" && t('projects.delete')}</th>
                     </tr>
                 </thead>
                 <tbody>
                     {projects && projects.map((project, index) => (
                         <tr key={index}>
-                            <td class="py-2 px-4 border-b text-center">{project.id}</td>
-                            <td class="py-2 px-4 border-b text-center" >{project.name}</td>
-                            <td class="py-2 px-4 border-b text-center">{project.team?.name}</td>
-                            <td class="py-2 px-4 border-b text-center"><button onClick={() => router.push('/tasks/project/' + project.id)}>{t('projects.tasks')}</button></td>
+                            <td className="py-2 px-4 border-b text-center">{project.id}</td>
+                            <td className="py-2 px-4 border-b text-center" >{project.name}</td>
+                            <td className="py-2 px-4 border-b text-center">{project.team?.name}</td>
+                            <td className="py-2 px-4 border-b text-center"><button onClick={() => router.push('/tasks/project/' + project.id)}>{t('projects.tasks')}</button></td>
                             {project.id && role === "admin" && <td><button onClick={() => handleDeleteButton(project.id)}>{t('projects.delete')}</button></td>}
                         </tr>
                     ))}
@@ -75,7 +75,7 @@ const ProjectOverviewTable: React.FC<Props> = ({ projects }: Props) => {
                                 <button onClick={handleDeleteCancel}>{t('cancel')}</button>
                             </>
                         )}
-            <p class=' text-red-600'>{statusMessage}</p>
+            <p className=' text-red-600'>{statusMessage}</p>
         
             </div>
         </div>
