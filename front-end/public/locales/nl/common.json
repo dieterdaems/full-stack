@@ -41,7 +41,11 @@
         "completed": "Voltooid",
         "complete": "Voltooi Taak",
         "deadline": "Deadline",
-        "project": "Project"
+        "project": "Project",
+        "confirmation": "Weet u zeker dat u deze taak wilt verwijderen?",
+        "register": "Registreer Taak"
+
+
     },
     "projects": {
         "title": "Projecten",

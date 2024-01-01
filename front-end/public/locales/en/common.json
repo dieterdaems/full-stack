@@ -42,7 +42,9 @@
         "completed": "Completed",
         "complete": "Complete",
         "deadline": "Deadline",
-        "project": "Project"
+        "project": "Project",
+        "confirmation": "Are you sure you want to delete this task?",
+        "register": "Task Registration"
     },
     "projects": {
         "title": "Projects",
