@@ -78,9 +78,9 @@ const TasksOverviewTable: React.FC<Props> = ({ tasks }: Props) => {
             <button onClick={() => router.push('/tasks/register/' + projectId)}>{t('tasks.new')}</button>
             {showConfirmation && (
                             <>
-                                <p>Are you sure you want to delete this user?</p>
-                                <button onClick={handleDeleteConfirm}>Confirm</button>
-                                <button onClick={handleDeleteCancel}>Cancel</button>
+                                <p>{t('tasks.confirmation')}</p>
+                                <button onClick={handleDeleteConfirm}>{t('confirm')}</button>
+                                <button onClick={handleDeleteCancel}>{t('cancel')}</button>
                             </>
                         )}
             <p>{statusMessage}</p>

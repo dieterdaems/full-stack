@@ -29,21 +29,16 @@ const AddProject: React.FC = () => {
     const handleSubmit = async (e: FormEvent) => {
         setErrorMessage('');
         e.preventDefault();
-        // console.log(name);
         if (validate()) {
-            // console.log('valid');
             const project = {name};
-            // console.log(project);
             setButton(!button)
             const teams = await TeamService.getAll();
             const teamsResponse = await teams.json();
             const team = teamsResponse.find((team: { id: number; }) => team.id === teamId);
             const response = await ProjectService.create(name,team);
             if (response.status === 200) {
-                // console.log('Project created');
                 setName('');
             } else {
-                // console.log('Project not created');
                 setErrorMessage('Project not created');
                 
             }
