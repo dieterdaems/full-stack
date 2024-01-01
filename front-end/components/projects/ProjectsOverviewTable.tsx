@@ -42,37 +42,43 @@ const ProjectOverviewTable: React.FC<Props> = ({ projects }: Props) => {
     
     return (
         <>
-        <table>
-            <thead>
-                <tr>
-                    <th>{t('projects.id')}</th>
-                    <th>{t('projects.name')}</th>
-                    <th>{t('projects.team')}</th>
-                    <th>{t('projects.tasks')}</th>
-                    <th>{role === "admin" && t('projects.delete')}</th>
-                </tr>
-            </thead>
-            <tbody>
-                {projects && projects.map((project, index) => (
-                    <tr key={index}>
-                        <td>{project.id}</td>
-                        <td>{project.name}</td>
-                        <td>{project.team?.name}</td>
-                        <td><button onClick={() => router.push('/tasks/project/' + project.id)}>{t('projects.tasks')}</button></td>
-                        {project.id && role === "admin" && <td><button onClick={() => handleDeleteButton(project.id)}>{t('projects.delete')}</button></td>}
+        <div class="bg-gray-100 flex items-start justify-center h-screen">
+
+        <div class="container mx-auto my-8" >
+
+            <table class="mx-auto bg-white border border-gray-300">
+                <thead>
+                    <tr>
+                        <th class="py-2 px-4 border-b">{t('projects.id')}</th>
+                        <th class="py-2 px-4 border-b">{t('projects.name')}</th>
+                        <th class="py-2 px-4 border-b">{t('projects.team')}</th>
+                        <th class="py-2 px-4 border-b">{t('projects.tasks')}</th>
+                        <th class="py-2 px-4 border-b">{role === "admin" && t('projects.delete')}</th>
                     </tr>
-                ))}
-            </tbody>
-        </table>
-        {showConfirmation && (
+                </thead>
+                <tbody>
+                    {projects && projects.map((project, index) => (
+                        <tr key={index}>
+                            <td class="py-2 px-4 border-b text-center">{project.id}</td>
+                            <td class="py-2 px-4 border-b text-center" >{project.name}</td>
+                            <td class="py-2 px-4 border-b text-center">{project.team?.name}</td>
+                            <td class="py-2 px-4 border-b text-center"><button onClick={() => router.push('/tasks/project/' + project.id)}>{t('projects.tasks')}</button></td>
+                            {project.id && role === "admin" && <td><button onClick={() => handleDeleteButton(project.id)}>{t('projects.delete')}</button></td>}
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
+            {showConfirmation && (
                             <>
                                 <p>{t('projects.confirmation')}</p>
                                 <button onClick={handleDeleteConfirm}>{t('confirm')}</button>
                                 <button onClick={handleDeleteCancel}>{t('cancel')}</button>
                             </>
                         )}
-            <p>{statusMessage}</p>
+            <p class=' text-red-600'>{statusMessage}</p>
         
+            </div>
+        </div>
         </>
     );
 };

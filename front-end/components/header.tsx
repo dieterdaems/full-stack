@@ -18,7 +18,7 @@ const Header: React.FC = () => {
     }, []);
 
     return (
-        <header className="lg:px-16 px-4 bg-white flex flex-wrap items-center py-4 shadow-md justify-center">
+        <header className="lg:px-16 px-4 flex flex-wrap items-center py-4 shadow-md justify-center bg-gray-100">
 
 
     <div className="hidden md:flex md:items-center md:w-auto w-full">
