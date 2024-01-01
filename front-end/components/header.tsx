@@ -62,7 +62,7 @@ const Header: React.FC = () => {
                     )}
                     {!loggedIn && (
                         <li>
-                            <a href="/users/register">Register</a>
+                            <a href="/register">Register</a>
                         </li>
                     )}
                 </ul>
