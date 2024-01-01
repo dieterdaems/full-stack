@@ -10,12 +10,10 @@ import userDb from "../domain/data-access/user.db";
 Parameters: id of logged in user, role of logged in user
 Return: all tasks if role is admin
         all tasks of user if role is user
-Authorization Error: if role is not admin or user (i.e. guest in the future)
 */
 const getAllTasks = async ({currentUser, role}): Promise<Task[]> => {
     if (role === 'admin') return taskDb.getAllTasks();
-    else if (role === 'user') return taskDb.getTasksByUserId(currentUser);
-    else throw new UnauthorizedError('credentials_required', { message: 'You are not authorized to access this resource.' });
+    else return taskDb.getTasksByUserId(currentUser);
 }
 
 /*
@@ -64,13 +62,12 @@ const deleteById = async ({id, currentUser, role}): Promise<Task> => {
 
 /*
 Parameters: id of project to retrieve tasks from, id of logged in user, role of logged in user
-Return: tasks of project
-Authorization Error: if role is not admin or user is not part of the team that the project belongs to
+Return: all tasks of given project, if role is admin
+        all tasks for logged in user of given project, if role is user
 */
 const getTasksByProjectId = async ({id, currentUser, role}): Promise<Task[]> => {
-    const project = await projectDb.getProjectByIdAndUserId(id, currentUser);
-    if (!project && role !== 'admin') throw new UnauthorizedError('credentials_required', { message: 'You are not authorized to access this resource.' });
-    return taskDb.getTasksByProjectId(id);
+    if (role === 'admin') return taskDb.getTasksByProjectId(id);
+    else return taskDb.getTasksByProjectIdAndUserId(id, currentUser);
 }
 
 /*

@@ -209,5 +209,29 @@ const getTasksByUserId = async (userId: number): Promise<Task[]> => {
     }
 }
 
+const getTasksByProjectIdAndUserId = async (projectId: number, userId: number): Promise<Task[]> => {
+    try {
+        const tasksPrisma = await prisma.task.findMany({
+            where: { projectId: projectId, userId: userId },
+            include: {
+                project: {
+                    include: {
+                        team: true
+                    }
+                }, user: {
+                    include: {
+                        teams: true
+                    }
+                }
+            }
+        });
+        return tasksPrisma.map((taskPrisma) => Task.from(taskPrisma));
+    }
+    catch (error) {
+        console.log(error);
+        throw new Error("Database error. Check logs for more details.");
+    }
+}
 
-export default { getAllTasks, getTaskById, getTasksByProjectId, createTask, deleteById, updateTask, completeTask, getTasksByUserId };
+
+export default { getAllTasks, getTaskById, getTasksByProjectId, createTask, deleteById, updateTask, completeTask, getTasksByUserId, getTasksByProjectIdAndUserId };

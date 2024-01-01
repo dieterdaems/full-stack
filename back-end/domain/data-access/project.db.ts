@@ -103,7 +103,6 @@ const getAllProjectsByUserId = async (userId: number): Promise<Project[]> => {
 }
 
 const getProjectByIdAndUserId = async (id: number, userId: number): Promise<Project> => {
-    console.log(id, userId);
     try {
         const projectPrisma = await prisma.project.findFirst({
             where: {
