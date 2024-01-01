@@ -20,8 +20,7 @@ const getAllTasks = async (): Promise<Task[]> => {
                 }
             }
         );
-        const tasks = tasksPrisma.map((taskPrisma) => Task.from(taskPrisma));
-        return tasks;
+        return tasksPrisma.map((taskPrisma) => Task.from(taskPrisma));
     }
     catch (error) {
         console.log(error);
@@ -45,9 +44,7 @@ const getTaskById = async (id: number): Promise<Task> => {
                 }
             }
         });
-        if (!taskPrisma) throw new Error(`Task with id ${id} does not exist.`);
-        const task = Task.from(taskPrisma);
-        return task;
+        return taskPrisma ? Task.from(taskPrisma) : null;
     }
     catch (error) {
         console.log(error);
@@ -79,8 +76,7 @@ const createTask = async ({ name, description, deadline, projectId, userId }: Ta
                 }
             }
         });
-        const task = Task.from(taskPrisma);
-        return task;
+        return Task.from(taskPrisma);
     }
     catch (error) {
         console.log(error);
@@ -106,8 +102,7 @@ const updateTask = async ({ name, id, description, deadline, completed }: TaskIn
                 }
             }
         });
-        const task = Task.from(taskPrisma);
-        return task;
+        return Task.from(taskPrisma);
     }
     catch (error) {
         console.log(error);
@@ -133,9 +128,7 @@ const getTasksByProjectId = async (projectId: number): Promise<Task[]> => {
                 }
             }
         });
-        if (!tasksPrisma) throw new Error(`No tasks found.`);
-        const tasks = tasksPrisma.map((taskPrisma) => Task.from(taskPrisma));
-        return tasks;
+        return tasksPrisma.map((taskPrisma) => Task.from(taskPrisma));
     }
     catch (error) {
         console.log(error);
@@ -159,9 +152,7 @@ const deleteById = async (id: number): Promise<Task> => {
                 }
             }
         });
-        if (!taskPrisma) throw new Error(`Task with id ${id} does not exist.`);
-        const task = Task.from(taskPrisma);
-        return task;
+        return Task.from(taskPrisma);
     }
     catch (error) {
         console.log(error);
@@ -186,8 +177,7 @@ const completeTask = async (id: number): Promise<Task> => {
                 }
             }
         });
-        const task = Task.from(taskPrisma);
-        return task;
+        return Task.from(taskPrisma);
     }
     catch (error) {
         console.log(error);
@@ -195,4 +185,29 @@ const completeTask = async (id: number): Promise<Task> => {
     }
 }
 
-export default { getAllTasks, getTaskById, getTasksByProjectId, createTask, deleteById, updateTask, completeTask };
+const getTasksByUserId = async (userId: number): Promise<Task[]> => {
+    try {
+        const tasksPrisma = await prisma.task.findMany({
+            where: { userId: userId },
+            include: {
+                project: {
+                    include: {
+                        team: true
+                    }
+                }, user: {
+                    include: {
+                        teams: true
+                    }
+                }
+            }
+        });
+        return tasksPrisma.map((taskPrisma) => Task.from(taskPrisma));
+    }
+    catch (error) {
+        console.log(error);
+        throw new Error("Database error. Check logs for more details.");
+    }
+}
+
+
+export default { getAllTasks, getTaskById, getTasksByProjectId, createTask, deleteById, updateTask, completeTask, getTasksByUserId };

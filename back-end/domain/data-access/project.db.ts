@@ -10,11 +10,7 @@ const getAllProjects = async (): Promise<Project[]> => {
                 }
             }
         );
-        if (!projectsPrisma) throw new Error(`No projects found.`);
-        // console.log(projectsPrisma);
-        const projects = projectsPrisma.map((projectPrisma) => Project.from(projectPrisma));
-        // console.log(projects);
-        return projects;
+        return projectsPrisma.map((projectPrisma) => Project.from(projectPrisma));
     }
     catch (error) {
         console.log(error);
@@ -29,9 +25,7 @@ const getProjectById = async (id: number): Promise<Project> => {
                 team: true
             }
         });
-        if (!projectPrisma) throw new Error(`Project with id ${id} does not exist.`);
-        const project = Project.from(projectPrisma);
-        return project;
+        return projectPrisma ? Project.from(projectPrisma) : null;
     }
     catch (error) {
         console.log(error);
@@ -99,7 +93,6 @@ const getAllProjectsByUserId = async (userId: number): Promise<Project[]> => {
                 team: true
             }
         });
-        if (!projectsPrisma) throw new Error(`No projects found.`);
         const projects = projectsPrisma.map((projectPrisma) => Project.from(projectPrisma));
         return projects;
     }
@@ -109,4 +102,31 @@ const getAllProjectsByUserId = async (userId: number): Promise<Project[]> => {
     }
 }
 
-export default { getAllProjects, getProjectById, createProject, deleteById, getAllProjectsByUserId};
+const getProjectByIdAndUserId = async (id: number, userId: number): Promise<Project> => {
+    console.log(id, userId);
+    try {
+        const projectPrisma = await prisma.project.findFirst({
+            where: {
+                id,
+                team:
+                {
+                    users: {
+                        some: {
+                            id: userId
+                        }
+                    }
+                }
+            },
+            include: {
+                team: true
+            }
+        });
+        return projectPrisma ? Project.from(projectPrisma) : null;
+    }
+    catch (error) {
+        console.log(error);
+        throw new Error("Database error. Check logs for more details.");
+    }
+};
+
+export default { getAllProjects, getProjectById, createProject, deleteById, getAllProjectsByUserId, getProjectByIdAndUserId };

@@ -32,7 +32,6 @@ export class Task {
         if (task.name == undefined || task.name == null || task.name == "") throw new Error("Task name is required.");
         if (task.description == undefined || task.description == null || task.description == "") throw new Error("Task description is required.");
         if (task.deadline == undefined || task.deadline == null) throw new Error("Task deadline is required.");
-        if (task.deadline < new Date()) throw new Error("Task deadline must be in the future.");
     }
 
     static from({

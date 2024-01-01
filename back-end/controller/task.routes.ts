@@ -20,10 +20,10 @@ const taskRouter = express.Router();
  *         deadline:
  *           type: string
  *           format: date-time
- *         project:
- *           $ref: "#/components/schemas/Project"
  *         completed:
  *           type: boolean
+ *         project:
+ *           $ref: "#/components/schemas/Project"
  *         user:
  *           $ref: "#/components/schemas/User"
  *       required:
@@ -43,11 +43,23 @@ const taskRouter = express.Router();
  *         deadline:
  *           type: string
  *           format: date-time
+ *         projectId:
+ *           type: integer
+ *     TaskInputUpdate:
+ *       type: object
+ *       properties:
+ *         id:
+ *           type: integer
+ *         name:
+ *           type: string
+ *         description:
+ *           type: string
+ *         deadline:
+ *           type: string
+ *           format: date-time
  *         completed:
  *           type: boolean
  *         projectId:
- *           type: integer
- *         userId:
  *           type: integer
  */
 
@@ -81,9 +93,11 @@ const taskRouter = express.Router();
  *                   type: string
  */
 
-taskRouter.get('/', async (req: Request, res: Response) => {
+taskRouter.get('/', async (req: Request & {auth: any}, res: Response) => {
     try {
-        const tasks = await taskService.getAllTasks();
+        const currentUser = req.auth.id;
+        const role = req.auth.role;
+        const tasks = await taskService.getAllTasks({currentUser, role});
         res.status(200).json(tasks);
     }
     catch (error) {
@@ -123,9 +137,11 @@ taskRouter.get('/', async (req: Request, res: Response) => {
  *                   type: string
  */
 
-taskRouter.get('/:id', async (req: Request, res: Response) => {
+taskRouter.get('/:id', async (req: Request & {auth: any}, res: Response) => {
     try {
-        const task = await taskService.getTaskById(parseInt(req.params.id));
+        const role = req.auth.role;
+        const currentUser = req.auth.id;
+        const task = await taskService.getTaskById({id: parseInt(req.params.id), currentUser, role});
         res.status(200).json(task);
     }
     catch (error) {
@@ -167,9 +183,11 @@ taskRouter.get('/:id', async (req: Request, res: Response) => {
  *                   type: string
  */
 
-taskRouter.get('/project/:id', async (req: Request, res: Response) => {
+taskRouter.get('/project/:id', async (req: Request & {auth: any}, res: Response) => {
     try {
-        const tasks = await taskService.getTasksByProjectId(parseInt(req.params.id));
+        const role = req.auth.role;
+        const currentUser = req.auth.id;
+        const tasks = await taskService.getTasksByProjectId({id: parseInt(req.params.id), currentUser, role});
         res.status(200).json(tasks);
     }
     catch (error) {
@@ -189,7 +207,7 @@ taskRouter.get('/project/:id', async (req: Request, res: Response) => {
  *           schema:
  *             $ref: '#/components/schemas/TaskInput'
  *     responses:
- *       201:
+ *       200:
  *         description: Successful response with the created task.
  *         content:
  *           application/json:
@@ -224,7 +242,7 @@ taskRouter.post('/', async (req: Request & {auth: any}, res: Response) => {
  * @swagger
  * /tasks:
  *   put:
- *     summary: Create a new task.
+ *     summary: Update a task.
  *     requestBody:
  *       required: true
  *       content:
@@ -232,8 +250,8 @@ taskRouter.post('/', async (req: Request & {auth: any}, res: Response) => {
  *           schema:
  *             $ref: '#/components/schemas/TaskInput'
  *     responses:
- *       201:
- *         description: Successful response with the created task.
+ *       200:
+ *         description: Successful response with the updated task.
  *         content:
  *           application/json:
  *             schema:
@@ -251,10 +269,12 @@ taskRouter.post('/', async (req: Request & {auth: any}, res: Response) => {
  *                   type: string
  */
 
-taskRouter.put('/:id', async (req: Request, res: Response) => {
+taskRouter.put('/:id', async (req: Request & {auth: any}, res: Response) => {
     try {
+        const currentUser = req.auth.id;
+        const role = req.auth.role;
         const task = <TaskInput>req.body;
-        const response = await taskService.updateTask({targetTaskId: parseInt(req.params.id), updatedInfo: task});
+        const response = await taskService.updateTask({targetTaskId: parseInt(req.params.id), updatedInfo: task, currentUser, role});
         res.status(200).json(response);
     }
     catch (error) {
@@ -262,9 +282,10 @@ taskRouter.put('/:id', async (req: Request, res: Response) => {
     }
 });
 
-taskRouter.put('/completeTask/:id', async (req: Request, res: Response) => {
+taskRouter.put('/completeTask/:id', async (req: Request & {auth:any}, res: Response) => {
     try {
-        const response = await taskService.completeTask(parseInt(req.params.id));
+        const currentUser = req.auth.id;
+        const response = await taskService.completeTask({id: parseInt(req.params.id), currentUser});
         res.status(200).json(response);
     }
     catch (error) {
@@ -304,9 +325,11 @@ taskRouter.put('/completeTask/:id', async (req: Request, res: Response) => {
  *                   type: string
  */
 
-taskRouter.delete('/:id', async (req: Request, res: Response) => {
+taskRouter.delete('/:id', async (req: Request & {auth: any}, res: Response) => {
     try {
-        const task = await taskService.deleteById(parseInt(req.params.id));
+        const currentUser = req.auth.id;
+        const role = req.auth.role;
+        const task = await taskService.deleteById({id: parseInt(req.params.id), currentUser, role});
         res.status(200).json(task);
     }
     catch (error) {
