@@ -38,11 +38,10 @@ Application Error: if deadline is in the past
                    if domalin validation fails
 */
 const createTask = async ({task, currentUser}: {task: TaskInput, currentUser: number}): Promise<Task> => {
-    console.log(task, currentUser)
     const user = await userDb.getUserById(currentUser);
     const project = await projectDb.getProjectById(task.projectId);
     if (!user.teams.map(team => team.id).includes(project?.team.id)) throw new UnauthorizedError('credentials_required', { message: 'You are not authorized to create a task for this project.' });
-    if (task.deadline < new Date()) throw new Error('Deadline must be in the future.');
+    if (new Date(task.deadline) < new Date()) throw new Error('Deadline must be in the future.');
     const name = task.name
     const description = task.description
     const deadline = task.deadline
@@ -86,13 +85,13 @@ const updateTask = async ({targetTaskId, updatedInfo, currentUser, role}): Promi
     const task = await taskDb.getTaskById(targetTaskId);
     if (role !== 'admin' && currentUser !== task?.user.id) throw new UnauthorizedError('credentials_required', { message: 'You are not authorized to update this task.' });
     if (!task) throw new Error(`Task with id ${targetTaskId} does not exist.`);
-    if (updatedInfo.deadline < new Date()) throw new Error('Deadline must be in the future.');
+    if (new Date(updatedInfo.deadline) < new Date()) throw new Error('Deadline must be in the future.');
     const completed = updatedInfo.completed
     const name = updatedInfo.name
     const description = updatedInfo.description
     const deadline = updatedInfo.deadline
-    const newTask = new Task({ name, description, deadline, completed });
-    return taskDb.updateTask(newTask);
+    const newTask = new Task({ name, description, deadline, completed }); // Domain validation
+    return taskDb.updateTask({id: targetTaskId, name, description, deadline, completed});
 }
 
 /*
