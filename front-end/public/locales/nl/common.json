@@ -1,6 +1,8 @@
 {
     "app.title": "Planning App",
     "general error": "Er is een error opgetreden. Probeer het later opnieuw.",
+    "confirm" : "Bevestig",
+    "delete" : "Verwijder",
     "header": {
         "welcome": "Welkom",
         "home": "Home",
@@ -54,7 +56,9 @@
         "return": "Terug naar Project overzicht",
         "id": "ID",
         "tasks": "Taken Bekijken",
-        "submit": "Verstuur"
+        "submit": "Verstuur",
+        "team": "Toegewezen Team",
+        "confirmation": "Weet u zeker dat u dit project wilt verwijderen?"
 
     }
 }

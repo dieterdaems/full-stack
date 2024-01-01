@@ -2,6 +2,8 @@
     "app.title": "Planning App",
     "general error": "An error occurred while processing your request. Please try again later.",
     "task": "Tasks",
+    "confirm" : "Confirm",
+    "delete" : "Delete",
     "header": {
         "welcome": "Welcome",
         "home": "Home",
@@ -55,7 +57,10 @@
         "return": "Return to project overview",
         "id": "ID",
         "tasks": "View Tasks",
-        "submit": "Submit"
+        "submit": "Submit",
+        "team": "Assigned Team",
+        "confirmation": "Are you sure you want to delete this project?"
+
 
     }
 }
