@@ -13,9 +13,13 @@ const Welcome: React.FC = () => {
                 <title>{t('app.title')}</title>
             </Head>
             <Header />
-            <main>
-                <h2>{t('main.welcome')}</h2>
-                <p>{t('main.description')}</p>
+            <main className='flex flex-col text-center'>
+                <h2 className=' mb-4 mt-4'>
+                    {t('main.welcome')}
+                </h2>
+                <p>
+                    {t('main.description')}
+                </p>
             </main>
         </>
     )

@@ -18,55 +18,59 @@ const Header: React.FC = () => {
     }, []);
 
     return (
-        <header>
+        <header className="lg:px-16 px-4 bg-white flex flex-wrap items-center py-4 shadow-md justify-center">
+
+
+    <div className="hidden md:flex md:items-center md:w-auto w-full">
             <nav>
-                <ul>
+                <ul  className="md:flex items-center justify-between text-base text-gray-700 pt-4 md:pt-0">
                     <li>
-                        <a href="/">Home</a>
+                        <a className="md:p-4 py-3 px-0 block" href="/">Home</a>
                     </li>
                     {loggedIn && (role === "admin") && (
                     <li>
-                        <a href="/users">Users</a>
+                        <a className="md:p-4 py-3 px-0 block" href="/users">Users</a>
                     </li>
                     )}
                     {loggedIn && (
                     <li>
-                        <a href="/teams">Teams</a>
+                        <a className="md:p-4 py-3 px-0 block" href="/teams">Teams</a>
                     </li>
                     )}
                     {loggedIn && (
                     <li>
-                        <a href="/projects">Projects</a>
+                        <a className="md:p-4 py-3 px-0 block" href="/projects">Projects</a>
                     </li>
                     )}
                     {loggedIn && (
                     <li>
-                        <a href="/tasks">Tasks</a>
+                        <a className="md:p-4 py-3 px-0 block" href="/tasks">Tasks</a>
                     </li>
                     )}
                     {loggedIn && (
                         <li>
-                            <a href={"/users/profile/" + loggedIn}>Profile</a>
+                            <a className="md:p-4 py-3 px-0 block" href={"/users/profile/" + loggedIn}>Profile</a>
+                        </li>
+                    )}
+                    {loggedIn && (
+                        <button className="md:p-4 py-3 px-0 block" onClick={handleLogout}>Logout</button>
+                    )}
+                    {!loggedIn && (
+                        <li>
+                            <a className="md:p-4 py-3 px-0 block" href="/login">Login</a>
+                        </li>
+                    )}
+                    {!loggedIn && (
+                        <li>
+                            <a className="md:p-4 py-3 px-0 block" href="/register">Register</a>
                         </li>
                     )}
                     <li>
                         <Language />
                     </li>
-                    {loggedIn && (
-                        <button onClick={handleLogout}>Logout</button>
-                    )}
-                    {!loggedIn && (
-                        <li>
-                            <a href="/login">Login</a>
-                        </li>
-                    )}
-                    {!loggedIn && (
-                        <li>
-                            <a href="/register">Register</a>
-                        </li>
-                    )}
                 </ul>
             </nav>
+        </div>
         </header>
     );
 }
