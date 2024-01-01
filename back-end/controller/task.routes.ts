@@ -34,8 +34,6 @@ const taskRouter = express.Router();
  *     TaskInput:
  *       type: object
  *       properties:
- *         id:
- *           type: integer
  *         name:
  *           type: string
  *         description:
@@ -48,8 +46,6 @@ const taskRouter = express.Router();
  *     TaskInputUpdate:
  *       type: object
  *       properties:
- *         id:
- *           type: integer
  *         name:
  *           type: string
  *         description:
@@ -59,8 +55,6 @@ const taskRouter = express.Router();
  *           format: date-time
  *         completed:
  *           type: boolean
- *         projectId:
- *           type: integer
  */
 
 
@@ -240,15 +234,22 @@ taskRouter.post('/', async (req: Request & {auth: any}, res: Response) => {
 
 /**
  * @swagger
- * /tasks:
+ * /tasks/{id}:
  *   put:
  *     summary: Update a task.
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: ID of the task to update.
+ *         schema:
+ *           type: integer
  *     requestBody:
  *       required: true
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/TaskInput'
+ *             $ref: '#/components/schemas/TaskInputUpdate'
  *     responses:
  *       200:
  *         description: Successful response with the updated task.
@@ -282,6 +283,37 @@ taskRouter.put('/:id', async (req: Request & {auth: any}, res: Response) => {
     }
 });
 
+/**
+ * @swagger
+ * /tasks/completeTask/{id}:
+ *   put:
+ *     summary: Complete a task.
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: ID of the task to complete.
+ *         schema:
+ *           type: integer
+ *     responses:
+ *       200:
+ *         description: Successful response with the completed task.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Task'
+ *       400:
+ *         description: Bad request with an error message.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                 errorMessage:
+ *                   type: string
+ */
 taskRouter.put('/completeTask/:id', async (req: Request & {auth:any}, res: Response) => {
     try {
         const currentUser = req.auth.id;
