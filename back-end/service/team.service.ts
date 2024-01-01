@@ -3,24 +3,45 @@ import teamDb from "../domain/data-access/team.db";
 import { Team } from "../domain/model/team";
 import { Role, TeamInput } from "../types";
 
-
+/*
+Parameters: none
+Return: all teams
+*/
 const getAllTeams = async (): Promise<Team[]> => teamDb.getAllTeams();
 
+/*
+Parameters: id of team to be retrieved
+Return: team
+Application Error: if team does not exist
+*/
 const getTeamById = async (id: number): Promise<Team> => {
     const team = await teamDb.getTeamById(id);
     if (!team) throw new Error(`Team with id ${id} does not exist.`);
     return team;
 };
 
-const createTeam = async ({name}: TeamInput, role: Role): Promise<Team> => {
+/*
+Parameters: name of team to be created, role of user logged in
+Return: created team
+Authorization Error: if inlogged user is not admin
+Application Error: if team already exists
+                   if domain validation failed
+*/
+const createTeam = async ({name, role}): Promise<Team> => {
     if (role !== 'admin') throw new UnauthorizedError('credentials_required', { message: 'You are not authorized to create a team.' });
     const teamExists = await teamDb.getTeamByName(name);
     if (teamExists) throw new Error(`Team with name ${name} already exists.`);
-    const team = new Team({name}); // to validate in service layer
+    const team = new Team({name});
     return teamDb.createTeam(team);
 };
 
-const deleteTeam = async (id: number, role: Role): Promise<Team> => {
+/*
+Parameters: id of team to be deleted, role of user logged in
+Return: deleted team
+Authorization Error: if inlogged user is not admin
+Application Error: if team does not exist
+*/
+const deleteTeam = async ({id, role}): Promise<Team> => {
     if (role !== 'admin') throw new UnauthorizedError('credentials_required', { message: 'You are not authorized to delete a team.' })
     const team = await teamDb.getTeamById(id);
     if (!team) throw new Error(`Team with id ${id} does not exist.`);

@@ -9,53 +9,53 @@ import useInterval from "use-interval";
 
 const Teams: React.FC = () => {
 
-    const [statusMessage, setStatusMessage] = useState<string>("");
-
+    const [errorMessage, setErrorMessage] = useState<string>("");
+    const [authError, setAuthError] = useState<string>("");
 
     const getAllTeams = async () => {
-        setStatusMessage("")
-        if (await auth()) {
+        setErrorMessage("");
+        setAuthError("");
         const response = await TeamService.getAll();
-        return response.json();
+        if (!response.ok) {
+            if (response.status === 401) {
+                setAuthError("You are not authorized to view this page.");
+            }
+            else setErrorMessage(response.statusText);
         }
         else {
-            setStatusMessage("You are not logged in!");
-           return
+            return response.json();
         }
     }
-
     const getUserTeams = async () => {
         setStatusMessage("")
         if (await auth()) {
         const id = sessionStorage.getItem("loggedUser");
-        if (!id) return;
-
-        const response = await UserService.getById(parseInt(id));
-        const user = await response.json();
-        return user.teams;
+        const response = await UserService.getById(id);
+        if (!response.ok) {
+            if (response.status === 401) {
+                setAuthError("You are not authorized to view this page.");
+            }
+            else setErrorMessage(response.statusText);
         }
         else {
-            setStatusMessage("You are not logged in!");
-           return
+            const user = await response.json();
+            return user.teams;
         }
-    }
+    };
 
-    const auth = async () => {
-        const response = await UserService.getAuth();
-        return response;
-    }
 
-    const { data: currentTeamsData, isLoading: isLoading2, error: currentTeamsError } = useSWR('currentTeams', getUserTeams);
-    const { data, isLoading, error } = useSWR('allTeams', getAllTeams);
+    const { data: currentTeamsData, error: currentTeamsError } = useSWR('currentTeams', getUserTeams);
+    const { data, error } = useSWR('allTeams', getAllTeams);
 
     useInterval(() => {
-        mutate('allTeams', getAllTeams());
-        mutate('currentTeams', getUserTeams());
+        if (!authError) {
+            mutate('allTeams', getAllTeams());
+            mutate('currentTeams', getUserTeams());
+        }
     }, 1000);
 
-    
-    // if (error || currentTeamsError) return <>Failed to load</>
-    // if (!data || !currentTeamsData) return <>Loading...</>
+
+    if (error || currentTeamsError) return <>Failed to load</>
     return (
         <>
             <Head>
@@ -63,11 +63,15 @@ const Teams: React.FC = () => {
             </Head>
             <Header />
             <main>
-                <h1>Teams</h1>
-                {statusMessage && <p>{statusMessage}</p>}
-                {(error || currentTeamsError) && <p>{error}</p>}
-                {(isLoading || isLoading2) && <p>Loading...</p>}
-                {(data || currentTeamsData) && <TeamsOverviewTable teams={data} currentTeams={currentTeamsData}/>}
+                <p>{errorMessage}</p>
+                <p>{authError}</p>
+                {data && currentTeamsData && (
+                    <>
+                        <h1>Teams</h1>
+                        {<TeamsOverviewTable teams={data} currentTeams={currentTeamsData} />}
+                    </>
+                )}
+                {!data && !errorMessage && !authError && <p>Loading...</p>}
             </main>
         </>
     )

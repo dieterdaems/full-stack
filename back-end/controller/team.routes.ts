@@ -146,7 +146,7 @@ teamRouter.post('/create', async (req: Request & { auth: any }, res: Response, n
     try {
         const role = req.auth.role;
         const team = <TeamInput>req.body;
-        const result = await teamService.createTeam(team, role);
+        const result = await teamService.createTeam({name: team, role});
         res.status(201).json(result);
     }
     catch (error) {
@@ -188,7 +188,7 @@ teamRouter.post('/create', async (req: Request & { auth: any }, res: Response, n
 teamRouter.delete('/delete/:id', async (req: Request & { auth: any }, res: Response, next: NextFunction) => {
     try {
         const role = req.auth.role;
-        const result = await teamService.deleteTeam(parseInt(req.params.id), role);
+        const result = await teamService.deleteTeam({id: parseInt(req.params.id), role});
         res.status(200).json(result);
     }
     catch (error) {

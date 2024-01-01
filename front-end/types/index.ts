@@ -5,7 +5,7 @@ type User = {
     email: string;
     password?: string;
     teams?: Array<Team>;
-    role: string;
+    role?: string;
 }
 
 type UserLogin = {

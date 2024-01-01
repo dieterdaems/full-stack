@@ -10,33 +10,31 @@ import useInterval from "use-interval";
 const Users: React.FC = () => {
 
     const [statusMessage, setStatusMessage] = useState<string>("");
-
+    const [authError, setAuthError] = useState<string>("");
 
     const getAllUsers = async () => {
-        setStatusMessage("")
-        if (await auth()) {
+        setStatusMessage("");
+        setAuthError("");
+        
         const response = await UserService.getAll();
-        return response.json();
+        if (!response.ok) {
+            if (response.status === 401) {
+                setAuthError("You are not authorized to view this page.");
+            }
+            else setStatusMessage(response.statusText);
         }
         else {
-            setStatusMessage("You are not logged in!");
-            return
+            return response.json();
         }
-    }
-
-    const auth = async () => {
-        const response = await UserService.getAuth();
-        return response;
     }
 
     const { data, isLoading, error } = useSWR('allUsers', getAllUsers);
 
     useInterval(() => {
-        mutate('allUsers', getAllUsers());
+        if (!authError) mutate('allUsers', getAllUsers());
     }, 1000);
 
-    // if (error) return <>Failed to load</>
-    // if (!data) return <>Loading...</>
+    if (error) return <>Failed to load</>
     return (
         <>
             <Head>
@@ -44,13 +42,17 @@ const Users: React.FC = () => {
             </Head>
             <Header />
             <main>
-                <h1>Users</h1>
-                {statusMessage && <p>{statusMessage}</p>}
-                {error && <p>{error}</p>}
-                {isLoading && <p>Loading...</p>}
-                <section>
-                    {data && <UsersOverviewTable users={data}/>}
-                </section>
+                <p>{authError}</p>
+                <p>{statusMessage}</p>
+                {data && (
+                    <>
+                        <h1>Users</h1>
+                        <section>
+                            {<UsersOverviewTable users={data} />}
+                        </section>
+                    </>
+                )}
+                {!data && !statusMessage && !authError && <p>Loading...</p>}
             </main>
         </>
     );
