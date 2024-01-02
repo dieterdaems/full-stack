@@ -43,15 +43,9 @@ const deleteProject = async (id: number): Promise<Project> => {
     return project;
 }
 
-const getProjectsByUserId = async (userId: number): Promise<Project[]> => {
-    const projects = [];
-    const user = await userDb.getUserById(userId);
-    await Promise.all(user.teams.map(async team =>{ 
-        const project = await projectDb.getProjectByTeamId(team.id);
-        projects.push(...project);
-    })
-    );
+const getAllProjectsByUserId = async (userId: number): Promise<Project[]> => {
+    const projects = await projectDb.getAllProjectsByUserId(userId);
     return projects;
 }
 
-export default { getAllProjects, getProjectById, createProject, deleteProject, getProjectsByUserId };
+export default { getAllProjects, getProjectById, createProject, deleteProject, getAllProjectsByUserId };

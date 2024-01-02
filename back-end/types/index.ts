@@ -24,8 +24,9 @@ type TaskInput = {
     id?: number;
     description?: string;
     deadline?: Date;
-    project?: ProjectInput;
+    projectId?: number;
     completed?: boolean;
+    userId?: number;
 };
 
 type AuthenticationResponse = {
