@@ -47,7 +47,7 @@ const ProjectOverviewTable: React.FC<Props> = ({ projects }: Props) => {
                 <tr>
                     <th>{t('projects.id')}</th>
                     <th>{t('projects.name')}</th>
-                    <th>Team assigned</th>
+                    <th>{t('projects.team')}</th>
                     <th>{t('projects.tasks')}</th>
                     <th>{role === "admin" && t('projects.delete')}</th>
                 </tr>
@@ -66,9 +66,9 @@ const ProjectOverviewTable: React.FC<Props> = ({ projects }: Props) => {
         </table>
         {showConfirmation && (
                             <>
-                                <p>Are you sure you want to delete this user?</p>
-                                <button onClick={handleDeleteConfirm}>Confirm</button>
-                                <button onClick={handleDeleteCancel}>Cancel</button>
+                                <p>{t('projects.confirmation')}</p>
+                                <button onClick={handleDeleteConfirm}>{t('confirm')}</button>
+                                <button onClick={handleDeleteCancel}>{t('cancel')}</button>
                             </>
                         )}
             <p>{statusMessage}</p>
