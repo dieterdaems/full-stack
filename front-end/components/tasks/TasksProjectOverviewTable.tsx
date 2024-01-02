@@ -20,13 +20,33 @@ const TasksOverviewTable: React.FC<Props> = ({ tasks }: Props) => {
 
     const projectId = router.query.id;
 
-    const deleteTask = async (id: any) => {
-        await TaskService.deleteById(id.toString());
-        // router.push('/tasks');
+    const handleDeleteButton = async (id: any) => {
+        setTaskToDelete(String(id));
+        setShowConfirmation(true);
+    };
+
+    const handleDeleteConfirm = async () => {
+        const response = await TaskService.deleteById(taskToDelete);
+        const data = await response.json();
+        if (response.ok) {
+            setStatusMessage("Deleted task successfully!");
+        }
+        else {
+            setStatusMessage(data.errorMessage);
+        }
+        setShowConfirmation(false);
+    };
+
+    const handleDeleteCancel = () => {
+        setShowConfirmation(false);
     }
 
-    const completebutton = async (id: any) => {
-        const response = await TaskService.completeTask(id);
+    const completebutton = (task: Task) => {
+        if (task.completed) {
+            return <>{t('tasks.completed')}</>
+        } else {
+            return <button onClick={() => TaskService.completeTask(task)}>{t('tasks.complete')}</button>
+        }
     }
     return (
         <>
