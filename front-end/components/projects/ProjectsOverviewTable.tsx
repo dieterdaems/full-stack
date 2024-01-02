@@ -49,21 +49,21 @@ const ProjectOverviewTable: React.FC<Props> = ({ projects }: Props) => {
             <table className="mx-auto bg-white border border-gray-300">
                 <thead>
                     <tr>
-                        <th className="py-2 px-4 border-b">{t('projects.id')}</th>
-                        <th className="py-2 px-4 border-b">{t('projects.name')}</th>
-                        <th className="py-2 px-4 border-b">{t('projects.team')}</th>
+                        <th className="py-2 px-4 border-b border-r">{t('projects.id')}</th>
+                        <th className="py-2 px-4 border-b border-r">{t('projects.name')}</th>
+                        <th className="py-2 px-4 border-b border-r">{t('projects.team')}</th>
                         <th className="py-2 px-4 border-b">{t('projects.tasks')}</th>
-                        <th className="py-2 px-4 border-b">{role === "admin" && t('projects.delete')}</th>
+                        {role === "admin" && <th className="py-2 px-4 border-b border-l">{t('projects.delete')}</th>}
                     </tr>
                 </thead>
                 <tbody>
                     {projects && projects.map((project, index) => (
                         <tr key={index}>
-                            <td className="py-2 px-4 border-b text-center">{project.id}</td>
-                            <td className="py-2 px-4 border-b text-center" >{project.name}</td>
-                            <td className="py-2 px-4 border-b text-center">{project.team?.name}</td>
+                            <td className="py-2 px-4 border-b text-center border-r">{project.id}</td>
+                            <td className="py-2 px-4 border-b text-center border-r" >{project.name}</td>
+                            <td className="py-2 px-4 border-b text-center border-r">{project.team?.name}</td>
                             <td className="py-2 px-4 border-b text-center"><button onClick={() => router.push('/tasks/project/' + project.id)}>{t('projects.tasks')}</button></td>
-                            {project.id && role === "admin" && <td><button onClick={() => handleDeleteButton(project.id)}>{t('projects.delete')}</button></td>}
+                            {project.id && role === "admin" && <td className="py-2 px-4 border-b text-center border-l"><button onClick={() => handleDeleteButton(project.id)}>{t('projects.delete')}</button></td>}
                         </tr>
                     ))}
                 </tbody>
