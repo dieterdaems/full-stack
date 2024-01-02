@@ -1,3 +1,4 @@
+import Header from "@/components/header";
 import UserLoginForm from "@/components/users/UserLoginForm";
 import Head from "next/head";
 import { useRouter } from "next/router";
@@ -30,6 +31,7 @@ const UserLogin: React.FC = () => {
             <Head>
                 <title>Login</title>
             </Head>
+            <Header />
             <main>
                 {!loading && (
                     <>

@@ -2,6 +2,7 @@ import TaskService from "@/services/TaskService";
 import { Task } from "@/types";
 import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next";
+import { useState } from "react";
 
 type Props = {
     tasks: Task[];
@@ -9,6 +10,11 @@ type Props = {
 
 
 const TasksOverviewTable: React.FC<Props> = ({ tasks }: Props) => {
+
+    const [statusMessage, setStatusMessage] = useState<string>("");
+    const [showConfirmation, setShowConfirmation] = useState<boolean>(false);
+    const [taskToDelete, setTaskToDelete] = useState<any>();
+
     const router = useRouter();
     const { t } = useTranslation();
 
@@ -48,7 +54,14 @@ const TasksOverviewTable: React.FC<Props> = ({ tasks }: Props) => {
             </tbody>
         </table>
             <button onClick={() => router.push('/tasks/register/' + projectId)}>{t('tasks.new')}</button>
-        
+            {/* {showConfirmation && (
+                            <>
+                                <p>Are you sure you want to delete this user?</p>
+                                <button onClick={handleDeleteConfirm}>Confirm</button>
+                                <button onClick={handleDeleteCancel}>Cancel</button>
+                            </>
+                        )}
+            <p>{statusMessage}</p> */}
         </>
     );
 };

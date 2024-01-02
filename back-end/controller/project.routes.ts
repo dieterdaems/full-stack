@@ -250,9 +250,50 @@ projectRouter.delete('/:id', async (req: Request, res: Response) => {
     }
 });
 
-//post om toe te voegen
-//put om aan te passen
-//delete om te verwijderen
+/**
+ * @swagger
+ * /projects/user/{id}:
+ *   get:
+ *     summary: Get a list of all projects for a specific user.
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: ID of the user to retrieve the tasks off.
+ *         schema:
+ *           type: integer
+ *     responses:
+ *       200:
+ *         description: Successful response with a list of Projects.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Project'
+ *       400:
+ *         description: Bad request with an error message.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                 errorMessage:
+ *                   type: string
+ */
+
+projectRouter.get('/user/:id', async (req: Request, res: Response) => {
+    try {
+        const projects = await projectService.getProjectsByUserId(parseInt(req.params.id));
+        res.status(200).json(projects);
+    }
+    catch (error) {
+        res.status(400).json({ status: 'error', errorMessage: error.message });
+    }
+});
+
 
 
 

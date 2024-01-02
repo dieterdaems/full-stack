@@ -1,3 +1,4 @@
+import Header from "@/components/header";
 import TeamsOverviewTable from "@/components/teams/TeamsOverviewTable";
 import TeamService from "@/services/TeamService";
 import UserService from "@/services/UserService";
@@ -26,6 +27,8 @@ const Teams: React.FC = () => {
         }
     }
     const getUserTeams = async () => {
+        setStatusMessage("")
+        if (await auth()) {
         const id = sessionStorage.getItem("loggedUser");
         const response = await UserService.getById(id);
         if (!response.ok) {
@@ -58,6 +61,7 @@ const Teams: React.FC = () => {
             <Head>
                 <title>Teams</title>
             </Head>
+            <Header />
             <main>
                 <p>{errorMessage}</p>
                 <p>{authError}</p>

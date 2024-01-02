@@ -1,10 +1,9 @@
 import { UnauthorizedError } from "express-jwt";
 import taskDb from "../domain/data-access/task.db";
+import userDb from "../domain/data-access/user.db";
 import { Task } from "../domain/model/task";
 import { TaskInput } from "../types";
 import projectDb from "../domain/data-access/project.db";
-import userDb from "../domain/data-access/user.db";
-
 
 /*
 Parameters: id of logged in user, role of logged in user

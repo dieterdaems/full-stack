@@ -4,6 +4,7 @@ import { Project } from "../domain/model/project";
 import teamDb from "../domain/data-access/team.db";
 import { ProjectInput } from "../types";
 import taskDb from "../domain/data-access/task.db";
+import userDb from "../domain/data-access/user.db";
 
 
 const getAllProjects = async (): Promise<Project[]> => {

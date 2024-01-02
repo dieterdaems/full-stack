@@ -12,24 +12,29 @@ type Props = {
 const TaskRegistrationForm: React.FC<Props> = ({projectId} : Props) => {
 
     const [name, setName] = useState<string>("");
+    const [nameError, setNameError] = useState<string>("");
     const [description, setDescription] = useState<string>("");
+    const [descriptionError, setDescriptionError] = useState<string>("");
     const [deadline, setDeadline] = useState<Date>(new Date());
+    const [deadlineError, setDeadlineError] = useState<string>("");
     const [errorMessage, setErrorMessage] = useState('');
 
     const router = useRouter();
 
     const validate = () => {
-        setErrorMessage('');
+        setNameError('');
+        setDescriptionError('');
+        setDeadlineError('');
         if (name === "" || name.trim() === "") {
-            setErrorMessage("Name is required\n");
-            return false;
+            setNameError("Name is required");
         }
         if (description === "" || description.trim() === "") {
-            setErrorMessage("Description is required\n");
-            return false;
+            setDescriptionError("Description is required");
         }
         if (deadline === null || deadline < new Date()) {
-            setErrorMessage("Deadline is required and has to be in the future\n");
+            setDeadlineError("Deadline is required and has to be in the future");
+        }
+        if (nameError !== "" || descriptionError !== "" || deadlineError !== "") {
             return false;
         }
         return true;
@@ -48,12 +53,22 @@ const TaskRegistrationForm: React.FC<Props> = ({projectId} : Props) => {
     return (
         <>
         <form onSubmit={handleSubmit}>
+            <div>
             <label htmlFor="name">Name</label>
             <input type="text" id="name" onChange={(e) => setName(e.target.value)} />
+            {nameError && <p>{nameError}</p>}
+            </div>
+            <div>
             <label htmlFor="description">Description</label>
             <input type="text" id="description" onChange={(e) => setDescription(e.target.value)} />
+            {descriptionError && <p>{descriptionError}</p>}
+            </div>
+            <div>
             <label htmlFor="deadline">Deadline</label>
             <input type="date" id="deadline" onChange={(e) => setDeadline(new Date(e.target.value))} />
+            {deadlineError && <p>{deadlineError}</p>}
+            </div>
+            <label htmlFor="project">Project</label>
             <button type="submit">Submit</button>
         </form>
         <div>

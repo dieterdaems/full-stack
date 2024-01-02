@@ -31,6 +31,7 @@ type Task = {
 type Project = {
     id?: number;
     name?: string;
+    team?: Team;
 }
 
 type StatusMessage = {
