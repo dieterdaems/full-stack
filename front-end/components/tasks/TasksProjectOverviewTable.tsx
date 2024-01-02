@@ -60,7 +60,7 @@ const TasksOverviewTable: React.FC<Props> = ({ tasks }: Props) => {
                         <td>{task.name}</td>
                         <td>{task.description}</td>
                         <td>{task.deadline.toString().slice(0, 10)}</td>
-                        <td>{task.completed ? <>{t('tasks.completed')}</> : <button onClick={() => TaskService.completeTask(task.id)}>{t('tasks.complete')}</button>}</td>
+                        <td>{task.completed ? <>{t('tasks.completed')}</> : <button onClick={async () => await TaskService.completeTask(task.id)}>{t('tasks.complete')}</button>}</td>
                         <td><button onClick={() => handleDeleteButton(task.id)}>{t('tasks.completed')}</button></td>
                     </tr>
                 ))}
