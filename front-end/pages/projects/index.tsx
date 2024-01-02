@@ -37,8 +37,8 @@ const Projects: React.FC = () => {
             }
         }
         else {
-            //TODO add translation
-            setStatusMessage("You are not logged in!");
+            const reply = t('notLoggedIn')
+            setStatusMessage(reply);
            return
         }
     }

@@ -40,7 +40,8 @@ const Tasks: React.FC = () => {
         }
 
         else {
-            setStatusMessage("You are not logged in!");
+            const reply = t('notLoggedIn')
+            setStatusMessage(reply);
            return
         }
     }
@@ -59,10 +60,10 @@ const Tasks: React.FC = () => {
             </Head>
             <Header />
             <main>
-                <h1>Tasks</h1>
+                <h1>{t('tasks.title')}</h1>
                 {statusMessage && <p>{statusMessage}</p>}
                 {error && <p>{error}</p>}
-                {isLoading && <p>Loading...</p>}
+                {isLoading && <p>{t('tasks.loading')}</p>}
                 <section>
                     {data && (<TasksOverviewTable tasks={data} />)}
                 </section>

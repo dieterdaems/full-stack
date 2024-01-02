@@ -2,6 +2,7 @@
     "app.title": "Planning App",
     "general error": "Er is een error opgetreden. Probeer het later opnieuw.",
     "confirm" : "Bevestig",
+    "notLoggedIn": "U moet ingelogd zijn om taken te kunnen bekijken.",
     "delete" : "Verwijder",
     "header": {
         "welcome": "Welkom",

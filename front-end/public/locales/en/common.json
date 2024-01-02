@@ -4,6 +4,7 @@
     "task": "Tasks",
     "confirm" : "Confirm",
     "delete" : "Delete",
+    "notLoggedIn": "You are not logged in. Please log in.",
     "header": {
         "welcome": "Welcome",
         "home": "Home",
