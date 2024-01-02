@@ -54,14 +54,14 @@ const TasksOverviewTable: React.FC<Props> = ({ tasks }: Props) => {
             </tbody>
         </table>
             <button onClick={() => router.push('/tasks/register/' + projectId)}>{t('tasks.new')}</button>
-            {/* {showConfirmation && (
+            {showConfirmation && (
                             <>
                                 <p>Are you sure you want to delete this user?</p>
                                 <button onClick={handleDeleteConfirm}>Confirm</button>
                                 <button onClick={handleDeleteCancel}>Cancel</button>
                             </>
                         )}
-            <p>{statusMessage}</p> */}
+            <p>{statusMessage}</p>
         </>
     );
 };
