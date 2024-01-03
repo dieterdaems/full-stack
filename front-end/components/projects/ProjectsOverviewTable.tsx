@@ -59,7 +59,7 @@ const ProjectOverviewTable: React.FC<Props> = ({ projects }: Props) => {
                         <td>{project.name}</td>
                         <td>{project.team?.name}</td>
                         <td><button onClick={() => router.push('/tasks/project/' + project.id)}>{t('projects.tasks')}</button></td>
-                        {project.id && role === "admin" && <td><button onClick={() => handleDeleteButton(project.id)}>{t('projects.delete')}</button></td>}
+                        {project.id && role === "91fb3f8394dead2470aaf953e1bed9d9abf34a41f65ac666cff414ca229245b8" && <td><button onClick={() => handleDeleteButton(project.id)}>🗑️</button></td>}
                     </tr>
                 ))}
             </tbody>
