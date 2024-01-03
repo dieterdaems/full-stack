@@ -1,21 +1,26 @@
 import { useEffect, useState } from "react";
 import Language from "./language/Language";
+import { useRouter } from "next/router";
 
 const Header: React.FC = () => {
     const [loggedIn, setLoggedIn] = useState<string | null>(null);
     const [role, setRole] = useState<string | null>(null);
+
+    const router = useRouter();
  
     const handleLogout = () => {
         sessionStorage.removeItem("loggedUser");
         sessionStorage.removeItem("token");
         sessionStorage.removeItem("role");
         setLoggedIn(null);
+        router.push("/");
+
     };
 
     useEffect(() => {
         setLoggedIn(sessionStorage.getItem("loggedUser"));
         setRole(sessionStorage.getItem("role"));
-    }, []);
+    }, [loggedIn]);
 
     return (
         <header>
@@ -24,7 +29,7 @@ const Header: React.FC = () => {
                     <li>
                         <a href="/">Home</a>
                     </li>
-                    {loggedIn && (role === "admin") && (
+                    {loggedIn && (role === "91fb3f8394dead2470aaf953e1bed9d9abf34a41f65ac666cff414ca229245b8") && (
                     <li>
                         <a href="/users">Users</a>
                     </li>
@@ -39,14 +44,14 @@ const Header: React.FC = () => {
                         <a href="/projects">Projects</a>
                     </li>
                     )}
-                    {loggedIn && (
+                    {/* {loggedIn && (
                     <li>
                         <a href="/tasks">Tasks</a>
                     </li>
-                    )}
+                    )} */}
                     {loggedIn && (
                         <li>
-                            <a href={"/users/profile/" + loggedIn}>Profile</a>
+                            <a href={"/users/profile/"}>Profile</a>
                         </li>
                     )}
                     <li>

@@ -1,3 +1,4 @@
+import Header from "@/components/header";
 import EditProfileForm from "@/components/users/EditProfileForm";
 import UserService from "@/services/UserService";
 import Head from "next/head";
@@ -42,6 +43,7 @@ const UserProfile: React.FC = () => {
             <Head>
                 <title>Profile</title>
             </Head>
+            <Header />
             <main>
                 {errorMessage || authError ?
                     <p>{errorMessage || authError}</p> :

@@ -24,7 +24,7 @@ const Tasks: React.FC = () => {
         if(auth) {
         const role = sessionStorage.getItem("role");
 
-            if (role == "admin") {
+            if (role == "91fb3f8394dead2470aaf953e1bed9d9abf34a41f65ac666cff414ca229245b8") {
             const response = await TaskService.getAll();
             const tasks = await response.json();
             return tasks;
@@ -52,7 +52,6 @@ const Tasks: React.FC = () => {
         mutate('getTasks', fetchTasks());
     }, 1000);
 
-
     return (
         <>
             <Head>
@@ -63,7 +62,7 @@ const Tasks: React.FC = () => {
                 <h1>{t('tasks.title')}</h1>
                 {statusMessage && <p>{statusMessage}</p>}
                 {error && <p>{error}</p>}
-                {isLoading && <p>{t('tasks.loading')}</p>}
+                {isLoading && <p>{t('tasks.loading')}</p>}  
                 <section>
                     {data && (<TasksOverviewTable tasks={data} />)}
                 </section>

@@ -22,7 +22,7 @@ Authorization Error: if role is not admin or user is not owner of task
 Application Error: if task does not exist
 */
 const getTaskById = async ({id, currentUser, role}): Promise<Task> => {
-    const task = await taskDb.getTaskById(id);
+    const task = await taskDb.getTaskById(parseInt(id));
     if (role !== 'admin' && task?.user.id !== currentUser ) throw new UnauthorizedError('credentials_required', { message: 'You are not authorized to access this resource.' });
     if (!task) throw new Error(`Task with id ${id} does not exist.`);
     return task;
@@ -66,8 +66,11 @@ Return: all tasks of given project, if role is admin
         all tasks for logged in user of given project, if role is user
 */
 const getTasksByProjectId = async ({id, currentUser, role}): Promise<Task[]> => {
-    if (role === 'admin') return taskDb.getTasksByProjectId(id);
-    else return taskDb.getTasksByProjectIdAndUserId(id, currentUser);
+    const tasks = await taskDb.getTasksByProjectId(id);
+    const user = await userDb.getUserById(currentUser);
+    if (role === 'admin') return tasks;
+    if (role === 'user' && !user.teams.some(team => team.id === id)) throw new UnauthorizedError('credentials_required', { message: 'You are not authorized to access this resource.' });
+    return tasks;
 }
 
 /*

@@ -3,6 +3,7 @@ import { Task } from "@/types";
 import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next";
 import { useState } from "react";
+import { error } from "console";
 
 type Props = {
     tasks: Task[];
@@ -41,6 +42,7 @@ const TasksOverviewTable: React.FC<Props> = ({ tasks }: Props) => {
         setShowConfirmation(false);
     }
 
+    if (tasks.length == 0 ) return <p>{t('tasks.noTasks')}</p>;
     return (
         <>
         <table>
@@ -61,7 +63,7 @@ const TasksOverviewTable: React.FC<Props> = ({ tasks }: Props) => {
                         <td>{task.description}</td>
                         <td>{task.deadline.toString().slice(0, 10)}</td>
                         <td>{task.completed ? <>{t('tasks.completed')}</> : <button onClick={async () => await TaskService.completeTask(task.id)}>{t('tasks.complete')}</button>}</td>
-                        <td><button onClick={() => handleDeleteButton(task.id)}>{t('tasks.completed')}</button></td>
+                        <td><button onClick={() => handleDeleteButton(task.id)}>{t('tasks.delete')}</button></td>
                     </tr>
                 ))}
             </tbody>
