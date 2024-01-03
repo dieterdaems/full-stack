@@ -29,9 +29,10 @@ Application Error: if team already exists
 */
 const createTeam = async ({name, role}): Promise<Team> => {
     if (role !== 'admin') throw new UnauthorizedError('credentials_required', { message: 'You are not authorized to create a team.' });
-    const teamExists = await teamDb.getTeamByName(name);
+    const newName = name.name.trim().toLowerCase();
+    const teamExists = await teamDb.getTeamByName(newName);
     if (teamExists) throw new Error(`Team with name ${name} already exists.`);
-    const team = new Team({name});
+    const team = new Team({name: newName});
     return teamDb.createTeam(team);
 };
 

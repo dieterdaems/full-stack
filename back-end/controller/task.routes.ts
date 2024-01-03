@@ -404,9 +404,9 @@ taskRouter.delete('/:id', async (req: Request & {auth: any}, res: Response, next
  */
 
 
-taskRouter.get('/user/:id', async (req: Request, res: Response) => {
+taskRouter.get('/user/:id', async (req: Request & {auth: any}, res: Response, next: NextFunction) => {
     try {
-        const tasks = await taskService.getTaskByUserId(parseInt(req.params.id));
+        const tasks = await taskService.getTaskById({id: req.params.id, currentUser: req.auth.id, role: req.auth.role});
         res.status(200).json(tasks);
     }
     catch (error) {

@@ -286,7 +286,7 @@ projectRouter.delete('/:id', async (req: Request, res: Response) => {
 
 projectRouter.get('/user/:id', async (req: Request, res: Response) => {
     try {
-        const projects = await projectService.getProjectsByUserId(parseInt(req.params.id));
+        const projects = await projectService.getAllProjectsByUserId(parseInt(req.params.id));
         res.status(200).json(projects);
     }
     catch (error) {
