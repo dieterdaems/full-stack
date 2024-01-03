@@ -20,7 +20,7 @@ const Header: React.FC = () => {
     useEffect(() => {
         setLoggedIn(sessionStorage.getItem("loggedUser"));
         setRole(sessionStorage.getItem("role"));
-    }, [loggedIn]);
+    }, []);
 
     return (
         <header>
