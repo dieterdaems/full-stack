@@ -44,7 +44,8 @@
         "deadline": "Deadline",
         "project": "Project",
         "confirmation": "Weet u zeker dat u deze taak wilt verwijderen?",
-        "register": "Registreer Taak"
+        "register": "Registreer Taak",
+        "noTasks": "No tasks found."
 
 
     },

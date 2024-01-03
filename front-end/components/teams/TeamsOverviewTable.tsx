@@ -112,12 +112,14 @@ const TeamsOverviewTable: React.FC<Props> = ({ teams, currentTeams }: Props) => 
             <table>
                 <thead>
                     <tr>
+                        <th>Id</th>
                         <th>Name</th>
                     </tr>
                 </thead>
                 <tbody>
                     {teams && teams.map((team, index) => (
                         <tr key={index}>
+                            <td>{team.id}</td>
                             <td>{team.name}</td>
                             <td>
                                 {role === '91fb3f8394dead2470aaf953e1bed9d9abf34a41f65ac666cff414ca229245b8' ? (

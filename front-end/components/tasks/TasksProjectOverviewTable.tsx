@@ -42,7 +42,10 @@ const TasksOverviewTable: React.FC<Props> = ({ tasks }: Props) => {
         setShowConfirmation(false);
     }
 
-    if (tasks.length == 0 ) return <p>{t('tasks.noTasks')}</p>;
+    if (tasks.length == 0 ) return <>
+    <p>{t('tasks.noTasks')}</p>
+    <button onClick={() => router.push('/tasks/register/' + projectId)}>{t('tasks.new')}</button>
+    </>
     return (
         <>
         <table>
