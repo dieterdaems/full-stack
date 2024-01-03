@@ -45,7 +45,8 @@
         "deadline": "Deadline",
         "project": "Project",
         "confirmation": "Are you sure you want to delete this task?",
-        "register": "Task Registration"
+        "register": "Task Registration",
+        "noTasks": "No tasks found."
     },
     "projects": {
         "title": "Projects",

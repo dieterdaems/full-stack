@@ -7,24 +7,24 @@ import taskDb from "../domain/data-access/task.db";
 import userDb from "../domain/data-access/user.db";
 
 
-const getAllProjects = async (): Promise<Project[]> => {
-    // console.log("meow");
-    return await projectDb.getAllProjects();
+const getAllProjects = async ({role, currentUser}): Promise<Project[]> => {
+    if (role === 'admin') return await projectDb.getAllProjects();
+    else return await projectDb.getAllProjectsByUserId(currentUser);
 }
 
 
-const getProjectById = async (id: number): Promise<Project> => {
+const getProjectById = async ({id,role,currentUser}): Promise<Project> => {
     const project = await projectDb.getProjectById(id);
     if (!project) throw new Error(`Project with id ${id} does not exist.`);
+    const user = await userDb.getUserById(currentUser);
+    const teamsId = user.teams.map((team) => team.id);
+    if (role !== 'admin' && !teamsId.some(teamId => teamId ===  id)) throw new Error(`You are not authorized to access this resource.`);
     return project;
 };
 
 const createProject = async (projectin: ProjectInput): Promise<Project> => {
-    // console.log(projectin);
     const projects = await projectDb.getAllProjects();
-    // console.log(projects);
     const existingProject = projects.find((project) => project.name === projectin.name);
-    // console.log(existingProject);
     if (existingProject) throw new Error(`Project with id ${existingProject.id} already exists.`);
     const teams = await teamDb.getAllTeams(); //change to find team by id?
     const team = teams.find((team) => team.id === projectin.team.id);
@@ -33,7 +33,8 @@ const createProject = async (projectin: ProjectInput): Promise<Project> => {
     return project;
 }
 
-const deleteProject = async (id: number): Promise<Project> => {
+const deleteProject = async ({id,role}): Promise<Project> => {
+    if (role !== 'admin') throw new Error(`You are not authorized to delete this project.`);
     const project = await projectDb.getProjectById(id);
     if (!project) throw new Error(`Project with id ${id} does not exist.`);
     const tasks = await taskDb.getAllTasks();
@@ -43,8 +44,8 @@ const deleteProject = async (id: number): Promise<Project> => {
     return project;
 }
 
-const getAllProjectsByUserId = async (userId: number): Promise<Project[]> => {
-    const projects = await projectDb.getAllProjectsByUserId(userId);
+const getAllProjectsByUserId = async ({id, role, currentUser}): Promise<Project[]> => {
+    const projects = await projectDb.getAllProjectsByUserId(id);
     return projects;
 }
 
