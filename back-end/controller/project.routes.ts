@@ -73,7 +73,7 @@ projectRouter.get('/', async (req: Request & {auth: any}, res: Response, next: N
     try {
         const currentUser = req.auth.id;
         const role = req.auth.role;
-        const projects = await projectService.getAllProjects({role, currentUser});
+        const projects = await projectService.getAllProjects({id: 0, role, currentUser});
         res.status(200).json(projects);
     }
     catch (error) {
@@ -120,7 +120,7 @@ projectRouter.get('/user/:id', async (req: Request & {auth: any}, res: Response,
         const currentUser = req.auth.id;
         const role = req.auth.role;
         const id = parseInt(req.params.id);
-        const projects = await projectService.getAllProjectsByUserId({id, role, currentUser});
+        const projects = await projectService.getAllProjects({id, role, currentUser});
         res.status(200).json(projects);
     }
     catch (error) {

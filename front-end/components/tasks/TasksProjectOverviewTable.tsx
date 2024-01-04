@@ -14,7 +14,9 @@ const TasksOverviewTable: React.FC<Props> = ({ tasks }: Props) => {
 
     const [statusMessage, setStatusMessage] = useState<string>("");
     const [showConfirmation, setShowConfirmation] = useState<boolean>(false);
+    const [showConfirmationComplete, setShowConfirmationComplete] = useState<boolean>(false);
     const [taskToDelete, setTaskToDelete] = useState<any>();
+    const [taskToComplete, setTaskToComplete] = useState<any>();
 
     const router = useRouter();
     const { t } = useTranslation();
@@ -27,6 +29,7 @@ const TasksOverviewTable: React.FC<Props> = ({ tasks }: Props) => {
     };
 
     const handleDeleteConfirm = async () => {
+        setStatusMessage("");
         const response = await TaskService.deleteById(taskToDelete);
         const data = await response.json();
         if (response.ok) {
@@ -40,6 +43,28 @@ const TasksOverviewTable: React.FC<Props> = ({ tasks }: Props) => {
 
     const handleDeleteCancel = () => {
         setShowConfirmation(false);
+    }
+
+    const handleCompleteButton = async (id: any) => {
+        setTaskToDelete(String(id));
+        setShowConfirmationComplete(true);
+    };
+
+    const handleCompleteConfirm = async () => {
+        setStatusMessage("");
+        const response = await TaskService.completeTask(taskToComplete);
+        const data = await response.json();
+        if (response.ok) {
+            setStatusMessage("Completed task successfully!");
+        }
+        else {
+            setStatusMessage(data.errorMessage);
+        }
+        setShowConfirmationComplete(false);
+    }
+
+    const handleCompleteCancel = () => {
+        setShowConfirmationComplete(false);
     }
 
     if (tasks.length == 0 ) return <>
@@ -65,7 +90,7 @@ const TasksOverviewTable: React.FC<Props> = ({ tasks }: Props) => {
                         <td>{task.name}</td>
                         <td>{task.description}</td>
                         <td>{task.deadline.toString().slice(0, 10)}</td>
-                        <td>{task.completed ? <>{t('tasks.completed')}</> : <button onClick={async () => await TaskService.completeTask(task.id)}>{t('tasks.complete')}</button>}</td>
+                        <td>{task.completed ? <>{t('tasks.completed')}</> : <button onClick={handleCompleteButton}>{t('tasks.complete')}</button>}</td>
                         <td><button onClick={() => handleDeleteButton(task.id)}>{t('tasks.delete')}</button></td>
                     </tr>
                 ))}
@@ -77,6 +102,13 @@ const TasksOverviewTable: React.FC<Props> = ({ tasks }: Props) => {
                                 <p>{t('tasks.confirmation')}</p>
                                 <button onClick={handleDeleteConfirm}>{t('confirm')}</button>
                                 <button onClick={handleDeleteCancel}>{t('cancel')}</button>
+                            </>
+                        )}
+            {showConfirmationComplete && (
+                            <>
+                                <p>{t('tasks.confirmation')}</p>
+                                <button onClick={handleCompleteConfirm}>{t('confirm')}</button>
+                                <button onClick={handleCompleteCancel}>{t('cancel')}</button>
                             </>
                         )}
             <p>{statusMessage}</p>
