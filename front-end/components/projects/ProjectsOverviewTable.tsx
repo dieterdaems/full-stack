@@ -42,7 +42,7 @@ const ProjectOverviewTable: React.FC<Props> = ({ projects }: Props) => {
     
     return (
         <>
-        <div className="bg-gray-100 flex items-start justify-center h-screen">
+        <div className="bg-gray-100 flex items-start justify-center">
 
         <div className="container mx-auto my-8" >
 
@@ -52,7 +52,7 @@ const ProjectOverviewTable: React.FC<Props> = ({ projects }: Props) => {
                         <th className="py-2 px-4 border-b border-r">{t('projects.id')}</th>
                         <th className="py-2 px-4 border-b border-r">{t('projects.name')}</th>
                         <th className="py-2 px-4 border-b border-r">{t('projects.team')}</th>
-                        <th className="py-2 px-4 border-b">{t('projects.tasks')}</th>
+                        <th className="py-2 px-4 border-b">{t('tasks.title')}</th>
                         {role === "admin" && <th className="py-2 px-4 border-b border-l">{t('projects.delete')}</th>}
                     </tr>
                 </thead>
@@ -62,8 +62,10 @@ const ProjectOverviewTable: React.FC<Props> = ({ projects }: Props) => {
                             <td className="py-2 px-4 border-b text-center border-r">{project.id}</td>
                             <td className="py-2 px-4 border-b text-center border-r" >{project.name}</td>
                             <td className="py-2 px-4 border-b text-center border-r">{project.team?.name}</td>
-                            <td className="py-2 px-4 border-b text-center"><button onClick={() => router.push('/tasks/project/' + project.id)}>{t('projects.tasks')}</button></td>
-                            {project.id && role === "admin" && <td className="py-2 px-4 border-b text-center border-l"><button onClick={() => handleDeleteButton(project.id)}>{t('projects.delete')}</button></td>}
+                            <td className="py-2 px-4 border-b text-center"><button className="inline-flex items-center justify-center h-12 px-6 font-medium tracking-wide text-white transition duration-200 bg-gray-900 rounded-lg hover:bg-gray-800 focus:shadow-outline focus:outline-none"
+                                    onClick={() => router.push('/tasks/project/' + project.id)}>{t('projects.tasks')}</button></td>
+                            {project.id && role === "admin" && <td className="py-2 px-4 border-b text-center border-l"><button className="inline-flex items-center justify-center h-12 px-6 font-medium tracking-wide text-white transition duration-200 bg-gray-900 rounded-lg hover:bg-gray-800 focus:shadow-outline focus:outline-none"
+                                    onClick={() => handleDeleteButton(project.id)}>{t('projects.delete')}</button></td>}
                         </tr>
                     ))}
                 </tbody>
@@ -71,8 +73,10 @@ const ProjectOverviewTable: React.FC<Props> = ({ projects }: Props) => {
             {showConfirmation && (
                             <>
                                 <p>{t('projects.confirmation')}</p>
-                                <button onClick={handleDeleteConfirm}>{t('confirm')}</button>
-                                <button onClick={handleDeleteCancel}>{t('cancel')}</button>
+                                <button className="inline-flex items-center justify-center h-12 px-6 font-medium tracking-wide text-white transition duration-200 bg-gray-900 rounded-lg hover:bg-gray-800 focus:shadow-outline focus:outline-none"
+                                onClick={handleDeleteConfirm}>{t('confirm')}</button>
+                                <button className="inline-flex items-center justify-center h-12 px-6 font-medium tracking-wide text-white transition duration-200 bg-gray-900 rounded-lg hover:bg-gray-800 focus:shadow-outline focus:outline-none"
+                                onClick={handleDeleteCancel}>{t('cancel')}</button>
                             </>
                         )}
             <p className=' text-red-600'>{statusMessage}</p>

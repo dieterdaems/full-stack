@@ -48,16 +48,43 @@ const AddProject: React.FC = () => {
 
     return (
         <>  
-        {!button && <button onClick={(e) => setButton(!button)}>{t('projects.new')}</button>}
-        {button && <button onClick={(e) => setButton(!button)}>{t('projects.cancel')}</button>}
-        {button && <form onSubmit={handleSubmit}>
-            <label htmlFor="name">{t('projects.name')}</label>
-            <input type="text" id="name" onChange={(e) => setName(e.target.value)} />
-            <label htmlFor="id">Team Id</label>
-            <input type="text" id="id" onChange={(e) => setTeamId(parseInt(e.target.value))} />
-            <button type='submit'>{t('projects.submit')}</button>
+        <div className="bg-gray-100 flex items-center justify-center">
+
+        <div className="container mx-auto my-8" >
+        <div className="flex justify-center">
+            {!button && <button className="inline-flex items-center justify-center h-12 px-6 font-medium tracking-wide text-white transition duration-200 bg-gray-900 rounded-lg hover:bg-gray-800 focus:shadow-outline focus:outline-none"
+                onClick={(e) => setButton(!button)}>{t('projects.new')}</button>}
+        </div>
+        <div className="flex justify-center">
+            {button && <button className="inline-flex items-center justify-center h-12 px-6 font-medium tracking-wide text-white transition duration-200 bg-gray-900 rounded-lg hover:bg-gray-800 focus:shadow-outline focus:outline-none"
+                onClick={(e) => setButton(!button)}>{t('projects.cancel')}</button>}
+        </div>
+        {button && <form className="mt-4 flex flex-col items-center" onSubmit={handleSubmit}>
+            <div className=" bg-gray-100 p-4 rounded-lg">
+                <div className="relative bg-inherit mt-4">
+                    <input className="peer bg-white-100 h-10 w-72 rounded-lg text-gray-200 placeholder-transparent ring-2 px-2 ring-gray-500 focus:ring-sky-600 focus:outline-none focus:border-rose-600"
+                    type="text" id="name" onChange={(e) => setName(e.target.value)} />
+                    <label className="absolute cursor-text left-0 -top-3 text-sm bg-inherit mx-1 px-1 peer-placeholder-shown:text-gray-500 peer-placeholder-shown:top-2 peer-focus:-top-3 peer-focus:text-sky-600 peer-focus:text-sm transition-all"
+                    htmlFor="name">{t('projects.name')}</label>
+                </div>
+            </div>
+            <div className="bg-gray-100 p-4 rounded-lg">
+                <div className="relative bg-inherit mt-4">
+            <label className="absolute cursor-text left-0 -top-3 text-sm bg-inherit mx-1 px-1 peer-placeholder-shown:text-gray-500 peer-placeholder-shown:top-2 peer-focus:-top-3 peer-focus:text-sky-600 peer-focus:text-sm transition-all"
+            htmlFor="teamid">Team Id</label>
+            <input className="peer bg-white-100 h-10 w-72 rounded-lg text-gray-200 placeholder-transparent ring-2 px-2 ring-gray-500 focus:ring-sky-600 focus:outline-none focus:border-rose-600"
+            type="text" id="teamid" onChange={(e) => setTeamId(parseInt(e.target.value))} />
+            </div>
+            </div>
         </form>}
+        {button && <p>{errorMessage}</p>}
+        <div className="flex justify-center">
+            <button className="inline-flex items-center justify-center h-12 px-6 font-medium tracking-wide text-white transition duration-200 bg-gray-900 rounded-lg hover:bg-gray-800 focus:shadow-outline focus:outline-none mt-4"
+            type='submit'>{t('projects.submit')}</button>
+        </div>
         {errorMessage && <p>{errorMessage}</p>}
+        </div>
+        </div>
         </>
     );
 }
