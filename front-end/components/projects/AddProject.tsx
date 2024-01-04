@@ -78,10 +78,10 @@ const AddProject: React.FC = () => {
             </div>
         </form>}
         {button && <p>{errorMessage}</p>}
-        <div className="flex justify-center">
+        {button && <div className="flex justify-center">
             <button className="inline-flex items-center justify-center h-12 px-6 font-medium tracking-wide text-white transition duration-200 bg-gray-900 rounded-lg hover:bg-gray-800 focus:shadow-outline focus:outline-none mt-4"
             type='submit'>{t('projects.submit')}</button>
-        </div>
+        </div>}
         {errorMessage && <p>{errorMessage}</p>}
         </div>
         </div>
