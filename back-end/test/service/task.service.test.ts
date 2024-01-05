@@ -103,7 +103,7 @@ test('given valid task, when createTask is called, then task is created', async 
     taskDb.createTask = mockTasksDbCreateTask.mockResolvedValue(task1);
     userDb.getUserById = mockUserDbGetUserById.mockResolvedValue(user);
     projectDb.getProjectById = mockProjectDbGetProjectById.mockResolvedValue(project1);
-    const task = await taskService.createTask({task: task1, currentUser: 1});
+    const task = await taskService.createTask({task: task1, currentUser: 1, role: 'user'});
     expect(task).toEqual(task1);
 }
 )
@@ -112,7 +112,7 @@ test('given invalid task, when createTask is called, then task is not created an
     taskDb.createTask = mockTasksDbCreateTask.mockResolvedValue(invalidTask);
     userDb.getUserById = mockUserDbGetUserById.mockResolvedValue(user);
     projectDb.getProjectById = mockProjectDbGetProjectById.mockResolvedValue(project1);
-    await expect(() => taskService.createTask({task: invalidTask, currentUser: 1})).rejects.toThrow("Deadline must be in the future.");
+    await expect(() => taskService.createTask({task: invalidTask, currentUser: 1, role: 'user'})).rejects.toThrow("Deadline must be in the future.");
 }
 )
 
@@ -120,7 +120,7 @@ test('given valid task, when createTask is called and user is not part of the te
     taskDb.createTask = mockTasksDbCreateTask.mockResolvedValue(task2);
     userDb.getUserById = mockUserDbGetUserById.mockResolvedValue(user);
     projectDb.getProjectById = mockProjectDbGetProjectById.mockResolvedValue(project2);
-    await expect(() => taskService.createTask({task: task1, currentUser: 1})).rejects.toThrow("You are not authorized to create a task for this project.");
+    await expect(() => taskService.createTask({task: task1, currentUser: 1, role: 'user'})).rejects.toThrow("You are not authorized to create a task for this project.");
 }
 )
 
@@ -187,14 +187,14 @@ test('given valid tasks, when getTaskByProjectId is called as user and does not 
 test('given valid task, when completeTask is called, then task is completed', async () => {
     taskDb.getTaskById = mockTasksDbGetTaskById.mockResolvedValue(task1);
     taskDb.completeTask = mockTasksDbDeleteById.mockResolvedValue(task1);
-    const task = await taskService.completeTask({id: 1, currentUser: 1});
+    const task = await taskService.completeTask({id: 1, currentUser: 1, role: 'user'});
     expect(task).toEqual(task1);
 }
 )
 
 test('given invalid task, when completeTask is called, then error is thrown', async () => {
     taskDb.getTaskById = mockTasksDbGetTaskById.mockResolvedValue(null);
-    await expect(() => taskService.completeTask({id: 1000, currentUser: 1})).rejects.toThrow("Task with id 1000 does not exist.");
+    await expect(() => taskService.completeTask({id: 1000, currentUser: 1, role: 'user'})).rejects.toThrow("Task with id 1000 does not exist.");
 }
 )
 
@@ -202,6 +202,6 @@ test('given valid task, when completeTask is called and user is not part of the 
     taskDb.getTaskById = mockTasksDbGetTaskById.mockResolvedValue(task2);
     userDb.getUserById = mockUserDbGetUserById.mockResolvedValue(user);
     projectDb.getProjectById = mockProjectDbGetProjectById.mockResolvedValue(project2);
-    await expect(() => taskService.completeTask({id: 1, currentUser: 1})).rejects.toThrow("You are not authorized to complete this task.");
+    await expect(() => taskService.completeTask({id: 1, currentUser: 1, role: 'user'})).rejects.toThrow("You are not authorized to complete this task.");
 }
 )

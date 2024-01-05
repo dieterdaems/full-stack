@@ -224,7 +224,8 @@ taskRouter.post('/', async (req: Request & {auth: any}, res: Response, next: Nex
     try {
         const task = <TaskInput>req.body;
         const currentUser = req.auth.id;
-        const response = await taskService.createTask({task, currentUser});
+        const role = req.auth.role;
+        const response = await taskService.createTask({task, currentUser, role});
         res.status(200).json(response);
     }
     catch (error) {
@@ -317,7 +318,8 @@ taskRouter.post('/', async (req: Request & {auth: any}, res: Response, next: Nex
 taskRouter.put('/completeTask/:id', async (req: Request & {auth:any}, res: Response, next: NextFunction) => {
     try {
         const currentUser = req.auth.id;
-        const response = await taskService.completeTask({id: parseInt(req.params.id), currentUser});
+        const role = req.auth.role;
+        const response = await taskService.completeTask({id: parseInt(req.params.id), currentUser, role});
         res.status(200).json(response);
     }
     catch (error) {
