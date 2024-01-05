@@ -124,7 +124,7 @@ const TeamsOverviewTable: React.FC<Props> = ({ teams, currentTeams }: Props) => 
                         <tr key={index}>
                             <td className="py-2 px-4 border-b border-r">{team.id}</td>
                             <td className="py-2 px-4 border-b border-r">{team.name}</td>
-                            <td>
+                            <td className="py-2 px-4 border-b border-r">
                                 {role === '91fb3f8394dead2470aaf953e1bed9d9abf34a41f65ac666cff414ca229245b8' ? (
                                     <button className="global-button" onClick={() => handleDeleteButton(team.id)}>
                                         🗑️</button>
