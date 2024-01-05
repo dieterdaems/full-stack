@@ -19,7 +19,7 @@ const getAllUsers = async ({ role }): Promise<User[]> => {
 
 
 /*
-Parameters: id of user to be retrieved, role saved in JWT token, id of user logged in, so id saved in JWT token
+Parameters: id of user to be retrieved, id of user logged in, so id saved in JWT token, role saved in JWT token
 Return: user
 Authorization Error: if inlogged user is not admin nor the same as the one to be retrieved
 Application Error: if user does not exist

@@ -19,7 +19,7 @@ const getAllTasks = async ({currentUser, role}): Promise<Task[]> => {
 /*
 Parameters: id of task to be retrieved, id of logged in user, role of logged in user
 Return: task
-Authorization Error: if role is not admin or user is not owner of task
+Authorization Error: if role is not admin or user is not part of the team that the task's project belongs to
 Application Error: if task does not exist
 */
 const getTaskById = async ({id, currentUser, role}): Promise<Task> => {
@@ -52,7 +52,7 @@ const createTask = async ({task, currentUser}: {task: TaskInput, currentUser: nu
 /*
 Parameters: id of task to be deleted, id of logged in user, role of logged in user
 Return: deleted task
-Authorization Error: if role is not admin or user is not owner of task
+Authorization Error: if role is not admin or user is not part of the team that the task's project belongs to
 Application Error: if task does not exist
 */
 const deleteById = async ({id, currentUser, role}): Promise<Task> => {
@@ -74,25 +74,6 @@ const getTasksByProjectId = async ({id, currentUser, role}): Promise<Task[]> => 
     if (role !== 'admin' && !user.teams.map(team => team.id).includes(project?.team.id)) throw new UnauthorizedError('credentials_required', { message: 'You are not authorized to access this resource.' });
     return taskDb.getTasksByProjectId(id);
 }
-
-/*
-Parameters: id of task to be updated, updated info, id of logged in user, role of logged in user
-Return: updated task
-Authorization Error: if role is not admin or user is not owner of task
-Application Error: if deadline is in the past
-                   if domain validation fails
-*/
-// const updateTask = async ({targetTaskId, updatedInfo, currentUser, role}): Promise<Task> => {
-//     const task = await taskDb.getTaskById(targetTaskId);
-//     if (role !== 'admin' && currentUser !== task?.user.id) throw new UnauthorizedError('credentials_required', { message: 'You are not authorized to update this task.' });
-//     if (new Date(updatedInfo.deadline) < new Date()) throw new Error('Deadline must be in the future.');
-//     const completed = updatedInfo.completed
-//     const name = updatedInfo.name
-//     const description = updatedInfo.description
-//     const deadline = updatedInfo.deadline
-//     const newTask = new Task({ name, description, deadline, completed }); // Domain validation
-//     return taskDb.updateTask({id: targetTaskId, name, description, deadline, completed});
-// }
 
 /*
 Parameters: id of task to be completed, id of logged in user

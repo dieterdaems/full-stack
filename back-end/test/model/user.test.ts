@@ -11,7 +11,6 @@ describe('User Model', () => {
   };
 
 
-  // Valid data
   test('Given valid data, when creating a user, then user is created with valid properties', () => {
     const user = new User(validUserData);
 
