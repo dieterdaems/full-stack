@@ -66,15 +66,13 @@ const deleteById = async ({id, currentUser, role}): Promise<Task> => {
 /*
 Parameters: id of project to retrieve tasks from, id of logged in user, role of logged in user
 Return: all tasks of given project, if role is admin
-        all tasks for logged in user of given project, if role is user
+        all tasks of given project, if role is user AND user is part of the team that the project belongs to
 */
 const getTasksByProjectId = async ({id, currentUser, role}): Promise<Task[]> => {
-    const tasks = await taskDb.getTasksByProjectId(id);
-    if (role === 'admin') return tasks;
     const project = await projectDb.getProjectById(id);
     const user = await userDb.getUserById(currentUser);
-    if (role === 'user' && !user.teams.map(team => team.id).includes(project?.team.id)) throw new UnauthorizedError('credentials_required', { message: 'You are not authorized to access this resource.' });
-    return tasks;
+    if (role !== 'admin' && !user.teams.map(team => team.id).includes(project?.team.id)) throw new UnauthorizedError('credentials_required', { message: 'You are not authorized to access this resource.' });
+    return taskDb.getTasksByProjectId(id);
 }
 
 /*
