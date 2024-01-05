@@ -151,7 +151,7 @@ teamRouter.post('/create', async (req: Request & { auth: any }, res: Response, n
     try {
         const role = req.auth.role;
         const team = <TeamInput>req.body;
-        const result = await teamService.createTeam({name: team, role});
+        const result = await teamService.createTeam({newTeam: team, role});
         res.status(201).json(result);
     }
     catch (error) {
