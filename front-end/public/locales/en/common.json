@@ -60,7 +60,7 @@
         "description": "Description",
         "return": "Return to project overview",
         "id": "ID",
-        "tasks": "View Tasks",
+        "tasks": "View",
         "submit": "Submit",
         "team": "Assigned Team",
         "confirmation": "Are you sure you want to delete this project?"

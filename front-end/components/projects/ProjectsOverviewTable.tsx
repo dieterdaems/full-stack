@@ -42,37 +42,47 @@ const ProjectOverviewTable: React.FC<Props> = ({ projects }: Props) => {
     
     return (
         <>
-        <table>
-            <thead>
-                <tr>
-                    <th>{t('projects.id')}</th>
-                    <th>{t('projects.name')}</th>
-                    <th>{t('projects.team')}</th>
-                    <th>{t('projects.tasks')}</th>
-                    <th>{role === "admin" && t('projects.delete')}</th>
-                </tr>
-            </thead>
-            <tbody>
-                {projects && projects.map((project, index) => (
-                    <tr key={index}>
-                        <td>{project.id}</td>
-                        <td>{project.name}</td>
-                        <td>{project.team?.name}</td>
-                        <td><button onClick={() => router.push('/tasks/project/' + project.id)}>{t('projects.tasks')}</button></td>
-                        {project.id && role === "91fb3f8394dead2470aaf953e1bed9d9abf34a41f65ac666cff414ca229245b8" && <td><button onClick={() => handleDeleteButton(project.id)}>🗑️</button></td>}
+        <div className="bg-gray-100 flex items-start justify-center">
+
+        <div className="container mx-auto my-8" >
+
+            <table className="mx-auto bg-white border border-gray-300">
+                <thead>
+                    <tr>
+                        <th className="py-2 px-4 border-b border-r">{t('projects.id')}</th>
+                        <th className="py-2 px-4 border-b border-r">{t('projects.name')}</th>
+                        <th className="py-2 px-4 border-b border-r">{t('projects.team')}</th>
+                        <th className="py-2 px-4 border-b">{t('tasks.title')}</th>
+                        {role === "admin" && <th className="py-2 px-4 border-b border-l">{t('projects.delete')}</th>}
                     </tr>
-                ))}
-            </tbody>
-        </table>
-        {showConfirmation && (
+                </thead>
+                <tbody>
+                    {projects && projects.map((project, index) => (
+                        <tr key={index}>
+                            <td className="py-2 px-4 border-b text-center border-r">{project.id}</td>
+                            <td className="py-2 px-4 border-b text-center border-r" >{project.name}</td>
+                            <td className="py-2 px-4 border-b text-center border-r">{project.team?.name}</td>
+                            <td className="py-2 px-4 border-b text-center"><button className="global-button"
+                                    onClick={() => router.push('/tasks/project/' + project.id)}>{t('projects.tasks')}</button></td>
+                            {project.id && role === "91fb3f8394dead2470aaf953e1bed9d9abf34a41f65ac666cff414ca229245b8" && <td className="py-2 px-4 border-b text-center border-l"><button className="global-button"
+                                    onClick={() => handleDeleteButton(project.id)}>🗑️</button></td>}
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
+            {showConfirmation && (
                             <>
                                 <p>{t('projects.confirmation')}</p>
-                                <button onClick={handleDeleteConfirm}>{t('confirm')}</button>
-                                <button onClick={handleDeleteCancel}>{t('cancel')}</button>
+                                <button className="global-button"
+                                onClick={handleDeleteConfirm}>{t('confirm')}</button>
+                                <button className="global-button"
+                                onClick={handleDeleteCancel}>{t('cancel')}</button>
                             </>
                         )}
-            <p>{statusMessage}</p>
+            <p className=' text-red-600'>{statusMessage}</p>
         
+            </div>
+        </div>
         </>
     );
 };

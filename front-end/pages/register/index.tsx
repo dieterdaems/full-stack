@@ -30,17 +30,19 @@ const UserRegistration: React.FC = () => {
             <Head>
                 <title>Registration</title>
             </Head>
+            <div className="bg-gray-100 min-h-screen">
             <Header />
             <main>
                 {!loading && (
                     <>
-                        <h1>User Registration</h1>
+                        <h1 className='bg-gray-100 text-center font-semibold text-3xl'>User Registration</h1>
                         <section>
                             {<UserRegistrationForm />}
                         </section>
                     </>
                 )}
             </main>
+            </div>
 
         </>
 

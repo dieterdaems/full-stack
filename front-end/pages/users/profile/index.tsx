@@ -43,19 +43,21 @@ const UserProfile: React.FC = () => {
             <Head>
                 <title>Profile</title>
             </Head>
+            <div className="bg-gray-100 min-h-screen">
             <Header />
             <main>
                 {errorMessage || authError ?
                     <p>{errorMessage || authError}</p> :
                     data ?
                         <>
-                            <h1>Profile</h1>
+                            <h1 className='bg-gray-100 text-center font-semibold text-3xl'>Profile</h1>
                             {<EditProfileForm user={data} />}
                         </>
                         :
                         <p>Loading...</p>
                 }
             </main>
+            </div>
         </>
     )
 

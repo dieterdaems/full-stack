@@ -73,45 +73,54 @@ const TasksOverviewTable: React.FC<Props> = ({ tasks }: Props) => {
     </>
     return (
         <>
-        <table>
+        <div className="bg-gray-100 flex items-start justify-center">
+
+        <div className="container mx-auto my-8" >
+        <table className="mx-auto bg-white border border-gray-300">
             <thead>
                 <tr>
-                    <th>{t('tasks.name')}</th>
-                    <th>{t("tasks.description")}</th>
-                    <th>{t('tasks.deadline')}</th>
-                    <th>{t('tasks.completed')}</th>
-                    <th>{t('tasks.delete')}</th>
-
+                    <th className="py-2 px-4 border-b border-r">{t('tasks.name')}</th>
+                    <th className="py-2 px-4 border-b border-r">{t("tasks.description")}</th>
+                    <th className="py-2 px-4 border-b border-r">{t('tasks.deadline')}</th>
+                    {/* <th className="py-2 px-4 border-b border-r">{t('tasks.project')}</th> */}
+                    <th className="py-2 px-4 border-b border-r">{t('tasks.completed')}</th>
+                    <th className="py-2 px-4 border-b border-r">{t('tasks.delete')}</th>
                 </tr>
             </thead>
             <tbody>
                 {tasks && tasks.map((task, index) => (
                     <tr key={index}>
-                        <td>{task.name}</td>
-                        <td>{task.description}</td>
-                        <td>{task.deadline.toString().slice(0, 10)}</td>
-                        <td>{task.completed ? <>{t('tasks.completed')}</> : <button onClick={handleCompleteButton}>{t('tasks.complete')}</button>}</td>
-                        <td><button onClick={() => handleDeleteButton(task.id)}>{t('tasks.delete')}</button></td>
+                        <td className="py-2 px-4 border-b text-center border-r">{task.name}</td>
+                        <td className="py-2 px-4 border-b text-center border-r">{task.description}</td>
+                        <td className="py-2 px-4 border-b text-center border-r">{task.deadline.toString().slice(0, 10)}</td>
+                        {/* <td className="py-2 px-4 border-b text-center border-r">{task.projectId}</td> */}
+                        <td className="py-2 px-4 border-b text-center border-r">{task.completed ? <p className=" text-green-500">{t('tasks.completed')}</p> : <button className='global-button' onClick={handleCompleteButton}>{t('tasks.complete')}</button>}</td>
+                        <td><button className="global-button" onClick={() => handleDeleteButton(task.id)}>{t('tasks.delete')}</button></td>
                     </tr>
                 ))}
             </tbody>
         </table>
-            <button onClick={() => router.push('/tasks/register/' + projectId)}>{t('tasks.new')}</button>
+        <div className="bg-gray-100 flex items-center justify-center">
+            <button className="global-button" onClick={() => router.push('/tasks/register/' + projectId)}>{t('tasks.new')}</button>
+        </div>
             {showConfirmation && (
                             <>
                                 <p>{t('tasks.confirmation')}</p>
-                                <button onClick={handleDeleteConfirm}>{t('confirm')}</button>
-                                <button onClick={handleDeleteCancel}>{t('cancel')}</button>
+                                <button className="global-button" onClick={handleDeleteConfirm}>{t('confirm')}</button>
+                                <button className="global-button" onClick={handleDeleteCancel}>{t('cancel')}</button>
                             </>
                         )}
             {showConfirmationComplete && (
                             <>
-                                <p>{t('tasks.confirmation')}</p>
-                                <button onClick={handleCompleteConfirm}>{t('confirm')}</button>
-                                <button onClick={handleCompleteCancel}>{t('cancel')}</button>
+                                <p>Complete task?</p>
+                                <button className="global-button" onClick={handleCompleteConfirm}>{t('confirm')}</button>
+                                <button className="global-button" onClick={handleCompleteCancel}>{t('cancel')}</button>
                             </>
                         )}
+          
             <p>{statusMessage}</p>
+        </div>
+        </div>
         </>
     );
 };

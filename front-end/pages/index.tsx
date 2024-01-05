@@ -12,11 +12,17 @@ const Welcome: React.FC = () => {
             <Head>
                 <title>{t('app.title')}</title>
             </Head>
+            <div className="bg-gray-100 min-h-screen">
             <Header />
-            <main>
-                <h2>{t('main.welcome')}</h2>
-                <p>{t('main.description')}</p>
+            <main className='flex flex-col text-center'>
+                <h2 className=' mb-4 mt-4'>
+                    {t('main.welcome')}
+                </h2>
+                <p>
+                    {t('main.description')}
+                </p>
             </main>
+            </div>
         </>
     )
 };

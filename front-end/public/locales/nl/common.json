@@ -61,7 +61,7 @@
         "description": "Beschrijving",
         "return": "Terug naar Project overzicht",
         "id": "ID",
-        "tasks": "Taken Bekijken",
+        "tasks": "Bekijken",
         "submit": "Verstuur",
         "team": "Toegewezen Team",
         "confirmation": "Weet u zeker dat u dit project wilt verwijderen?"

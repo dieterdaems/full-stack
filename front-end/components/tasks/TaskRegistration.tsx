@@ -52,27 +52,45 @@ const TaskRegistrationForm: React.FC<Props> = ({projectId} : Props) => {
 
     return (
         <>
-        <form onSubmit={handleSubmit}>
+        <div className="bg-gray-100 flex items-center justify-center">
+        <div className="container mx-auto my-8" >
+        <form className="mt-4 flex flex-col items-center" onSubmit={handleSubmit}>
             <div>
-            <label htmlFor="name">Name</label>
-            <input type="text" id="name" onChange={(e) => setName(e.target.value)} />
-            {nameError && <p>{nameError}</p>}
+            <div className=" bg-gray-100 p-4 rounded-lg">
+                <div className="relative bg-inherit mt-4">
+            <label className='global-label' htmlFor="name">Name</label>
+            <input className='global-input' type="text" id="name" onChange={(e) => setName(e.target.value)} />
+            </div>
+            </div>
+            {nameError && <p className=" text-red-500">{nameError}</p>}
             </div>
             <div>
-            <label htmlFor="description">Description</label>
-            <input type="text" id="description" onChange={(e) => setDescription(e.target.value)} />
-            {descriptionError && <p>{descriptionError}</p>}
+            <div className=" bg-gray-100 p-4 rounded-lg">
+                <div className="relative bg-inherit mt-4">
+            <label className="global-label" htmlFor="description">Description</label>
+            <input className='global-input' type="text" id="description" onChange={(e) => setDescription(e.target.value)} />
+            </div>
+            </div>
+            {descriptionError && <p className=" text-red-500">{descriptionError}</p>}
             </div>
             <div>
-            <label htmlFor="deadline">Deadline</label>
-            <input type="date" id="deadline" onChange={(e) => setDeadline(new Date(e.target.value))} />
-            {deadlineError && <p>{deadlineError}</p>}
+            <div className=" bg-gray-100 p-4 rounded-lg">
+                <div className="relative bg-inherit mt-4">
+            <label className="global-label" htmlFor="deadline">Deadline</label>
+            <input className='global-input' type="date" id="deadline" onChange={(e) => setDeadline(new Date(e.target.value))} />
+            </div>
+            </div>
+            {deadlineError && <p className=" text-red-500">{deadlineError}</p>}
             </div>
             <label htmlFor="project">Project</label>
-            <button type="submit">Submit</button>
+            <div className="flex justify-center">
+            <button className="global-button" type="submit">Submit</button>
+            </div>
         </form>
         <div>
-        {errorMessage && <p>{errorMessage}</p>}
+        {errorMessage && <p className=" text-red-500">{errorMessage}</p>}
+        </div>
+        </div>
         </div>
                 
                 </>

@@ -38,24 +38,27 @@ const UsersOverviewTable: React.FC<Props> = ({ users }: Props) => {
 
     return (
         <>
+        <div className="bg-gray-100 flex items-start justify-center">
+
+        <div className="container mx-auto my-8" >
             <table>
                 <thead>
                     <tr>
-                        <th>Name</th>
-                        <th>Specialisation</th>
-                        <th>Email</th>
-                        <th>Role</th>
+                        <th className="py-2 px-4 border-b border-r">Name</th>
+                        <th className="py-2 px-4 border-b border-r">Specialisation</th>
+                        <th className="py-2 px-4 border-b border-r">Email</th>
+                        <th className="py-2 px-4 border-b border-r">Role</th>
                     </tr>
                 </thead>
                 <tbody>
                     {users && users.map((user, index) => (
                         <tr key={index}>
-                            <td>{user.name}</td>
-                            <td>{user.specialisation}</td>
-                            <td>{user.email}</td>
-                            <td>{user.role}</td>
+                            <td className="py-2 px-4 border-b text-center border-r">{user.name}</td>
+                            <td className="py-2 px-4 border-b text-center border-r">{user.specialisation}</td>
+                            <td className="py-2 px-4 border-b text-center border-r">{user.email}</td>
+                            <td className="py-2 px-4 border-b text-center border-r">{user.role}</td>
                             <td>
-                                <button onClick={() => handleDeleteButton(user.id)}>
+                                <button className="global-button" onClick={() => handleDeleteButton(user.id)}>
                                     🗑️</button>
                             </td>
                         </tr>
@@ -65,12 +68,15 @@ const UsersOverviewTable: React.FC<Props> = ({ users }: Props) => {
             {showConfirmation && (
                             <>
                                 <p>Are you sure you want to delete this user?</p>
-                                <button onClick={handleDeleteConfirm}>Confirm</button>
-                                <button onClick={handleDeleteCancel}>Cancel</button>
+                                <button className="global-button" onClick={handleDeleteConfirm}>Confirm</button>
+                                <button className="global-button" onClick={handleDeleteCancel}>Cancel</button>
                             </>
                         )}
-            <p>{statusMessage}</p>
+            <p className=' text-red-600'>{statusMessage}</p>
+            </div>
+        </div>
         </>
+
     );
 };
 

@@ -57,9 +57,10 @@ return (
     <Head>
                 <title>{t('app.title')}</title>
     </Head>
+    <div className="bg-gray-100 min-h-screen">
     <Header />
     <main>
-        <h1>{t('projects.title')}</h1>
+        <h1 className='bg-gray-100 text-center font-semibold text-3xl'>{t('projects.title')}</h1>
         {statusMessage && <p>{statusMessage}</p>}
         {error && <p>{error}</p>}
         {isLoading && <p>{t('projects.loading')}</p>}
@@ -70,6 +71,8 @@ return (
             {data && <AddProject />}
         </section>
     </main>
+
+    </div>
     
     
     </>

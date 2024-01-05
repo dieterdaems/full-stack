@@ -31,17 +31,19 @@ const UserLogin: React.FC = () => {
             <Head>
                 <title>Login</title>
             </Head>
+            <div className="bg-gray-100 min-h-screen">
             <Header />
             <main>
                 {!loading && (
                     <>
-                        <h1>Login</h1>
+                        <h1 className='bg-gray-100 text-center font-semibold text-3xl'>Login</h1>
                         <section>
                             {<UserLoginForm />}
                         </section>
                     </>
                 )}
             </main>
+            </div>
         </>
     )
 }

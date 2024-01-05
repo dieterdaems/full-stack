@@ -15,6 +15,7 @@ const AddProject: React.FC = () => {
     const [errorMessage, setErrorMessage] = useState('');
 
     const validate = () => {
+        setErrorMessage('');
         if (name === "" || name.trim() === "") {
             setErrorMessage("Name is required\n");
             return false;
@@ -48,16 +49,43 @@ const AddProject: React.FC = () => {
 
     return (
         <>  
-        {!button && <button onClick={(e) => setButton(!button)}>{t('projects.new')}</button>}
-        {button && <button onClick={(e) => setButton(!button)}>{t('projects.cancel')}</button>}
-        {button && <form onSubmit={handleSubmit}>
-            <label htmlFor="name">{t('projects.name')}</label>
-            <input type="text" id="name" onChange={(e) => setName(e.target.value)} />
-            <label htmlFor="id">Team Id</label>
-            <input type="text" id="id" onChange={(e) => setTeamId(parseInt(e.target.value))} />
-            <button type='submit'>{t('projects.submit')}</button>
+        <div className="bg-gray-100 flex items-center justify-center">
+
+        <div className="container mx-auto my-8" >
+        <div className="flex justify-center">
+            {!button && <button className="global-button"
+                onClick={(e) => setButton(!button)}>{t('projects.new')}</button>}
+        </div>
+        <div className="flex justify-center">
+            {button && <button className="global-button"
+                onClick={(e) => {setButton(!button); setErrorMessage('')}}>{t('projects.cancel')}</button>}
+        </div>
+        {button && <form className="mt-4 flex flex-col items-center" onSubmit={handleSubmit}>
+            <div className=" bg-gray-100 p-4 rounded-lg">
+                <div className="relative bg-inherit mt-4">
+                    <input className="global-input"
+                    type="text" id="name" onChange={(e) => setName(e.target.value)} />
+                    <label className="global-label"
+                    htmlFor="name">{t('projects.name')}</label>
+                </div>
+            </div>
+            <div className="bg-gray-100 p-4 rounded-lg">
+                <div className="relative bg-inherit mt-4">
+            <label className="global-label"
+            htmlFor="teamid">Team Id</label>
+            <input className="global-input"
+            type="text" id="teamid" onChange={(e) => setTeamId(parseInt(e.target.value))} />
+            </div>
+            </div>
+        <div className="flex justify-center">
+            <button className="global-button"
+            type='submit'>{t('projects.submit')}</button>
+        </div>
         </form>}
+        {button && <p>{errorMessage}</p>}
         {errorMessage && <p>{errorMessage}</p>}
+        </div>
+        </div>
         </>
     );
 }

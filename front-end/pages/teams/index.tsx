@@ -63,18 +63,20 @@ const Teams: React.FC = () => {
             <Head>
                 <title>Teams</title>
             </Head>
+            <div className="bg-gray-100 min-h-screen">
             <Header />
             <main>
                 <p>{errorMessage}</p>
                 <p>{authError}</p>
                 {data && currentTeamsData && (
                     <>
-                        <h1>Teams</h1>
+                        <h1 className='bg-gray-100 text-center font-semibold text-3xl'>Teams</h1>
                         {<TeamsOverviewTable teams={data} currentTeams={currentTeamsData} />}
                     </>
                 )}
                 {!data && !errorMessage && !authError && <p>Loading...</p>}
             </main>
+            </div>
         </>
     )
 };

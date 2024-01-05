@@ -42,16 +42,20 @@ const Tasks: React.FC = () => {
             <Head>
                 <title>{t('app.title')}</title>
             </Head>
+            <div className="bg-gray-100 min-h-screen">
             <Header />
             <main>
-                <h1>{t('tasks.title')}</h1>
+                <h1 className='bg-gray-100 text-center font-semibold text-3xl'>{t('tasks.title')}</h1>
                 {error && <p>{error}</p>}
                 {isLoading && <p>{t('tasks.loading')}</p>}
                 <section>
                     {data && (<TasksOverviewTable tasks={data} />)}
                 </section>
-                <button onClick={() => router.push('/projects/')}>{t('tasks.return')}</button>
+                <div className="bg-gray-100 flex items-center justify-center">
+                <button className="global-button" onClick={() => router.push('/projects/')}>{t('tasks.return')}</button>
+                </div>
             </main>
+            </div>
 
 
         </>

@@ -40,13 +40,14 @@ const Users: React.FC = () => {
             <Head>
                 <title>Users</title>
             </Head>
+            <div className="bg-gray-100 min-h-screen">
             <Header />
             <main>
                 <p>{authError}</p>
                 <p>{statusMessage}</p>
                 {data && (
                     <>
-                        <h1>Users</h1>
+                        <h1 className='bg-gray-100 text-center font-semibold text-3xl'>Users</h1>
                         <section>
                             {<UsersOverviewTable users={data} />}
                         </section>
@@ -54,6 +55,7 @@ const Users: React.FC = () => {
                 )}
                 {!data && !statusMessage && !authError && <p>Loading...</p>}
             </main>
+            </div>
         </>
     );
 }

@@ -54,35 +54,44 @@ function UserLogin() {
 
   return (
     <>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="email">Email</label>
-          <input id="email"
+    <div className="bg-gray-100 flex items-center justify-center">
+
+    <div className="container mx-auto my-8" >
+      <form className="mt-4 flex flex-col items-center" onSubmit={handleSubmit}>
+      <div className=" bg-gray-100 p-4 rounded-lg">
+          <div className="relative bg-inherit mt-4">
+          <label className="global-label" htmlFor="email">Email</label>
+          <input className="global-input" id="email"
             type="email"
             name="email"
             placeholder="jan.janssens@example.com"
             onChange={(event) => setEmail(event.target.value)}
             required
           />
+          </div>
         </div>
-        <div >
-          <label htmlFor="password">Password</label>
-          <input id="password"
+        <div className=" bg-gray-100 p-4 rounded-lg">
+          <div className="relative bg-inherit mt-4">
+          <label className="global-label" htmlFor="password">Password</label>
+          <input className="global-input" id="password"
             type={showPassword ? "text" : "password"}
             name="password"
             placeholder="********"
             onChange={(event) => setPassword(event.target.value)}
             required
           />
-          <button type="button" onClick={togglePasswordVisibility}>
+          <button className="global-button" type="button" onClick={togglePasswordVisibility}>
             👁️
           </button>
+          </div>
         </div>
-        <button type="submit">Log in</button>
+        <button className="global-button" type="submit">Log in</button>
       </form>
       {statusMessage && (
-        <p> {statusMessage} </p>
+        <p className=" text-red-500"> {statusMessage} </p>
       )}
+    </div>
+    </div>
     </>
   );
 }
