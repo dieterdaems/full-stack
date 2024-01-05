@@ -71,6 +71,9 @@ const EditProfileForm: React.FC<Props> = ({ user }: Props) => {
 
     return (
         <>
+        <div className="bg-gray-100 flex items-center justify-center">
+
+        <div className="container mx-auto my-8" >
             <form className="mt-4 flex flex-col items-center" onSubmit={handleSubmit}>
 
                 <div className=" bg-gray-100 p-4 rounded-lg">
@@ -104,6 +107,8 @@ const EditProfileForm: React.FC<Props> = ({ user }: Props) => {
             <div>
             <p className=" text-red-500">{errorMessage}</p>
             </div>
+        </div>
+        </div>
         </>
     );
 }
