@@ -23,7 +23,7 @@ const Projects: React.FC = () => {
         const auth = await UserService.getAuth();
         if(auth) {
             const role = sessionStorage.getItem("role");
-            if (role == "admin") {
+            if (role == "91fb3f8394dead2470aaf953e1bed9d9abf34a41f65ac666cff414ca229245b8") {
                 const response = await ProjectService.getAll();
                 const projects = await response.json();
                 return projects;
@@ -37,8 +37,8 @@ const Projects: React.FC = () => {
             }
         }
         else {
-            //TODO add translation
-            setStatusMessage("You are not logged in!");
+            const reply = t('notLoggedIn')
+            setStatusMessage(reply);
            return
         }
     }

@@ -30,6 +30,11 @@ const teamRouter = express.Router();
  *      id:
  *       type: number
  *       format: int64
+ *   TeamCreateInput:
+ *    type: object
+ *    properties:
+ *      name:
+ *        type: string
 */
 
 
@@ -122,7 +127,7 @@ teamRouter.get('/:id', async (req: Request, res: Response, next: NextFunction) =
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/TeamInput'
+ *             $ref: '#/components/schemas/TeamCreateInput'
  *     responses:
  *       201:
  *         description: Successful response with the created team.

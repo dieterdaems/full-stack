@@ -1,8 +1,6 @@
-import { Project } from "@prisma/client";
 import { TaskInput } from "../../types";
 import prisma from "../../util/init-db";
 import { Task } from "../model/task";
-
 
 const getAllTasks = async (): Promise<Task[]> => {
     try {
@@ -11,20 +9,18 @@ const getAllTasks = async (): Promise<Task[]> => {
                 include: {
                     project: {
                         include: {
-                            team: {
-                                include: {
-                                    users: true
-                                }
-                            }
+                            team: true
                         }
-                    
+                    },
+                    user: {
+                        include: {
+                            teams: true
+                        }
                     }
                 }
             }
         );
-        if (!tasksPrisma) throw new Error(`No tasks found.`);
-        const tasks = tasksPrisma.map((taskPrisma) => Task.from(taskPrisma));
-        return tasks;
+        return tasksPrisma.map((taskPrisma) => Task.from(taskPrisma));
     }
     catch (error) {
         console.log(error);
@@ -34,50 +30,21 @@ const getAllTasks = async (): Promise<Task[]> => {
 const getTaskById = async (id: number): Promise<Task> => {
     try {
         const taskPrisma = await prisma.task.findUnique({
-             where: { id: id },
-             include: {
-                    project: {
-                        include: {
-                            team: {
-                                include: {
-                                    users: true
-                                }
-                            }
-                        }
-                    }
-              }
-            });
-        if (!taskPrisma) throw new Error(`Task with id ${id} does not exist.`);
-        const task = Task.from(taskPrisma);
-        return task;
-    }
-    catch (error) {
-        console.log(error);
-        throw new Error("Database error. Check logs for more details.");
-    }
-}
-
-const createTask = async ({name, description, deadline, project, completed}: Task): Promise<Task> => {
-    try {
-        const newTask = new Task({name, description, deadline, project});
-        const taskPrisma = await prisma.task.create({
-             data: { name, 
-                     description, 
-                     deadline, 
-                     completed,
-                        project: { connect: { id: project.id } }
-                    },
-                include: {project: {
+            where: { id },
+            include: {
+                project: {
                     include: {
-                        team: {
-                            include: {
-                                users: true
-                            }
-                        }
+                        team: true
                     }
-                }} });
-        const task = Task.from(taskPrisma);
-        return task;
+                },
+                user: {
+                    include: {
+                        teams: true
+                    }
+                }
+            }
+        });
+        return taskPrisma ? Task.from(taskPrisma) : null;
     }
     catch (error) {
         console.log(error);
@@ -85,23 +52,57 @@ const createTask = async ({name, description, deadline, project, completed}: Tas
     }
 }
 
-const updateTask = async ({name, id, description, deadline, completed}: TaskInput): Promise<Task> => {
+const createTask = async ({ name, description, deadline, projectId, userId }: TaskInput): Promise<Task> => {
     try {
-        const newTask = new Task({name, id, description, deadline, completed});
-        const taskPrisma = await prisma.task.update({ 
+        const taskPrisma = await prisma.task.create({
+            data: {
+                name,
+                description,
+                deadline,
+                completed: false,
+                project: { connect: { id: projectId } },
+                user: { connect: { id: userId } }
+            },
+            include: {
+                project: {
+                    include: {
+                        team: true
+                    }
+                },
+                user: {
+                    include: {
+                        teams: true
+                    }
+                }
+            }
+        });
+        return Task.from(taskPrisma);
+    }
+    catch (error) {
+        console.log(error);
+        throw new Error("Database error. Check logs for more details.");
+    }
+}
+
+const updateTask = async ({ name, id, description, deadline, completed }: TaskInput): Promise<Task> => {
+    try {
+        const taskPrisma = await prisma.task.update({
             where: { id: id },
-             data: { name, description, deadline, completed },
-             include: {project: {
-                include: {
-                    team: {
-                        include: {
-                            users: true
-                        }
+            data: { name, description, deadline, completed },
+            include: {
+                project: {
+                    include: {
+                        team: true
+                    }
+                },
+                user: {
+                    include: {
+                        teams: true
                     }
                 }
-            }} });
-        const task = Task.from(taskPrisma);
-        return task;
+            }
+        });
+        return Task.from(taskPrisma);
     }
     catch (error) {
         console.log(error);
@@ -109,35 +110,25 @@ const updateTask = async ({name, id, description, deadline, completed}: TaskInpu
     }
 }
 
-// const updateTask = async ({name, id, description, deadline}: TaskInput): Promise<Task> => {
-//     try {
-//         const newTask = new Task({name, id, description, deadline});
-//         const taskPrisma = await prisma.task.update({ where: { id: id },
-//              data: { name, description, deadline },
-//              include: {project: true} });
-//         const task = Task.from(taskPrisma);
-//         return task;
-//     }
-//     catch (error) {
-//         throw new Error(error);
-//     }
-// }
 
-const getTaskByProject = async (projectId: number): Promise<Task[]> => {
+const getTasksByProjectId = async (projectId: number): Promise<Task[]> => {
     try {
-        const tasksPrisma = await prisma.task.findMany({ where: { projectId: projectId },
-             include: {project: {
-                include: {
-                    team: {
-                        include: {
-                            users: true
-                        }
+        const tasksPrisma = await prisma.task.findMany({
+            where: { projectId: projectId },
+            include: {
+                project: {
+                    include: {
+                        team: true
+                    }
+                },
+                user: {
+                    include: {
+                        teams: true
                     }
                 }
-            }} });
-        if (!tasksPrisma) throw new Error(`No tasks found.`);
-        const tasks = tasksPrisma.map((taskPrisma) => Task.from(taskPrisma));
-        return tasks;
+            }
+        });
+        return tasksPrisma.map((taskPrisma) => Task.from(taskPrisma));
     }
     catch (error) {
         console.log(error);
@@ -147,19 +138,94 @@ const getTaskByProject = async (projectId: number): Promise<Task[]> => {
 
 const deleteById = async (id: number): Promise<Task> => {
     try {
-        const taskPrisma = await prisma.task.delete({ where: { id: id },
-             include: {project: {
-                include: {
-                    team: {
-                        include: {
-                            users: true
-                        }
+        const taskPrisma = await prisma.task.delete({
+            where: { id: id },
+            include: {
+                project: {
+                    include: {
+                        team: true
+                    }
+                }, user: {
+                    include: {
+                        teams: true
                     }
                 }
-            }} });
-        if (!taskPrisma) throw new Error(`Task with id ${id} does not exist.`);
-        const task = Task.from(taskPrisma);
-        return task;
+            }
+        });
+        return Task.from(taskPrisma);
+    }
+    catch (error) {
+        console.log(error);
+        throw new Error("Database error. Check logs for more details.");
+    }
+}
+
+const completeTask = async (id: number): Promise<Task> => {
+    try {
+        const taskPrisma = await prisma.task.update({
+            where: { id: id },
+            data: { completed: true },
+            include: {
+                project: {
+                    include: {
+                        team: true
+                    }
+                }, user: {
+                    include: {
+                        teams: true
+                    }
+                }
+            }
+        });
+        return Task.from(taskPrisma);
+    }
+    catch (error) {
+        console.log(error);
+        throw new Error("Database error. Check logs for more details.");
+    }
+}
+
+const getTasksByUserId = async (userId: number): Promise<Task[]> => {
+    try {
+        const tasksPrisma = await prisma.task.findMany({
+            where: { userId: userId },
+            include: {
+                project: {
+                    include: {
+                        team: true
+                    }
+                }, user: {
+                    include: {
+                        teams: true
+                    }
+                }
+            }
+        });
+        return tasksPrisma.map((taskPrisma) => Task.from(taskPrisma));
+    }
+    catch (error) {
+        console.log(error);
+        throw new Error("Database error. Check logs for more details.");
+    }
+}
+
+const getTasksByProjectIdAndUserId = async (projectId: number, userId: number): Promise<Task[]> => {
+    try {
+        const tasksPrisma = await prisma.task.findMany({
+            where: { projectId: projectId, userId: userId },
+            include: {
+                project: {
+                    include: {
+                        team: true
+                    }
+                }, user: {
+                    include: {
+                        teams: true
+                    }
+                }
+            }
+        });
+        return tasksPrisma.map((taskPrisma) => Task.from(taskPrisma));
     }
     catch (error) {
         console.log(error);
@@ -168,5 +234,4 @@ const deleteById = async (id: number): Promise<Task> => {
 }
 
 
-
-export default { getAllTasks, getTaskById, getTaskByProject, createTask, deleteById, updateTask };
+export default { getAllTasks, getTaskById, getTasksByProjectId, createTask, deleteById, updateTask, completeTask, getTasksByUserId, getTasksByProjectIdAndUserId };

@@ -11,6 +11,7 @@ const Teams: React.FC = () => {
 
     const [errorMessage, setErrorMessage] = useState<string>("");
     const [authError, setAuthError] = useState<string>("");
+    const [statusMessage, setStatusMessage] = useState<string>("");
 
     const getAllTeams = async () => {
         setErrorMessage("");
@@ -28,7 +29,7 @@ const Teams: React.FC = () => {
     }
     const getUserTeams = async () => {
         setStatusMessage("")
-        if (await auth()) {
+        if (await UserService.getAuth()) {
         const id = sessionStorage.getItem("loggedUser");
         const response = await UserService.getById(id);
         if (!response.ok) {
@@ -42,6 +43,7 @@ const Teams: React.FC = () => {
             return user.teams;
         }
     };
+}
 
 
     const { data: currentTeamsData, error: currentTeamsError } = useSWR('currentTeams', getUserTeams);

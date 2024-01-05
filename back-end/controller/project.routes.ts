@@ -1,6 +1,7 @@
 import projectService from "../service/project.service";
-import express, { Request, Response } from 'express';
+import express, { NextFunction, Request, Response } from 'express';
 import { ProjectInput } from "../types";
+import { ne } from "@faker-js/faker";
 
 const projectRouter = express.Router();
 
@@ -68,13 +69,62 @@ const projectRouter = express.Router();
  */
 
 
-projectRouter.get('/', async (req: Request, res: Response) => {
+projectRouter.get('/', async (req: Request & {auth: any}, res: Response, next: NextFunction) => {
     try {
-        const projects = await projectService.getAllProjects();
+        const currentUser = req.auth.id;
+        const role = req.auth.role;
+        const projects = await projectService.getAllProjects({id: 0, role, currentUser});
         res.status(200).json(projects);
     }
     catch (error) {
-        res.status(400).json({ status: 'error', errorMessage: error.message });
+        next(error);
+    }
+});
+
+
+/**
+ * @swagger
+ * /projects/user/{id}:
+ *   get:
+ *     summary: Get a list of all projects by user ID.
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: ID of the user to retrieve projects from.
+ *         schema:
+ *           type: integer
+ *     responses:
+ *       200:
+ *         description: Successful response with a list of projects.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Project'
+ *       400:
+ *         description: Bad request with an error message.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                 errorMessage:
+ *                   type: string
+ */
+projectRouter.get('/user/:id', async (req: Request & {auth: any}, res: Response, next: NextFunction) => {
+    try {
+        const currentUser = req.auth.id;
+        const role = req.auth.role;
+        const id = parseInt(req.params.id);
+        const projects = await projectService.getAllProjects({id, role, currentUser});
+        res.status(200).json(projects);
+    }
+    catch (error) {
+        next(error);
     }
 });
 
@@ -110,9 +160,12 @@ projectRouter.get('/', async (req: Request, res: Response) => {
  *                   type: string
  */
 
-projectRouter.get('/:id', async (req: Request, res: Response) => {
+projectRouter.get('/:id', async (req: Request & {auth: any}, res: Response, next: NextFunction) => {
     try {
-        const project = await projectService.getProjectById(parseInt(req.params.id));
+        const currentUser = req.auth.id;
+        const role = req.auth.role;
+        const id = parseInt(req.params.id);
+        const project = await projectService.getProjectById({id, role, currentUser});
         res.status(200).json(project);
     }
     catch (error) {
@@ -152,9 +205,10 @@ projectRouter.get('/:id', async (req: Request, res: Response) => {
  */
 
 
-projectRouter.post('/', async (req: Request, res: Response) => {
+projectRouter.post('/', async (req: Request & {auth: any}, res: Response, next: NextFunction) => {
     try {
-        // console.log(req.body);
+        const currentUser = req.auth.id;
+        const role = req.auth.role;
         const project = <ProjectInput>req.body;
         const newProject = await projectService.createProject(project);
         res.status(200).json(newProject);
@@ -196,9 +250,12 @@ projectRouter.post('/', async (req: Request, res: Response) => {
  *                 errorMessage:
  *                   type: string
  */
-projectRouter.delete('/:id', async (req: Request, res: Response) => {
+projectRouter.delete('/:id', async (req: Request & {auth: any}, res: Response, next: NextFunction) => {
     try {
-        const project = await projectService.deleteProject(parseInt(req.params.id));
+        const currentUser = req.auth.id;
+        const role = req.auth.role;
+        const id = parseInt(req.params.id);
+        const project = await projectService.deleteProject({id, role});
         res.status(200).json(project);
     }
     catch (error) {
@@ -206,49 +263,51 @@ projectRouter.delete('/:id', async (req: Request, res: Response) => {
     }
 });
 
-/**
- * @swagger
- * /projects/user/{id}:
- *   get:
- *     summary: Get a list of all projects for a specific user.
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         description: ID of the user to retrieve the tasks off.
- *         schema:
- *           type: integer
- *     responses:
- *       200:
- *         description: Successful response with a list of Projects.
- *         content:
- *           application/json:
- *             schema:
- *               type: array
- *               items:
- *                 $ref: '#/components/schemas/Project'
- *       400:
- *         description: Bad request with an error message.
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 status:
- *                   type: string
- *                 errorMessage:
- *                   type: string
- */
+// /**
+//  * @swagger
+//  * /projects/user/{id}:
+//  *   get:
+//  *     summary: Get a list of all projects for a specific user.
+//  *     parameters:
+//  *       - in: path
+//  *         name: id
+//  *         required: true
+//  *         description: ID of the user to retrieve the tasks off.
+//  *         schema:
+//  *           type: integer
+//  *     responses:
+//  *       200:
+//  *         description: Successful response with a list of Projects.
+//  *         content:
+//  *           application/json:
+//  *             schema:
+//  *               type: array
+//  *               items:
+//  *                 $ref: '#/components/schemas/Project'
+//  *       400:
+//  *         description: Bad request with an error message.
+//  *         content:
+//  *           application/json:
+//  *             schema:
+//  *               type: object
+//  *               properties:
+//  *                 status:
+//  *                   type: string
+//  *                 errorMessage:
+//  *                   type: string
+//  */
 
-projectRouter.get('/user/:id', async (req: Request, res: Response) => {
-    try {
-        const projects = await projectService.getProjectsByUserId(parseInt(req.params.id));
-        res.status(200).json(projects);
-    }
-    catch (error) {
-        res.status(400).json({ status: 'error', errorMessage: error.message });
-    }
-});
+// projectRouter.get('/user/:id', async (req: Request & {auth: any}, res: Response, next: NextFunction) => {
+//     try {
+//         const currentUser = req.auth.id;
+//         const role = req.auth.role;
+//         const projects = await projectService.getAllProjectsByUserId(parseInt(req.params.id));
+//         res.status(200).json(projects);
+//     }
+//     catch (error) {
+//         res.status(400).json({ status: 'error', errorMessage: error.message });
+//     }
+// });
 
 
 

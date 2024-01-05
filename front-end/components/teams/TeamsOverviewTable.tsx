@@ -115,12 +115,14 @@ const TeamsOverviewTable: React.FC<Props> = ({ teams, currentTeams }: Props) => 
             <table className="mx-auto bg-white border border-gray-300">
                 <thead>
                     <tr>
+                        <th className="py-2 px-4 border-b border-r">Id</th>
                         <th className="py-2 px-4 border-b border-r">Name</th>
                     </tr>
                 </thead>
                 <tbody>
                     {teams && teams.map((team, index) => (
                         <tr key={index}>
+                            <td className="py-2 px-4 border-b border-r">{team.id}</td>
                             <td className="py-2 px-4 border-b border-r">{team.name}</td>
                             <td>
                                 {role === '91fb3f8394dead2470aaf953e1bed9d9abf34a41f65ac666cff414ca229245b8' ? (

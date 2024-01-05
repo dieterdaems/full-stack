@@ -32,7 +32,7 @@ const getTeamByName = async (name: string): Promise<Team> => {
     try {
         const teamPrisma = await prisma.team.findUnique({
             where :
-                { name: name.trim().toLowerCase()},
+                { name: name},
         });
         return teamPrisma ? Team.from(teamPrisma) : undefined;
     }
@@ -46,7 +46,7 @@ const createTeam = async ({name}: Team): Promise<Team> => {
     try {
         const teamPrisma = await prisma.team.create({
             data: {
-                name: name.trim().toLowerCase(),
+                name: name,
             },
         });
         const team = Team.from(teamPrisma);

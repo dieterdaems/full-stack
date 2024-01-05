@@ -1,21 +1,26 @@
 import { useEffect, useState } from "react";
 import Language from "./language/Language";
+import { useRouter } from "next/router";
 
 const Header: React.FC = () => {
     const [loggedIn, setLoggedIn] = useState<string | null>(null);
     const [role, setRole] = useState<string | null>(null);
+
+    const router = useRouter();
  
     const handleLogout = () => {
         sessionStorage.removeItem("loggedUser");
         sessionStorage.removeItem("token");
         sessionStorage.removeItem("role");
         setLoggedIn(null);
+        router.push("/");
+
     };
 
     useEffect(() => {
         setLoggedIn(sessionStorage.getItem("loggedUser"));
         setRole(sessionStorage.getItem("role"));
-    }, []);
+    }, [loggedIn]);
 
     return (
         <header className="lg:px-16 px-4 flex flex-wrap items-center py-4 shadow-md justify-center bg-gray-100">
@@ -27,7 +32,7 @@ const Header: React.FC = () => {
                     <li>
                         <a className="md:p-4 py-3 px-0 block" href="/">Home</a>
                     </li>
-                    {loggedIn && (role === "admin") && (
+                    {loggedIn && (role === "91fb3f8394dead2470aaf953e1bed9d9abf34a41f65ac666cff414ca229245b8") && (
                     <li>
                         <a className="md:p-4 py-3 px-0 block" href="/users">Users</a>
                     </li>
@@ -42,14 +47,14 @@ const Header: React.FC = () => {
                         <a className="md:p-4 py-3 px-0 block" href="/projects">Projects</a>
                     </li>
                     )}
-                    {loggedIn && (
+                    {/* {loggedIn && (
                     <li>
                         <a className="md:p-4 py-3 px-0 block" href="/tasks">Tasks</a>
                     </li>
-                    )}
+                    )} */}
                     {loggedIn && (
                         <li>
-                            <a className="md:p-4 py-3 px-0 block" href={"/users/profile/" + loggedIn}>Profile</a>
+                            <a className="md:p-4 py-3 px-0 block" href={"/users/profile/"}>Profile</a>
                         </li>
                     )}
                     {loggedIn && (

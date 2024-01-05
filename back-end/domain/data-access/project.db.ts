@@ -1,45 +1,31 @@
 import { Project } from "../model/project";
 import prisma from "../../util/init-db";
 
-
 const getAllProjects = async (): Promise<Project[]> => {
     try {
         const projectsPrisma = await prisma.project.findMany(
             {
                 include: {
-                    tasks: true,
-                    team: {
-                        include: {
-                            users: true
-                        }
-                    }
+                    team: true
                 }
             }
         );
-
-        const projects = projectsPrisma.map((projectPrisma) => Project.from(projectPrisma));
-        return projects;
+        return projectsPrisma.map((projectPrisma) => Project.from(projectPrisma));
     }
     catch (error) {
         console.log(error);
         throw new Error("Database error. Check logs for more details.");
     }
-    }
+}
 const getProjectById = async (id: number): Promise<Project> => {
     try {
         const projectPrisma = await prisma.project.findUnique({
             where: { id: id },
             include: {
-                team: {
-                    include: {
-                        users: true
-                    }
-                },
-                tasks: true
+                team: true
             }
         });
-        const project = Project.from(projectPrisma);
-        return project;
+        return projectPrisma ? Project.from(projectPrisma) : null;
     }
     catch (error) {
         console.log(error);
@@ -60,16 +46,10 @@ const createProject = async (project: Project): Promise<Project> => {
                 }
             };
         }
-        // console.log(data);
         const newProject = await prisma.project.create({
             data,
             include: {
-                team: {
-                    include: {
-                        users: true
-                    }
-                },
-                tasks: true
+                team: true
             }
         });
         return Project.from(newProject);
@@ -86,12 +66,7 @@ const deleteById = async (id: number): Promise<Project> => {
         const projectPrisma = await prisma.project.delete({
             where: { id: id },
             include: {
-                tasks: true,
-                team: {
-                    include: {
-                        users: true
-                    }
-                }
+                team: true
             }
         });
         return Project.from(projectPrisma);
@@ -102,17 +77,20 @@ const deleteById = async (id: number): Promise<Project> => {
     }
 }
 
-const getProjectByTeamId = async (teamId: number): Promise<Project[]> => {
+const getAllProjectsByUserId = async (userId: number): Promise<Project[]> => {
     try {
         const projectsPrisma = await prisma.project.findMany({
-            where: { teamId: teamId },
-            include: {
+            where: {
                 team: {
-                    include: {
-                        users: true
+                    users: {
+                        some: {
+                            id: userId
+                        }
                     }
-                },
-                tasks: true
+                }
+            },
+            include: {
+                team: true
             }
         });
         const projects = projectsPrisma.map((projectPrisma) => Project.from(projectPrisma));
@@ -124,5 +102,30 @@ const getProjectByTeamId = async (teamId: number): Promise<Project[]> => {
     }
 }
 
+const getProjectByIdAndUserId = async (id: number, userId: number): Promise<Project> => {
+    try {
+        const projectPrisma = await prisma.project.findFirst({
+            where: {
+                id,
+                team:
+                {
+                    users: {
+                        some: {
+                            id: userId
+                        }
+                    }
+                }
+            },
+            include: {
+                team: true
+            }
+        });
+        return projectPrisma ? Project.from(projectPrisma) : null;
+    }
+    catch (error) {
+        console.log(error);
+        throw new Error("Database error. Check logs for more details.");
+    }
+};
 
-export default { getAllProjects, getProjectById, createProject, deleteById, getProjectByTeamId };
+export default { getAllProjects, getProjectById, createProject, deleteById, getAllProjectsByUserId, getProjectByIdAndUserId };
