@@ -77,7 +77,7 @@ const EditProfileForm: React.FC<Props> = ({ user }: Props) => {
                     <div className="relative bg-inherit mt-4">
                     <label htmlFor="name">Name</label>
                     <input type="text" id="name" value={name} onChange={(e) => setName(e.target.value)} />
-                    {nameError}
+                    <p className=" text-red-500">{nameError}</p>
                     </div>
                 </div>
 
@@ -85,7 +85,7 @@ const EditProfileForm: React.FC<Props> = ({ user }: Props) => {
                     <div className="relative bg-inherit mt-4">
                     <label htmlFor="email">Email</label>
                     <input type="text" id="email" value={email} onChange={(e) => setEmail(e.target.value)} />
-                    {emailError}
+                    <p className=" text-red-500">{emailError}</p>
                     </div>
                 </div>
 
@@ -93,7 +93,7 @@ const EditProfileForm: React.FC<Props> = ({ user }: Props) => {
                     <div className="relative bg-inherit mt-4">
                     <label htmlFor="specialisation">Specialisation</label>
                     <input type="text" id="specialisation" name={specialisation} value={specialisation} onChange={(e) => setSpecialisation(e.target.value)} />
-                    {specialisationError}
+                    <p className=" text-red-500">{specialisationError}</p>
                     </div>
                 </div>
 
@@ -102,7 +102,7 @@ const EditProfileForm: React.FC<Props> = ({ user }: Props) => {
                 <button className="global-button" type="submit">Update</button>
             </form>
             <div>
-                {errorMessage}
+            <p className=" text-red-500">{errorMessage}</p>
             </div>
         </>
     );
