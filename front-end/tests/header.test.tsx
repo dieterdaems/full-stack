@@ -36,6 +36,9 @@ describe('Header', () => {
     sessionStorage.setItem('loggedUser', 'admin');
     sessionStorage.setItem('role', '91fb3f8394dead2470aaf953e1bed9d9abf34a41f65ac666cff414ca229245b8');
     render(<Header />);
+    //needs to be changed to:
+    // const users = t('header.users') // or whatever the key is that is used in common.json
+    // expect(screen.getByText(users)) // to test if t('header.users') can be added directly in here
     expect(screen.getByText('Users'))
     expect(screen.getByText('Teams'))
     expect(screen.getByText('Projects'))
