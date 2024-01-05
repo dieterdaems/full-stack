@@ -46,7 +46,8 @@
         "project": "Project",
         "confirmation": "Are you sure you want to delete this task?",
         "register": "Task Registration",
-        "noTasks": "No tasks found."
+        "noTasks": "No tasks found.",
+        "completeConfirmation": "Are you sure you want to complete this task?"
     },
     "projects": {
         "title": "Projects",
