@@ -93,38 +93,51 @@ const UserRegistrationForm: React.FC = () => {
 
     return (
         <>
-            <form onSubmit={handleSubmit}>
+        <div className="bg-gray-100 flex items-center justify-center">
 
-                <div>
-                    <label htmlFor="name">Name *</label>
-                    <input type="text" id="name" onChange={(e) => setName(e.target.value)} />
-                    {nameError}
+        <div className="container mx-auto my-8" >
+            <form className="mt-4 flex flex-col items-center" onSubmit={handleSubmit}>
+
+            <div className=" bg-gray-100 p-4 rounded-lg">
+                <div className="relative bg-inherit mt-4">
+                    <label className="global-label" htmlFor="name">Name *</label>
+                    <input className="global-input" type="text" id="name" onChange={(e) => setName(e.target.value)} />
+                    <p className=" text-red-500">{nameError}</p>
                 </div>
+            </div>
 
-                <div>
-                    <label htmlFor="email">Email *</label>
-                    <input type="text" id="email" onChange={(e) => setEmail(e.target.value)} />
-                    {emailError}
+            <div className=" bg-gray-100 p-4 rounded-lg">
+                <div className="relative bg-inherit mt-4">
+                    <label className="global-label" htmlFor="email">Email *</label>
+                    <input className="global-input" type="text" id="email" onChange={(e) => setEmail(e.target.value)} />
+                    <p className=" text-red-500">{emailError}</p>
                 </div>
+            </div>
 
-                <div>
-                    <label htmlFor="specialisation">Specialisation *</label>
-                    <input type="text" id="specialisation" onChange={(e) => setSpecialisation(e.target.value)} />
-                    {specialisationError}
+            <div className=" bg-gray-100 p-4 rounded-lg">
+                <div className="relative bg-inherit mt-4">
+                    <label className="global-label" htmlFor="specialisation">Specialisation *</label>
+                    <input className="global-input" type="text" id="specialisation" onChange={(e) => setSpecialisation(e.target.value)} />
+                    <p className=" text-red-500">{specialisationError}</p>
                 </div>
+            </div>
 
-                <div>
-                    <label htmlFor="password">Password *</label>
-                    <input type="text" id="password" onChange={(e) => setPassword(e.target.value)} />
-                    {passwordError}
+            <div className=" bg-gray-100 p-4 rounded-lg">
+                <div className="relative bg-inherit mt-4">
+                    <label className="global-label" htmlFor="password">Password *</label>
+                    <input className="global-input" type="text" id="password" onChange={(e) => setPassword(e.target.value)} />
+                    <p className=" text-red-500">{passwordError}</p>
                 </div>
+            </div>
 
 
-                <button type="submit">Register</button>
+                <button className="global-button" type="submit">Register</button>
             </form>
             <div>
-                <p>{statusMessage}</p>
+                <p className=" text-red-500">{statusMessage}</p>
             </div>
+        </div>
+        </div>
         </>
     );
 }
