@@ -163,7 +163,7 @@ const TeamsOverviewTable: React.FC<Props> = ({ teams, currentTeams }: Props) => 
                 </>
             )}
 
-
+            <div className="bg-gray-100 flex items-center justify-center">
             {showConfirmation && (
                 <>
                     <p>Are you sure you want to delete this team?</p>
@@ -171,7 +171,8 @@ const TeamsOverviewTable: React.FC<Props> = ({ teams, currentTeams }: Props) => 
                     <button className="global-button" onClick={(() => setShowConfirmation(false))}>Cancel</button>
                 </>
             )}
-            <p>{statusMessage}</p>
+            <p className=" mt-4">{statusMessage}</p>
+            </div>
         </div>
         </div>
         </>
