@@ -29,14 +29,14 @@ Authorization Error: if role is not admin or user is not part of project's team
 Application Error: if project does not exist
 */
 
-const getProjectById = async ({id,role,currentUser}): Promise<Project> => {
-    const project = await projectDb.getProjectById(id);
-    if (!project) throw new Error(`Project with id ${id} does not exist.`);
-    const user = await userDb.getUserById(currentUser);
-    const teamsId = user.teams.map((team) => team.id);
-    if (role !== 'admin' && !teamsId.some(teamId => teamId ===  id)) throw new UnauthorizedError('credentials_required', { message: 'You are not authorized to access this resource.' });
-    return project;
-};
+// const getProjectById = async ({id,role,currentUser}): Promise<Project> => {
+//     const project = await projectDb.getProjectById(id);
+//     if (!project) throw new Error(`Project with id ${id} does not exist.`);
+//     const user = await userDb.getUserById(currentUser);
+//     const teamsId = user.teams.map((team) => team.id);
+//     if (role !== 'admin' && !teamsId.some(teamId => teamId ===  id)) throw new UnauthorizedError('credentials_required', { message: 'You are not authorized to access this resource.' });
+//     return project;
+// };
 
 /*
 Parameters: project to be created
@@ -48,7 +48,7 @@ Application Error: if project with same id exists
 const createProject = async (projectin: ProjectInput): Promise<Project> => {
     const projects = await projectDb.getAllProjects();
     const existingProject = projects.find((project) => project.name === projectin.name);
-    if (existingProject) throw new Error(`Project with id ${existingProject.id} already exists.`);
+    if (existingProject) throw new Error(`Project with name ${existingProject.name} already exists.`);
     const teams = await teamDb.getAllTeams();
     const team = teams.find((team) => team.id === projectin.team.id);
     const newProject = new Project({name: projectin.name, team: team});
@@ -79,4 +79,4 @@ const deleteProject = async ({id,role}): Promise<Project> => {
 //     return projects;
 // }
 
-export default { getAllProjects, getProjectById, createProject, deleteProject, /*getAllProjectsByUserId*/ };
+export default { getAllProjects, /*getProjectById,*/ createProject, deleteProject, /*getAllProjectsByUserId*/ };

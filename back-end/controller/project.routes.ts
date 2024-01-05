@@ -160,18 +160,18 @@ projectRouter.get('/user/:id', async (req: Request & {auth: any}, res: Response,
  *                   type: string
  */
 
-projectRouter.get('/:id', async (req: Request & {auth: any}, res: Response, next: NextFunction) => {
-    try {
-        const currentUser = req.auth.id;
-        const role = req.auth.role;
-        const id = parseInt(req.params.id);
-        const project = await projectService.getProjectById({id, role, currentUser});
-        res.status(200).json(project);
-    }
-    catch (error) {
-        res.status(400).json({ status: 'error', errorMessage: error.message });
-    }
-});
+// projectRouter.get('/:id', async (req: Request & {auth: any}, res: Response, next: NextFunction) => {
+//     try {
+//         const currentUser = req.auth.id;
+//         const role = req.auth.role;
+//         const id = parseInt(req.params.id);
+//         const project = await projectService.getProjectById({id, role, currentUser});
+//         res.status(200).json(project);
+//     }
+//     catch (error) {
+//         res.status(400).json({ status: 'error', errorMessage: error.message });
+//     }
+// });
 
 /**
  * @swagger
