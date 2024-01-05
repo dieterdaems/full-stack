@@ -5,7 +5,7 @@ export class Team {
     readonly id?: number;
 
     constructor(team: {name: string, id? :number}) {
-        if (!team.name?.trim()) throw new Error('Name is required');
+        if (!team.name?.trim()) throw new Error('Team name is required');
         this.name = team.name;
         this.id = team.id;
     }

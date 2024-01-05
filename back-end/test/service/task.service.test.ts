@@ -1,13 +1,13 @@
 //getalltasks, createtask, deletebyid,gettaskbyprojectid
 
-import projectDb from "../domain/data-access/project.db";
-import taskDb from "../domain/data-access/task.db";
-import userDb from "../domain/data-access/user.db";
-import { Project } from "../domain/model/project";
-import { Task } from "../domain/model/task";
-import { Team } from "../domain/model/team";
-import { User } from "../domain/model/user";
-import taskService from "../service/task.service";
+import projectDb from "../../domain/data-access/project.db";
+import taskDb from "../../domain/data-access/task.db";
+import userDb from "../../domain/data-access/user.db";
+import { Project } from "../../domain/model/project";
+import { Task } from "../../domain/model/task";
+import { Team } from "../../domain/model/team";
+import { User } from "../../domain/model/user";
+import taskService from "../../service/task.service";
 
 const futureDate = new Date();
 futureDate.setDate(futureDate.getDate() + 7);

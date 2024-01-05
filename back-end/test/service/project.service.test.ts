@@ -1,13 +1,13 @@
 //getallprojects
 
 import { id } from "date-fns/locale";
-import projectDb from "../domain/data-access/project.db";
-import { Project } from "../domain/model/project";
-import { Team } from "../domain/model/team";
-import projectService from "../service/project.service";
-import { User } from "../domain/model/user";
-import userDb from "../domain/data-access/user.db";
-import taskDb from "../domain/data-access/task.db";
+import projectDb from "../../domain/data-access/project.db";
+import { Project } from "../../domain/model/project";
+import { Team } from "../../domain/model/team";
+import projectService from "../../service/project.service";
+import { User } from "../../domain/model/user";
+import userDb from "../../domain/data-access/user.db";
+import taskDb from "../../domain/data-access/task.db";
 
 const team = new Team({name: "team1", id: 1});
 const user = new User({id: 1, name: "user1", specialisation: "specialisation1", email: "email1@t.t", password: "password1", role: "user", teams: [team]});
