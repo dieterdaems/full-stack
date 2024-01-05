@@ -71,29 +71,35 @@ const EditProfileForm: React.FC<Props> = ({ user }: Props) => {
 
     return (
         <>
-            <form onSubmit={handleSubmit}>
+            <form className="mt-4 flex flex-col items-center" onSubmit={handleSubmit}>
 
-                <div>
+                <div className=" bg-gray-100 p-4 rounded-lg">
+                    <div className="relative bg-inherit mt-4">
                     <label htmlFor="name">Name</label>
                     <input type="text" id="name" value={name} onChange={(e) => setName(e.target.value)} />
                     {nameError}
+                    </div>
                 </div>
 
-                <div>
+                <div className=" bg-gray-100 p-4 rounded-lg">
+                    <div className="relative bg-inherit mt-4">
                     <label htmlFor="email">Email</label>
                     <input type="text" id="email" value={email} onChange={(e) => setEmail(e.target.value)} />
                     {emailError}
+                    </div>
                 </div>
 
-                <div>
+                <div className=" bg-gray-100 p-4 rounded-lg">
+                    <div className="relative bg-inherit mt-4">
                     <label htmlFor="specialisation">Specialisation</label>
                     <input type="text" id="specialisation" name={specialisation} value={specialisation} onChange={(e) => setSpecialisation(e.target.value)} />
                     {specialisationError}
+                    </div>
                 </div>
 
 
 
-                <button type="submit">Update</button>
+                <button className="global-button" type="submit">Update</button>
             </form>
             <div>
                 {errorMessage}
