@@ -24,8 +24,9 @@ Application Error: if task does not exist
 */
 const getTaskById = async ({id, currentUser, role}): Promise<Task> => {
     const task = await taskDb.getTaskById(parseInt(id));
-    if (role !== 'admin' && task?.user.id !== currentUser ) throw new UnauthorizedError('credentials_required', { message: 'You are not authorized to access this resource.' });
     if (!task) throw new Error(`Task with id ${id} does not exist.`);
+    const user = await userDb.getUserById(currentUser);
+    if (role !== 'admin' && !user.teams.map(team => team.id).includes(task?.project.team.id) ) throw new UnauthorizedError('credentials_required', { message: 'You are not authorized to access this resource.' });
     return task;
 };
 
@@ -56,8 +57,9 @@ Application Error: if task does not exist
 */
 const deleteById = async ({id, currentUser, role}): Promise<Task> => {
     const task = await taskDb.getTaskById(id);
-    if (role !== 'admin' && currentUser !== task?.user.id) throw new UnauthorizedError('credentials_required', { message: 'You are not authorized to delete this task.' });
     if (!task) throw new Error(`Task with id ${id} does not exist.`);
+    const user = await userDb.getUserById(currentUser);
+    if (role !== 'admin' && !user.teams.map(team => team.id).includes(task?.project.team.id)) throw new UnauthorizedError('credentials_required', { message: 'You are not authorized to delete this task.' });
     return taskDb.deleteById(id);
 }
 
@@ -69,9 +71,9 @@ Return: all tasks of given project, if role is admin
 const getTasksByProjectId = async ({id, currentUser, role}): Promise<Task[]> => {
     const tasks = await taskDb.getTasksByProjectId(id);
     if (role === 'admin') return tasks;
-    const projects = await projectService.getAllProjects({id: currentUser, role, currentUser});
+    const project = await projectDb.getProjectById(id);
     const user = await userDb.getUserById(currentUser);
-    if (role === 'user' && !user.teams.some(team => projects.some(project => project.team.id === team.id))) throw new UnauthorizedError('credentials_required', { message: 'You are not authorized to access this resource.' });
+    if (role === 'user' && !user.teams.map(team => team.id).includes(project?.team.id)) throw new UnauthorizedError('credentials_required', { message: 'You are not authorized to access this resource.' });
     return tasks;
 }
 
@@ -82,27 +84,29 @@ Authorization Error: if role is not admin or user is not owner of task
 Application Error: if deadline is in the past
                    if domain validation fails
 */
-const updateTask = async ({targetTaskId, updatedInfo, currentUser, role}): Promise<Task> => {
-    const task = await taskDb.getTaskById(targetTaskId);
-    if (role !== 'admin' && currentUser !== task?.user.id) throw new UnauthorizedError('credentials_required', { message: 'You are not authorized to update this task.' });
-    if (new Date(updatedInfo.deadline) < new Date()) throw new Error('Deadline must be in the future.');
-    const completed = updatedInfo.completed
-    const name = updatedInfo.name
-    const description = updatedInfo.description
-    const deadline = updatedInfo.deadline
-    const newTask = new Task({ name, description, deadline, completed }); // Domain validation
-    return taskDb.updateTask({id: targetTaskId, name, description, deadline, completed});
-}
+// const updateTask = async ({targetTaskId, updatedInfo, currentUser, role}): Promise<Task> => {
+//     const task = await taskDb.getTaskById(targetTaskId);
+//     if (role !== 'admin' && currentUser !== task?.user.id) throw new UnauthorizedError('credentials_required', { message: 'You are not authorized to update this task.' });
+//     if (new Date(updatedInfo.deadline) < new Date()) throw new Error('Deadline must be in the future.');
+//     const completed = updatedInfo.completed
+//     const name = updatedInfo.name
+//     const description = updatedInfo.description
+//     const deadline = updatedInfo.deadline
+//     const newTask = new Task({ name, description, deadline, completed }); // Domain validation
+//     return taskDb.updateTask({id: targetTaskId, name, description, deadline, completed});
+// }
 
 /*
 Parameters: id of task to be completed, id of logged in user
 Return: completed task
-Authorization Error: if user is not owner of task
+Authorization Error: if user is not part of the team that the task's project belongs to
 */
 const completeTask = async ({id, currentUser}): Promise<Task> => {
     const task = await taskDb.getTaskById(id);
-    if (currentUser !== task?.user.id) throw new UnauthorizedError('credentials_required', { message: 'You are not authorized to complete this task.' });
+    if (!task) throw new Error(`Task with id ${id} does not exist.`);
+    const user = await userDb.getUserById(currentUser);
+    if (!user.teams.map(team => team.id).includes(task?.project.team.id)) throw new UnauthorizedError('credentials_required', { message: 'You are not authorized to complete this task.' });
     return taskDb.completeTask(id);
 }
 
-export default { getAllTasks, getTaskById, getTasksByProjectId, createTask, deleteById, updateTask, completeTask };
+export default { getAllTasks, getTaskById, getTasksByProjectId, createTask, deleteById, /*updateTask,*/ completeTask };

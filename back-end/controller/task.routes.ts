@@ -270,18 +270,18 @@ taskRouter.post('/', async (req: Request & {auth: any}, res: Response, next: Nex
  *                   type: string
  */
 
-taskRouter.put('/:id', async (req: Request & {auth: any}, res: Response, next: NextFunction) => {
-    try {
-        const currentUser = req.auth.id;
-        const role = req.auth.role;
-        const task = <TaskInput>req.body;
-        const response = await taskService.updateTask({targetTaskId: parseInt(req.params.id), updatedInfo: task, currentUser, role});
-        res.status(200).json(response);
-    }
-    catch (error) {
-        next(error);
-    }
-});
+// taskRouter.put('/:id', async (req: Request & {auth: any}, res: Response, next: NextFunction) => {
+//     try {
+//         const currentUser = req.auth.id;
+//         const role = req.auth.role;
+//         const task = <TaskInput>req.body;
+//         const response = await taskService.updateTask({targetTaskId: parseInt(req.params.id), updatedInfo: task, currentUser, role});
+//         res.status(200).json(response);
+//     }
+//     catch (error) {
+//         next(error);
+//     }
+// });
 
 /**
  * @swagger
