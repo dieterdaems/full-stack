@@ -82,7 +82,7 @@ const TasksOverviewTable: React.FC<Props> = ({ tasks }: Props) => {
                     <th className="py-2 px-4 border-b border-r">{t('tasks.name')}</th>
                     <th className="py-2 px-4 border-b border-r">{t("tasks.description")}</th>
                     <th className="py-2 px-4 border-b border-r">{t('tasks.deadline')}</th>
-                    <th className="py-2 px-4 border-b border-r">{t('tasks.project')}</th>
+                    {/* <th className="py-2 px-4 border-b border-r">{t('tasks.project')}</th> */}
                     <th className="py-2 px-4 border-b border-r">{t('tasks.completed')}</th>
                     <th className="py-2 px-4 border-b border-r">{t('tasks.delete')}</th>
                 </tr>
@@ -93,13 +93,16 @@ const TasksOverviewTable: React.FC<Props> = ({ tasks }: Props) => {
                         <td className="py-2 px-4 border-b text-center border-r">{task.name}</td>
                         <td className="py-2 px-4 border-b text-center border-r">{task.description}</td>
                         <td className="py-2 px-4 border-b text-center border-r">{task.deadline.toString().slice(0, 10)}</td>
-                        <td className="py-2 px-4 border-b text-center border-r">{task.completed ? <>{t('tasks.completed')}</> : <button onClick={handleCompleteButton}>{t('tasks.complete')}</button>}</td>
+                        {/* <td className="py-2 px-4 border-b text-center border-r">{task.projectId}</td> */}
+                        <td className="py-2 px-4 border-b text-center border-r">{task.completed ? <p className=" text-green-500">{t('tasks.completed')}</p> : <button className='global-button' onClick={handleCompleteButton}>{t('tasks.complete')}</button>}</td>
                         <td><button className="global-button" onClick={() => handleDeleteButton(task.id)}>{t('tasks.delete')}</button></td>
                     </tr>
                 ))}
             </tbody>
         </table>
-            <button onClick={() => router.push('/tasks/register/' + projectId)}>{t('tasks.new')}</button>
+        <div className="bg-gray-100 flex items-center justify-center">
+            <button className="global-button" onClick={() => router.push('/tasks/register/' + projectId)}>{t('tasks.new')}</button>
+        </div>
             {showConfirmation && (
                             <>
                                 <p>{t('tasks.confirmation')}</p>
@@ -109,7 +112,7 @@ const TasksOverviewTable: React.FC<Props> = ({ tasks }: Props) => {
                         )}
             {showConfirmationComplete && (
                             <>
-                                <p>{t('tasks.confirmation')}</p>
+                                <p>Complete task?</p>
                                 <button className="global-button" onClick={handleCompleteConfirm}>{t('confirm')}</button>
                                 <button className="global-button" onClick={handleCompleteCancel}>{t('cancel')}</button>
                             </>

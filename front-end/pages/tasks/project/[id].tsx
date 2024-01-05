@@ -51,7 +51,9 @@ const Tasks: React.FC = () => {
                 <section>
                     {data && (<TasksOverviewTable tasks={data} />)}
                 </section>
-                <button onClick={() => router.push('/projects/')}>{t('tasks.return')}</button>
+                <div className="bg-gray-100 flex items-center justify-center">
+                <button className="global-button" onClick={() => router.push('/projects/')}>{t('tasks.return')}</button>
+                </div>
             </main>
             </div>
 
