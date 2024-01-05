@@ -46,12 +46,13 @@ const TasksOverviewTable: React.FC<Props> = ({ tasks }: Props) => {
     }
 
     const handleCompleteButton = async (id: any) => {
-        setTaskToDelete(String(id));
+        setTaskToComplete(String(id));
         setShowConfirmationComplete(true);
     };
 
     const handleCompleteConfirm = async () => {
         setStatusMessage("");
+        console.log(taskToComplete);
         const response = await TaskService.completeTask(taskToComplete);
         const data = await response.json();
         if (response.ok) {
@@ -94,7 +95,7 @@ const TasksOverviewTable: React.FC<Props> = ({ tasks }: Props) => {
                         <td className="py-2 px-4 border-b text-center border-r">{task.description}</td>
                         <td className="py-2 px-4 border-b text-center border-r">{task.deadline.toString().slice(0, 10)}</td>
                         {/* <td className="py-2 px-4 border-b text-center border-r">{task.projectId}</td> */}
-                        <td className="py-2 px-4 border-b text-center border-r">{task.completed ? <p className=" text-green-500">{t('tasks.completed')}</p> : <button className='global-button' onClick={handleCompleteButton}>{t('tasks.complete')}</button>}</td>
+                        <td className="py-2 px-4 border-b text-center border-r">{task.completed ? <p className=" text-green-500">{t('tasks.completed')}</p> : <button className='global-button' onClick={() => handleCompleteButton(task.id)}>{t('tasks.complete')}</button>}</td>
                         <td><button className="global-button" onClick={() => handleDeleteButton(task.id)}>{t('tasks.delete')}</button></td>
                     </tr>
                 ))}
@@ -103,6 +104,7 @@ const TasksOverviewTable: React.FC<Props> = ({ tasks }: Props) => {
         <div className="bg-gray-100 flex items-center justify-center">
             <button className="global-button" onClick={() => router.push('/tasks/register/' + projectId)}>{t('tasks.new')}</button>
         </div>
+        <div className="bg-gray-100 flex items-center justify-center">
             {showConfirmation && (
                             <>
                                 <p>{t('tasks.confirmation')}</p>
@@ -112,13 +114,14 @@ const TasksOverviewTable: React.FC<Props> = ({ tasks }: Props) => {
                         )}
             {showConfirmationComplete && (
                             <>
-                                <p>Complete task?</p>
+                                <p>{t('tasks.completeConfirmation')}</p>
                                 <button className="global-button" onClick={handleCompleteConfirm}>{t('confirm')}</button>
                                 <button className="global-button" onClick={handleCompleteCancel}>{t('cancel')}</button>
                             </>
                         )}
           
-            <p>{statusMessage}</p>
+            <p className=" mt-4">{statusMessage}</p>
+            </div>
         </div>
         </div>
         </>
