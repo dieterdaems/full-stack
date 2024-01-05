@@ -62,9 +62,9 @@ const ProjectOverviewTable: React.FC<Props> = ({ projects }: Props) => {
                             <td className="py-2 px-4 border-b text-center border-r">{project.id}</td>
                             <td className="py-2 px-4 border-b text-center border-r" >{project.name}</td>
                             <td className="py-2 px-4 border-b text-center border-r">{project.team?.name}</td>
-                            <td className="py-2 px-4 border-b text-center"><button className="inline-flex items-center justify-center h-12 px-6 font-medium tracking-wide text-white transition duration-200 bg-gray-900 rounded-lg hover:bg-gray-800 focus:shadow-outline focus:outline-none"
+                            <td className="py-2 px-4 border-b text-center"><button className="global-button"
                                     onClick={() => router.push('/tasks/project/' + project.id)}>{t('projects.tasks')}</button></td>
-                            {project.id && role === "admin" && <td className="py-2 px-4 border-b text-center border-l"><button className="inline-flex items-center justify-center h-12 px-6 font-medium tracking-wide text-white transition duration-200 bg-gray-900 rounded-lg hover:bg-gray-800 focus:shadow-outline focus:outline-none"
+                            {project.id && role === "admin" && <td className="py-2 px-4 border-b text-center border-l"><button className="global-button"
                                     onClick={() => handleDeleteButton(project.id)}>{t('projects.delete')}</button></td>}
                         </tr>
                     ))}
@@ -73,9 +73,9 @@ const ProjectOverviewTable: React.FC<Props> = ({ projects }: Props) => {
             {showConfirmation && (
                             <>
                                 <p>{t('projects.confirmation')}</p>
-                                <button className="inline-flex items-center justify-center h-12 px-6 font-medium tracking-wide text-white transition duration-200 bg-gray-900 rounded-lg hover:bg-gray-800 focus:shadow-outline focus:outline-none"
+                                <button className="global-button"
                                 onClick={handleDeleteConfirm}>{t('confirm')}</button>
-                                <button className="inline-flex items-center justify-center h-12 px-6 font-medium tracking-wide text-white transition duration-200 bg-gray-900 rounded-lg hover:bg-gray-800 focus:shadow-outline focus:outline-none"
+                                <button className="global-button"
                                 onClick={handleDeleteCancel}>{t('cancel')}</button>
                             </>
                         )}

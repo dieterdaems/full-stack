@@ -53,11 +53,11 @@ const AddProject: React.FC = () => {
 
         <div className="container mx-auto my-8" >
         <div className="flex justify-center">
-            {!button && <button className="inline-flex items-center justify-center h-12 px-6 font-medium tracking-wide text-white transition duration-200 bg-gray-900 rounded-lg hover:bg-gray-800 focus:shadow-outline focus:outline-none"
+            {!button && <button className="global-button"
                 onClick={(e) => setButton(!button)}>{t('projects.new')}</button>}
         </div>
         <div className="flex justify-center">
-            {button && <button className="inline-flex items-center justify-center h-12 px-6 font-medium tracking-wide text-white transition duration-200 bg-gray-900 rounded-lg hover:bg-gray-800 focus:shadow-outline focus:outline-none"
+            {button && <button className="global-button"
                 onClick={(e) => {setButton(!button); setErrorMessage('')}}>{t('projects.cancel')}</button>}
         </div>
         {button && <form className="mt-4 flex flex-col items-center" onSubmit={handleSubmit}>
@@ -65,20 +65,20 @@ const AddProject: React.FC = () => {
                 <div className="relative bg-inherit mt-4">
                     <input className="global-input"
                     type="text" id="name" onChange={(e) => setName(e.target.value)} />
-                    <label className="absolute cursor-text left-0 -top-3 text-sm bg-inherit mx-1 px-1 peer-placeholder-shown:text-gray-500 peer-placeholder-shown:top-2 peer-focus:-top-3 peer-focus:text-sky-600 peer-focus:text-sm transition-all"
+                    <label className="global-label"
                     htmlFor="name">{t('projects.name')}</label>
                 </div>
             </div>
             <div className="bg-gray-100 p-4 rounded-lg">
                 <div className="relative bg-inherit mt-4">
-            <label className="absolute cursor-text left-0 -top-3 text-sm bg-inherit mx-1 px-1 peer-placeholder-shown:text-gray-500 peer-placeholder-shown:top-2 peer-focus:-top-3 peer-focus:text-sky-600 peer-focus:text-sm transition-all"
+            <label className="global-label"
             htmlFor="teamid">Team Id</label>
             <input className="global-input"
             type="text" id="teamid" onChange={(e) => setTeamId(parseInt(e.target.value))} />
             </div>
             </div>
         <div className="flex justify-center">
-            <button className="inline-flex items-center justify-center h-12 px-6 font-medium tracking-wide text-white transition duration-200 bg-gray-900 rounded-lg hover:bg-gray-800 focus:shadow-outline focus:outline-none mt-4"
+            <button className="global-button"
             type='submit'>{t('projects.submit')}</button>
         </div>
         </form>}

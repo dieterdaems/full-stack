@@ -15,7 +15,7 @@
     @apply border-2 border-red-500;
   }
 
-  /* .global-label {
+  .global-label {
     @apply absolute cursor-text left-0 -top-3 text-sm bg-inherit mx-1 px-1 transition-all;
   }
   
@@ -37,5 +37,10 @@
   
   .global-label.peer-focus\:text-sm {
     @apply text-sm;
-  } */
+  }
 
+  @layer components {
+    .global-button {
+      @apply inline-flex items-center justify-center h-12 px-6 font-medium tracking-wide text-white transition duration-200 bg-gray-900 rounded-lg hover:bg-gray-800 focus:outline-none focus:ring focus:border-gray-300 mt-4;
+    }
+  }
