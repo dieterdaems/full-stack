@@ -109,27 +109,32 @@ const TeamsOverviewTable: React.FC<Props> = ({ teams, currentTeams }: Props) => 
 
     return (
         <>
-            <table>
+        <div className="bg-gray-100 flex items-start justify-center">
+
+        <div className="container mx-auto my-8" >
+            <table className="mx-auto bg-white border border-gray-300">
                 <thead>
                     <tr>
-                        <th>Name</th>
+                        <th className="py-2 px-4 border-b border-r">Name</th>
                     </tr>
                 </thead>
                 <tbody>
                     {teams && teams.map((team, index) => (
                         <tr key={index}>
-                            <td>{team.name}</td>
+                            <td className="py-2 px-4 border-b border-r">{team.name}</td>
                             <td>
                                 {role === '91fb3f8394dead2470aaf953e1bed9d9abf34a41f65ac666cff414ca229245b8' ? (
-                                    <button onClick={() => handleDeleteButton(team.id)}>
+                                    <button className="global-button" onClick={() => handleDeleteButton(team.id)}>
                                         🗑️</button>
                                 ) : (
                                     currentTeams.some((currentTeam) => currentTeam.id == team.id) ? (
                                         <button
+                                            className="global-button"
                                             disabled={cooldownTeamId === team.id}
                                             onClick={() => handleLeaveTeam({ id: team.id, name: team.name })}>Leave</button>
                                     ) : (
                                         <button
+                                            className="global-button"
                                             disabled={cooldownTeamId === team.id}
                                             onClick={() => handleJoinTeam({ id: team.id, name: team.name })}>Join</button>
                                     ))}
@@ -140,18 +145,19 @@ const TeamsOverviewTable: React.FC<Props> = ({ teams, currentTeams }: Props) => 
             </table>
 
             {role === '91fb3f8394dead2470aaf953e1bed9d9abf34a41f65ac666cff414ca229245b8' && !showAddTeam && (
-                <button onClick={() => setShowAddTeam(true)}>➕</button>
+                <button className="global-button" onClick={() => setShowAddTeam(true)}>➕</button>
             )}
             {showAddTeam && (
                 <>
                     <input
+                        className="global-input"
                         type="text"
                         placeholder="The avengers"
                         value={newTeamName}
                         onChange={(e) => setNewTeamName(e.target.value)}
                     />
-                    <button onClick={() => handleAddTeam()}>💾</button>
-                    <button onClick={() => abortAddButton()}>🗑️</button>
+                    <button className="global-button" onClick={() => handleAddTeam()}>💾</button>
+                    <button className="global-button" onClick={() => abortAddButton()}>🗑️</button>
                 </>
             )}
 
@@ -159,11 +165,13 @@ const TeamsOverviewTable: React.FC<Props> = ({ teams, currentTeams }: Props) => 
             {showConfirmation && (
                 <>
                     <p>Are you sure you want to delete this team?</p>
-                    <button onClick={handleDeleteConfirm}>Confirm</button>
-                    <button onClick={(() => setShowConfirmation(false))}>Cancel</button>
+                    <button className="global-button" onClick={handleDeleteConfirm}>Confirm</button>
+                    <button className="global-button" onClick={(() => setShowConfirmation(false))}>Cancel</button>
                 </>
             )}
             <p>{statusMessage}</p>
+        </div>
+        </div>
         </>
     );
 };
