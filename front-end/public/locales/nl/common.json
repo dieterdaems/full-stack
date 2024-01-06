@@ -50,7 +50,8 @@
         "deleted": "Taak is succesvol verwijderd.",
         "errorName": "Naam mag niet leeg zijn.",
         "errorDescription": "Beschrijving mag niet leeg zijn.",
-        "errorDeadline": "Deadline mag niet leeg zijn of in het verleden liggen."
+        "errorDeadline": "Deadline mag niet leeg zijn of in het verleden liggen.",
+        "registrationSuccess": "Taak is succesvol geregistreerd. Doorverwijzen naar taken overzicht..."
 
     },
     "projects": {
@@ -73,7 +74,9 @@
         "deleted": "Project is succesvol verwijderd.",
         "errorName": "Naam mag niet leeg zijn.",
         "errorTeamId": "Team Id is verplicht",
-        "createError": "Er is een error opgetreden bij het aanmaken van het project."
+        "createError": "Er is een error opgetreden bij het aanmaken van het project.",
+        "createSuccess": "Project is succesvol aangemaakt.",
+        "notAuthorizedCreate": "U bent niet geautoriseerd om een project aan te maken voor een team waar u geen lid van bent."
     },
     "teams": {
         "title": "Teams",

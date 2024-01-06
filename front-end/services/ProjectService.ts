@@ -12,7 +12,7 @@ const getAll = () => {
     });
 }
 
-const create = (name : string, teamId: number) => {
+const create = ({name, teamId}: Project) => {
     const token = sessionStorage.getItem('token');
     return fetch(process.env.NEXT_PUBLIC_API_URL + '/projects', {
         method: 'POST',

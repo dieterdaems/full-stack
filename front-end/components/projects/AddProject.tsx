@@ -6,7 +6,7 @@ const AddProject: React.FC = () => {
 
     const { t } = useTranslation();
     const [name, setName] = useState<string>("");
-    const [teamId, setTeamId] = useState<number>(0);
+    const [teamId, setTeamId] = useState<number>();
     const [button, setButton] = useState<boolean>(false);
     const [errorMessage, setErrorMessage] = useState('');
     const [nameError, setNameError] = useState('');
@@ -20,7 +20,7 @@ const AddProject: React.FC = () => {
             setNameError(t('projects.errorName'));
             valid = false;
         }
-        if (teamId === null || teamId < 1 || teamId === undefined) {
+        if (teamId === null || teamId === undefined) {
             setTeamIdError(t('projects.errorTeamId'));
             valid = false;
         }
@@ -31,16 +31,19 @@ const AddProject: React.FC = () => {
         setErrorMessage('');
         e.preventDefault();
         if (validate()) {
-            const project = {name};
             setButton(!button)
-            const response = await ProjectService.create(name,teamId);
-            if (response.status === 200) {
-                setName('');
-            } else {
-                setErrorMessage(t('projects.createError'));
-                
+            const response = await ProjectService.create({name, teamId});
+            if (!response.ok) {
+                if (response.status === 401) {
+                    setErrorMessage(t('projects.notAuthorizedCreate'));
+                }
+                else setErrorMessage(t('projects.createError'));
             }
-
+            else {
+                setErrorMessage(t('projects.createSuccess'));
+            }
+            setName('');
+            setTeamId(undefined);
         }
     }
 
@@ -68,7 +71,7 @@ const AddProject: React.FC = () => {
             <label className="global-label"
             htmlFor="teamid">Team Id</label>
             <input className="global-input"
-            type="number" min='1' id="teamid" onChange={(e) => setTeamId(parseInt(e.target.value))} />
+            type="number" id="teamid" onChange={(e) => setTeamId(parseInt(e.target.value))} />
             <p className=' text-red-500'>{teamIdError}</p>
             </div>
             </div>
@@ -76,11 +79,12 @@ const AddProject: React.FC = () => {
             <button className="global-button"
             type='submit'>{t('projects.submit')}</button>
             {button && <button className="global-button"
-                onClick={(e) => {setButton(!button); setErrorMessage('')}}>{t('projects.cancel')}</button>}
+                onClick={() => {setButton(!button)}}>{t('projects.cancel')}</button>}
         </div>
         </form>}
-        {button && <p>{errorMessage}</p>}
-        {!button && errorMessage && <p>{errorMessage}</p>}
+        <div className="flex justify-center">
+        {<p className="text-red-500">{errorMessage}</p>}
+        </div>
         </div>
         </div>
         </>

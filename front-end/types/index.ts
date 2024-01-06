@@ -32,6 +32,7 @@ type Project = {
     id?: number;
     name?: string;
     team?: Team;
+    teamId?: number;
 }
 
 type StatusMessage = {

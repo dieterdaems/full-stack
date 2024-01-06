@@ -52,7 +52,8 @@
         "deleted": "Task has been deleted.",
         "errorName": "Name cannot be empty.",
         "errorDescription": "Description cannot be empty.",
-        "errorDeadline": "Deadline cannot be empty or in the past."
+        "errorDeadline": "Deadline cannot be empty or in the past.",
+        "registrationSuccess": "Task has been successfully created. Redirecting to tasks overview..."
     },
     "projects": {
         "adminTitle": "All Projects",
@@ -75,7 +76,9 @@
         "deleted": "Project has been deleted.",
         "errorName": "Name cannot be empty.",
         "errorTeamId": "Team Id is required.",
-        "createError": "An error occurred while creating the project."
+        "createError": "An error occurred while creating the project.",
+        "createSuccess": "Project has been successfully created",
+        "notAuthorizedCreate": "You are not authorized to create a project for a team you are not a member of."
     },
     "teams": {
         "title": "Teams",
