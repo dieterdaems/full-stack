@@ -1,14 +1,11 @@
 import TasksOverviewTable from "@/components/tasks/TasksProjectOverviewTable";
 import TaskService from "@/services/TaskService";
-import { Task } from "@/types";
-import exp from "constants";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
 import { useTranslation } from "next-i18next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import useSWR, { mutate } from "swr";
 import useInterval from "use-interval";
-import { GetServerSideProps, GetServerSidePropsContext } from "next";
+import { GetServerSideProps } from "next";
 import Head from "next/head";
 import Header from "@/components/header";
 
@@ -17,22 +14,17 @@ const Tasks: React.FC = () => {
     const { id } = router.query;
     const { t } = useTranslation();
 
-    const getTaskByProjectId = async () => {
+    const getTasksByProjectId = async () => {
         const response = await TaskService.getByProjectId(id as string);
         const tasks = await response.json();
-        // console.log("test");
         return tasks;
     }
 
-    // useEffect(() => {
-    //     getTaskByProjectId();
-    // }
-    //     , []);
     
-    const {data, isLoading, error} = useSWR('tasksByProjectId', getTaskByProjectId);
+    const {data, isLoading, error} = useSWR('tasksByProjectId', getTasksByProjectId);
 
     useInterval(() => {
-        mutate('tasksByProjectId',getTaskByProjectId());
+        mutate('tasksByProjectId',getTasksByProjectId());
     }, 1000);
 
     console.log('Translations:', t('tasks.title'));
@@ -42,16 +34,20 @@ const Tasks: React.FC = () => {
             <Head>
                 <title>{t('app.title')}</title>
             </Head>
+            <div className="bg-gray-100 min-h-screen">
             <Header />
             <main>
-                <h1>{t('tasks.title')}</h1>
+                <h1 className='bg-gray-100 text-center font-semibold text-3xl'>{t('tasks.title')}</h1>
                 {error && <p>{error}</p>}
                 {isLoading && <p>{t('tasks.loading')}</p>}
                 <section>
                     {data && (<TasksOverviewTable tasks={data} />)}
                 </section>
-                <button onClick={() => router.push('/projects/')}>{t('tasks.return')}</button>
+                <div className="bg-gray-100 flex items-center justify-center">
+                <button className="global-button" onClick={() => router.push('/projects/')}>{t('tasks.return')}</button>
+                </div>
             </main>
+            </div>
 
 
         </>

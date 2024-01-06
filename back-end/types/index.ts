@@ -12,6 +12,7 @@ type ProjectInput = {
     name?: string;
     id?: number;
     team?: TeamInput;
+    teamId?: number;
 };
 
 type TeamInput = {

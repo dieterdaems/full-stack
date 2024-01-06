@@ -33,6 +33,22 @@ const getProjectById = async (id: number): Promise<Project> => {
     }
 }
 
+const getProjectByName = async (name: string): Promise<Project> => {
+    try {
+        const projectPrisma = await prisma.project.findUnique({
+            where: { name: name },
+            include: {
+                team: true
+            }
+        });
+        return projectPrisma ? Project.from(projectPrisma) : null;
+    }
+    catch (error) {
+        console.log(error);
+        throw new Error("Database error. Check logs for more details.");
+    }
+}
+
 const createProject = async (project: Project): Promise<Project> => {
     try {
         const data: any = {
@@ -102,30 +118,4 @@ const getAllProjectsByUserId = async (userId: number): Promise<Project[]> => {
     }
 }
 
-const getProjectByIdAndUserId = async (id: number, userId: number): Promise<Project> => {
-    try {
-        const projectPrisma = await prisma.project.findFirst({
-            where: {
-                id,
-                team:
-                {
-                    users: {
-                        some: {
-                            id: userId
-                        }
-                    }
-                }
-            },
-            include: {
-                team: true
-            }
-        });
-        return projectPrisma ? Project.from(projectPrisma) : null;
-    }
-    catch (error) {
-        console.log(error);
-        throw new Error("Database error. Check logs for more details.");
-    }
-};
-
-export default { getAllProjects, getProjectById, createProject, deleteById, getAllProjectsByUserId, getProjectByIdAndUserId };
+export default { getAllProjects, getProjectById, createProject, deleteById, getAllProjectsByUserId, getProjectByName };

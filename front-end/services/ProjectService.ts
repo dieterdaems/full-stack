@@ -12,18 +12,7 @@ const getAll = () => {
     });
 }
 
-const getById = (projectId: string) => {
-    const token = sessionStorage.getItem('token');
-    return fetch(process.env.NEXT_PUBLIC_API_URL + '/projects/' + projectId, {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`
-        },
-    });
-}
-
-const create = (name : string, team: Team) => {
+const create = (name : string, teamId: number) => {
     const token = sessionStorage.getItem('token');
     return fetch(process.env.NEXT_PUBLIC_API_URL + '/projects', {
         method: 'POST',
@@ -31,7 +20,7 @@ const create = (name : string, team: Team) => {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${token}`
         },
-        body: JSON.stringify({name, team}),
+        body: JSON.stringify({name, teamId}),
     });
 }
 
@@ -46,23 +35,10 @@ const deleteProject = (projectId: string) => {
     });
 }
 
-const getProjectsByUserId = (userId: string) => {
-    const token = sessionStorage.getItem('token');
-    return fetch(process.env.NEXT_PUBLIC_API_URL + '/projects/user/' + userId, {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`
-        },
-    });
-}
-
 const ProjectService = {
     getAll,
-    getById,
     create,
-    deleteProject,
-    getProjectsByUserId
+    deleteProject
 }
 
 export default ProjectService;

@@ -5,7 +5,6 @@ import { useTranslation } from "next-i18next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
 
 
 
@@ -20,14 +19,18 @@ const Tasks: React.FC = () => {
         <Head>
                 <title>{t('tasks.title')}</title>
             </Head>
+            <div className="bg-gray-100 min-h-screen">
             <Header />
         <main>
-            <h1>{t('tasks.registration')}</h1>
+            <h1 className='bg-gray-100 text-center font-semibold text-3xl'>{t('tasks.register')}</h1>
             <section>
-            {projectId !== undefined && <TaskRegistrationForm projectId={projectId} />}
+            {projectId && <TaskRegistrationForm projectId={projectId} />}
             </section>
+            <div className="bg-gray-100 flex items-center justify-center">
+                <button className="global-button" onClick={() => router.push('/tasks/project/'+id)}>{t('tasks.returnToTasks')}</button>
+                </div>
         </main>
-        
+        </div>
         
         </>
 

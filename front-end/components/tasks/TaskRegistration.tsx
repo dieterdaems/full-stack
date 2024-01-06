@@ -1,9 +1,7 @@
-import ProjectService from "@/services/ProjectService";
 import TaskService from "@/services/TaskService";
-import { Project } from "@/types";
 import { useRouter } from "next/router";
 import { FormEvent, useState } from "react";
-import { StatusMessage } from "@/types";
+import { useTranslation } from "next-i18next";
 
 type Props = {
     projectId: number;
@@ -20,24 +18,29 @@ const TaskRegistrationForm: React.FC<Props> = ({projectId} : Props) => {
     const [errorMessage, setErrorMessage] = useState('');
 
     const router = useRouter();
+    const { t } = useTranslation();
 
     const validate = () => {
         setNameError('');
         setDescriptionError('');
         setDeadlineError('');
+        let valid = true;
         if (name === "" || name.trim() === "") {
-            setNameError("Name is required");
+            setNameError(t('tasks.errorName'));
+            valid = false;
         }
+
         if (description === "" || description.trim() === "") {
-            setDescriptionError("Description is required");
+            setDescriptionError(t('tasks.errorDescription'));
+            valid = false;
         }
-        if (deadline === null || deadline < new Date()) {
-            setDeadlineError("Deadline is required and has to be in the future");
+
+        if (!deadline || deadline < new Date()){
+            setDeadlineError(t('tasks.errorDeadline'));
+            valid = false;
         }
-        if (nameError !== "" || descriptionError !== "" || deadlineError !== "") {
-            return false;
-        }
-        return true;
+
+        return valid;
     }
 
     const handleSubmit = async (e: FormEvent) => {
@@ -45,34 +48,53 @@ const TaskRegistrationForm: React.FC<Props> = ({projectId} : Props) => {
         if (validate()) {
         const newTask = {name, description, deadline, projectId};
         const response = await TaskService.create(newTask);
-        router.push('/tasks/project/' + projectId);
+        if (!response.ok) {
+         setErrorMessage(response.statusText);
         }
-
+        else router.push('/tasks/project/' + projectId);
+        }
     }
 
     return (
         <>
-        <form onSubmit={handleSubmit}>
+        <div className="bg-gray-100 flex items-center justify-center">
+        <div className="container mx-auto my-8" >
+        <form className="mt-4 flex flex-col items-center" onSubmit={handleSubmit}>
             <div>
-            <label htmlFor="name">Name</label>
-            <input type="text" id="name" onChange={(e) => setName(e.target.value)} />
-            {nameError && <p>{nameError}</p>}
+            <div className=" bg-gray-100 p-4 rounded-lg">
+                <div className="relative bg-inherit mt-4">
+            <label className='global-label' htmlFor="name">{t('tasks.name')}</label>
+            <input className='global-input' type="text" id="name" onChange={(e) => setName(e.target.value)} />
+            </div>
+            </div>
+            {nameError && <p className=" text-red-500">{nameError}</p>}
             </div>
             <div>
-            <label htmlFor="description">Description</label>
-            <input type="text" id="description" onChange={(e) => setDescription(e.target.value)} />
-            {descriptionError && <p>{descriptionError}</p>}
+            <div className=" bg-gray-100 p-4 rounded-lg">
+                <div className="relative bg-inherit mt-4">
+            <label className="global-label" htmlFor="description">{t('tasks.description')}</label>
+            <input className='global-input' type="text" id="description" onChange={(e) => setDescription(e.target.value)} />
+            </div>
+            </div>
+            {descriptionError && <p className=" text-red-500">{descriptionError}</p>}
             </div>
             <div>
-            <label htmlFor="deadline">Deadline</label>
-            <input type="date" id="deadline" onChange={(e) => setDeadline(new Date(e.target.value))} />
-            {deadlineError && <p>{deadlineError}</p>}
+            <div className=" bg-gray-100 p-4 rounded-lg">
+                <div className="relative bg-inherit mt-4">
+            <label className="global-label" htmlFor="deadline">{t('tasks.deadline')}</label>
+            <input className='global-input' type="date" id="deadline" onChange={(e) => setDeadline(new Date(e.target.value))} />
             </div>
-            <label htmlFor="project">Project</label>
-            <button type="submit">Submit</button>
+            </div>
+            {deadlineError && <p className=" text-red-500">{deadlineError}</p>}
+            </div>
+            <div className="flex justify-center">
+            <button className="global-button" type="submit">{t('add')}</button>
+            </div>
         </form>
         <div>
-        {errorMessage && <p>{errorMessage}</p>}
+        {errorMessage && <p className=" text-red-500">{errorMessage}</p>}
+        </div>
+        </div>
         </div>
                 
                 </>

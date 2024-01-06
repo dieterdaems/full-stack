@@ -43,6 +43,7 @@ const teamRouter = express.Router();
  * /teams:
  *   get:
  *     summary: Get a list of all teams.
+ *     tags: [Teams]
  *     responses:
  *       200:
  *         description: Successful response with a list of teams.
@@ -80,6 +81,7 @@ teamRouter.get('/', async (req: Request, res: Response, next: NextFunction) => {
  * /teams/{id}:
  *   get:
  *     summary: Get a team by ID.
+ *     tags: [Teams]
  *     parameters:
  *       - in: path
  *         name: id
@@ -122,6 +124,7 @@ teamRouter.get('/:id', async (req: Request, res: Response, next: NextFunction) =
  * /teams/create:
  *   post:
  *     summary: Create a new team.
+ *     tags: [Teams]
  *     requestBody:
  *       required: true
  *       content:
@@ -151,7 +154,7 @@ teamRouter.post('/create', async (req: Request & { auth: any }, res: Response, n
     try {
         const role = req.auth.role;
         const team = <TeamInput>req.body;
-        const result = await teamService.createTeam({name: team, role});
+        const result = await teamService.createTeam({newTeam: team, role});
         res.status(201).json(result);
     }
     catch (error) {
@@ -164,6 +167,7 @@ teamRouter.post('/create', async (req: Request & { auth: any }, res: Response, n
  * /teams/delete/{id}:
  *   delete:
  *     summary: Delete a team by ID.
+ *     tags: [Teams]
  *     parameters:
  *       - in: path
  *         name: id

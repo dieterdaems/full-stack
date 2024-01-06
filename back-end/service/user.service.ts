@@ -19,7 +19,7 @@ const getAllUsers = async ({ role }): Promise<User[]> => {
 
 
 /*
-Parameters: id of user to be retrieved, role saved in JWT token, id of user logged in, so id saved in JWT token
+Parameters: id of user to be retrieved, id of user logged in, so id saved in JWT token, role saved in JWT token
 Return: user
 Authorization Error: if inlogged user is not admin nor the same as the one to be retrieved
 Application Error: if user does not exist
@@ -84,13 +84,12 @@ const updateUser = async ({ targetUserId, updatedInfo, currentUser, currentRole 
         if (existingUser) throw new Error(`User with email ${updatedInfo.email} already exists.`);
     }
 
-    if (!updatedInfo.password) updatedInfo.password = targetUser.password;
-    if (targetUser.password !== updatedInfo.password) {
+    if (updatedInfo.password && targetUser.password !== updatedInfo.password ) {
         if (!updatedInfo.password?.trim() || updatedInfo.password.length < 7) throw new Error('Password must be at least 7 characters');
         updatedInfo.password = await bcrypt.hash(updatedInfo.password, 12);
     }
 
-    const updatedUser = new User({ id: targetUserId, ...updatedInfo });
+    const updatedUser = new User({ ...targetUser, ...updatedInfo });
     return userDb.updateUser({ id: targetUserId, ...updatedUser });
 }
 
@@ -131,6 +130,7 @@ const addUserToTeam = async ({teamId, userId, currentUser, role}): Promise<User>
 
     const existingUser = await userDb.getUserById(userId);
     if (!existingUser) throw new Error(`User with id ${userId} does not exist.`);
+    
     return userDb.addUserToTeam(teamId, userId);
 }
 

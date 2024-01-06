@@ -21,18 +21,18 @@ const getTeamById = async (id: number): Promise<Team> => {
 };
 
 /*
-Parameters: name of team to be created, role of user logged in
+Parameters: team to be created, role of user logged in
 Return: created team
 Authorization Error: if inlogged user is not admin
 Application Error: if team already exists
                    if domain validation failed
 */
-const createTeam = async ({name, role}): Promise<Team> => {
+const createTeam = async ({newTeam, role}: {newTeam: TeamInput, role:Role}): Promise<Team> => {
     if (role !== 'admin') throw new UnauthorizedError('credentials_required', { message: 'You are not authorized to create a team.' });
-    const newName = name.name.trim().toLowerCase();
+    const team = new Team({name: newTeam.name});
+    const newName = newTeam.name.trim().toLowerCase();
     const teamExists = await teamDb.getTeamByName(newName);
-    if (teamExists) throw new Error(`Team with name ${name} already exists.`);
-    const team = new Team({name: newName});
+    if (teamExists) throw new Error(`Team with name ${newTeam.name} already exists.`);
     return teamDb.createTeam(team);
 };
 

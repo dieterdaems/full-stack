@@ -1,32 +1,30 @@
 {
     "app.title": "Planning App",
-    "general error": "Er is een error opgetreden. Probeer het later opnieuw.",
+    "generalError": "Er is een error opgetreden. Probeer het later opnieuw.",
     "confirm" : "Bevestig",
+    "cancel" : "Annuleer",
     "notLoggedIn": "U moet ingelogd zijn om taken te kunnen bekijken.",
+    "notAuthorized": "U bent niet geautoriseerd om deze pagina te bekijken.",
+    "notAuthorizedAction": "U bent niet geautoriseerd om deze actie uit te voeren.",
     "delete" : "Verwijder",
+    "add": "Toevoegen",
     "header": {
         "welcome": "Welkom",
-        "home": "Home",
         "nav": {
+            "home": "Home",
             "tasks": "Taken",
             "projects": "Projecten",
             "teams": "Teams",
             "logout": "Uitloggen",
-            "login": "Inloggen"
+            "login": "Inloggen",
+            "register": "Registreren",
+            "profile": "Profiel",
+            "users": "Gebruikers"
         }
     },
     "main": {
         "welcome": "Welkom bij de Planning App",
-        "description": "Dit is een simpele applicatie om projecten en taken te beheren."
-    },
-    "login": {
-        "title": "Inloggen",
-        "username": "Gebruikersnaam",
-        "password": "Wachtwoord",
-        "login": "Inloggen",
-        "register": "Registreren",
-        "forgot password": "Wachtwoord vergeten?",
-        "success": "U bent succesvol ingelogd."
+        "description": "Dit is een eenvoudige applicatie om projecten en taken te beheren."
     },
     "tasks": {
         "title": "Taken",
@@ -39,18 +37,25 @@
         "name": "Naam",
         "description": "Beschrijving",
         "return": "Terug naar Project overzicht",
+        "returnToTasks": "Terug naar Taken overzicht",
         "completed": "Voltooid",
         "complete": "Voltooi Taak",
         "deadline": "Deadline",
         "project": "Project",
         "confirmation": "Weet u zeker dat u deze taak wilt verwijderen?",
         "register": "Registreer Taak",
-        "noTasks": "No tasks found."
-
+        "noTasks": "No tasks found.",
+        "completeConfirmation": "Weet u zeker dat u deze taak wilt voltooien?",
+        "completedSuccess": "Taak is succesvol voltooid.",
+        "deleted": "Taak is succesvol verwijderd.",
+        "errorName": "Naam mag niet leeg zijn.",
+        "errorDescription": "Beschrijving mag niet leeg zijn.",
+        "errorDeadline": "Deadline mag niet leeg zijn of in het verleden liggen."
 
     },
     "projects": {
-        "title": "Projecten",
+        "adminTitle": "Alle Projecten",
+        "userTitle": "Mijn Projecten",
         "loading": "Projecten worden geladen...",
         "new": "Voeg Project Toe",
         "edit": "Bewerk Project",
@@ -61,10 +66,67 @@
         "description": "Beschrijving",
         "return": "Terug naar Project overzicht",
         "id": "ID",
-        "tasks": "Taken Bekijken",
+        "tasks": "Bekijken",
         "submit": "Verstuur",
         "team": "Toegewezen Team",
-        "confirmation": "Weet u zeker dat u dit project wilt verwijderen?"
-
+        "confirmation": "Weet u zeker dat u dit project wilt verwijderen?",
+        "deleted": "Project is succesvol verwijderd."
+    },
+    "teams": {
+        "title": "Teams",
+        "loading": "Teams worden geladen...",
+        "name": "Naam",
+        "errorName": "Naam mag niet leeg zijn.",
+        "created": "Team is succesvol aangemaakt.",
+        "confirmation": "Weet u zeker dat u dit team wilt verwijderen?",
+        "deleted": "Team is succesvol verwijderd.",
+        "leave": "Verlaten",
+        "join": "Toetreden",
+        "left1": "U heeft het team ",
+        "left2": " succesvol verlaten.",
+        "joined1": "U bent succesvol toegevoegd aan het team ",
+        "joined2": ".",
+        "nameError": "Naam mag niet leeg zijn.",
+        "noTeams": "Er bestaan nog geen teams. Neem contact op met een beheerder om een team aan te maken.",
+        "newTeam": "Nieuw Team Aanmaken"
+    },
+    "users": {
+        "name": "Naam",
+        "email": "Email",
+        "role": "Rol",
+        "specialization": "Specialisatie",
+        "password": "Wachtwoord",
+        "errorName": "Naam mag niet leeg zijn.",
+        "errorEmail": "Email mag niet leeg zijn.",
+        "errorEmailFormat": "Email moet een geldig email adres zijn.",
+        "errorSpecialization": "Specialisatie mag niet leeg zijn.",
+        "errorPassword": "Wachtwoord mag niet leeg zijn.",
+        "errorPasswordLength": "Wachtwoord moet minimaal 7 tekens lang zijn.",
+        "overview" : {
+            "title": "Gebruikers",
+            "loading": "Gebruikers worden geladen...",
+            "confirmation": "Weet u zeker dat u deze gebruiker wilt verwijderen?",
+            "deleted": "Gebruiker is succesvol verwijderd."
+        },
+        "profile": {
+            "title": "Profiel",
+            "loading": "Profiel wordt geladen...",
+            "updated": "Profiel is succesvol geupdate.",
+            "save": "Opslaan",
+            "errorInvalidInput": "Ongeldige invoer. Probeer het opnieuw."
+        },
+        "login": {
+            "title": "Inloggen",
+            "login": "Inloggen",
+            "success": "Succesvol ingelogd, doorverwijzen...",
+            "error": "Ongeldige inloggegevens. Probeer het opnieuw.",
+            "errorAutoLogin": "Er is een error opgetreden bij automatisch inloggen, gelieve in te loggen. Doorverwijzen naar login pagina..."
+        },
+        "register": {
+            "title": "Registreren",
+            "success": "Succesvol geregistreerd, aan het inloggen...",
+            "error": "Ongeldige registratiegegevens. Probeer het opnieuw.",
+            "fail": "Registreren mislukt. Probeer het opnieuw."
+        }
     }
 }
