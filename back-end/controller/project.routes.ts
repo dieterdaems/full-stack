@@ -25,7 +25,6 @@ const projectRouter = express.Router();
  *       properties:
  *         name:
  *           type: string
-*           format: int64
  *         team:
  *           $ref: '#/components/schemas/ProjectInputTeam'
  *       required:
