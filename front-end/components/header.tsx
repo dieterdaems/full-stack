@@ -22,7 +22,7 @@ const Header: React.FC = () => {
     useEffect(() => {
         setLoggedIn(sessionStorage.getItem("loggedUser"));
         setRole(sessionStorage.getItem("role"));
-    }, [loggedIn]);
+    }, []);
 
     return (
         <header className="lg:px-16 px-4 flex flex-wrap items-center py-4 shadow-md justify-center bg-gray-100">
@@ -64,7 +64,7 @@ const Header: React.FC = () => {
                     )}
                     {!loggedIn && (
                         <li>
-                            <a className="md:p-4 py-3 px-0 block" href="/login">{t('header.nav.login')}</a>
+                            <a data-testid='login' className="md:p-4 py-3 px-0 block" href="/login">{t('header.nav.login')}</a>
                         </li>
                     )}
                     {!loggedIn && (

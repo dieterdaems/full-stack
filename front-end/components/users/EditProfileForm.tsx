@@ -45,7 +45,7 @@ const EditProfileForm: React.FC<Props> = ({ user }: Props) => {
 
 
         if (specialisation === "" || specialisation.trim() === "") {
-            setSpecialisationError(t('users.errorSpecialisation'));
+            setSpecialisationError(t('users.errorSpecialization'));
             valid = false;
         }
 
@@ -107,7 +107,7 @@ const EditProfileForm: React.FC<Props> = ({ user }: Props) => {
 
 
 
-                <button className="global-button" type="submit">{t('users.profile.save')}</button>
+                <button className="global-button" type="submit" data-testid='update'>{t('users.profile.save')}</button>
             </form>
         </div>
         </div>
