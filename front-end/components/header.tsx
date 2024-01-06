@@ -64,7 +64,7 @@ const Header: React.FC = () => {
                     )}
                     {!loggedIn && (
                         <li>
-                            <a className="md:p-4 py-3 px-0 block" href="/login">{t('header.nav.login')}</a>
+                            <a data-testid='login' className="md:p-4 py-3 px-0 block" href="/login">{t('header.nav.login')}</a>
                         </li>
                     )}
                     {!loggedIn && (
