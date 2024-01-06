@@ -15,7 +15,7 @@ Return: all projects if role is admin
 */
 const getAllProjects = async ({role, currentUser}): Promise<Project[]> => {
     if (role === 'admin') return await projectDb.getAllProjects();
-    else return projectDb.getAllProjectsByUserId(currentUser);
+    else return await projectDb.getAllProjectsByUserId(currentUser);
 }
 
 
