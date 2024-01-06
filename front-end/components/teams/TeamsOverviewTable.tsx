@@ -18,7 +18,7 @@ const TeamsOverviewTable: React.FC<Props> = ({ teams, currentTeams, isAdmin }: P
 
 
     /* ---------------------------------------------- */
-    // Join&Leave handling
+    // User -- Join&Leave handling
 
     const handleLeaveTeam = async (team: { id: any, name: string }) => {
         setStatusMessage("");
@@ -39,7 +39,7 @@ const TeamsOverviewTable: React.FC<Props> = ({ teams, currentTeams, isAdmin }: P
 
 
     /* ---------------------------------------------- */
-    // Delete handling
+    // Admin -- Delete handling
 
     
     const [teamToDelete, setTeamToDelete] = useState<any>();
@@ -56,7 +56,7 @@ const TeamsOverviewTable: React.FC<Props> = ({ teams, currentTeams, isAdmin }: P
         const response = await TeamService.deleteById(teamToDelete);
         if (response.ok) {
             setStatusMessage(t('teams.deleted'));
-            setTimeout(() => setStatusMessage(""), 3000);
+            setTimeout(() => setStatusMessage(""), 2000);
         }
         else {
             if (response.status === 401) {
@@ -109,13 +109,17 @@ const TeamsOverviewTable: React.FC<Props> = ({ teams, currentTeams, isAdmin }: P
 
             {showConfirmation && (
                 <div className="bg-gray-100 flex items-center justify-center">
-                    <p>{t('teams.confirmation')}</p>
-                    <button className="global-button" onClick={handleDeleteConfirm}>{t('confirm')}</button>
-                    <button className="global-button" onClick={(() => setShowConfirmation(false))}>{t('cancel')}</button>
+                    <div className="bg-gray-100 p-4 rounded-lg text-center">
+                        <p className="text-red-500">{t('teams.confirmation')}</p>
+                        <div className="flex justify-center items-center">
+                            <button className="global-button" onClick={handleDeleteConfirm}>{t('confirm')}</button>
+                            <button className="global-button" onClick={(() => setShowConfirmation(false))}>{t('cancel')}</button>
+                        </div>
+                    </div>
                 </div>
 
             )}
-            <p className=" mt-4 flex items-center justify-center">{statusMessage}</p>
+            <p className=" mt-4 flex items-center justify-center text-red-500">{statusMessage}</p>
             <div className="bg-gray-100 flex items-center justify-center text-red-500">
             {isAdmin && (teams.length === 0) && <p className=" mt-4 flex items-center justify-center">{t('teams.noTeams')}</p>}
              </div>

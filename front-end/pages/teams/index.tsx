@@ -84,7 +84,7 @@ const Teams: React.FC = () => {
                     <>
                         <h1 className='bg-gray-100 text-center font-semibold text-3xl'>{t('teams.title')}</h1>
                         {<TeamsOverviewTable teams={data} currentTeams={currentTeamsData} isAdmin={isAdmin} />}
-                        {<AddTeamForm isAdmin={isAdmin} />}
+                        {isAdmin && <AddTeamForm />}
                     </>
                 )}
                 {!data && !errorMessage && !authError && <p>{t('teams.loading')}</p>}

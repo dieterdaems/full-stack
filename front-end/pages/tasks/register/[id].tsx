@@ -17,7 +17,7 @@ const Tasks: React.FC = () => {
     return (
         <>
         <Head>
-                <title>{t('tasks.title')}</title>
+                <title>{t('tasks.register')}</title>
             </Head>
             <div className="bg-gray-100 min-h-screen">
             <Header />
