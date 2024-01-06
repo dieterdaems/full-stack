@@ -81,7 +81,7 @@ const addUserToTeam = ({teamId, userId}: {teamId: any, userId: any}) => {
 const removeUserFromTeam = ({teamId, userId}: {teamId: any, userId: any}) => {
     const token = sessionStorage.getItem('token');
     return fetch(process.env.NEXT_PUBLIC_API_URL + '/users/team/' + teamId + '/user/' + userId, {
-        method: 'DELETE',
+        method: 'PUT',
         headers: {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${token}`
@@ -100,18 +100,6 @@ const deleteUser = (id: number) => {
     });
 }
 
-const isAuth = async () => {
-    const id = sessionStorage.getItem('loggedUser');
-    if (id === undefined) return false;
-    if (id) {
-        const res = await UserService.getById(parseInt(id));
-        if (res.status === 200) {
-            return true;
-        }
-    }
-    return false;
-}
-
 const UserService = {
     getAll,
     getById,
@@ -120,8 +108,7 @@ const UserService = {
     login,
     addUserToTeam,
     removeUserFromTeam,
-    deleteUser,
-    isAuth
+    deleteUser
 }
 
 export default UserService;
