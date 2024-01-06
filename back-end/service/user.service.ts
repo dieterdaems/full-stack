@@ -84,7 +84,7 @@ const updateUser = async ({ targetUserId, updatedInfo, currentUser, currentRole 
         if (existingUser) throw new Error(`User with email ${updatedInfo.email} already exists.`);
     }
 
-    if (targetUser.password !== updatedInfo.password) {
+    if (updatedInfo.password && targetUser.password !== updatedInfo.password ) {
         if (!updatedInfo.password?.trim() || updatedInfo.password.length < 7) throw new Error('Password must be at least 7 characters');
         updatedInfo.password = await bcrypt.hash(updatedInfo.password, 12);
     }
