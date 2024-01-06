@@ -72,7 +72,10 @@
         "submit": "Submit",
         "team": "Assigned Team",
         "confirmation": "Are you sure you want to delete this project?",
-        "deleted": "Project has been deleted."
+        "deleted": "Project has been deleted.",
+        "errorName": "Name cannot be empty.",
+        "errorTeamId": "Team Id is required.",
+        "createError": "An error occurred while creating the project."
     },
     "teams": {
         "title": "Teams",

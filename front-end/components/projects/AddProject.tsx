@@ -17,11 +17,11 @@ const AddProject: React.FC = () => {
         setTeamIdError('');
         let valid = true;
         if (name === "" || name.trim() === "") {
-            setNameError("Name is required");
+            setNameError(t('projects.errorName'));
             valid = false;
         }
         if (teamId === null || teamId < 1 || teamId === undefined) {
-            setTeamIdError("Team Id is required");
+            setTeamIdError(t('projects.errorTeamId'));
             valid = false;
         }
         return valid;
@@ -37,7 +37,7 @@ const AddProject: React.FC = () => {
             if (response.status === 200) {
                 setName('');
             } else {
-                setErrorMessage('Project not created');
+                setErrorMessage(t('projects.createError'));
                 
             }
 

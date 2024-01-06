@@ -70,7 +70,10 @@
         "submit": "Verstuur",
         "team": "Toegewezen Team",
         "confirmation": "Weet u zeker dat u dit project wilt verwijderen?",
-        "deleted": "Project is succesvol verwijderd."
+        "deleted": "Project is succesvol verwijderd.",
+        "errorName": "Naam mag niet leeg zijn.",
+        "errorTeamId": "Team Id is verplicht",
+        "createError": "Er is een error opgetreden bij het aanmaken van het project."
     },
     "teams": {
         "title": "Teams",
