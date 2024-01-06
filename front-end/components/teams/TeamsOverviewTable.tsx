@@ -147,10 +147,12 @@ const TeamsOverviewTable: React.FC<Props> = ({ teams, currentTeams }: Props) => 
             </table>
 
             {role === '91fb3f8394dead2470aaf953e1bed9d9abf34a41f65ac666cff414ca229245b8' && !showAddTeam && (
+                <div className= "flex justify-center mb-4">
                 <button className="global-button" onClick={() => setShowAddTeam(true)}>➕</button>
+                </div>
             )}
             {showAddTeam && (
-                <>
+                <div className="bg-gray-100 flex items-center justify-center">
                     <input
                         className="global-input"
                         type="text"
@@ -160,19 +162,18 @@ const TeamsOverviewTable: React.FC<Props> = ({ teams, currentTeams }: Props) => 
                     />
                     <button className="global-button" onClick={() => handleAddTeam()}>💾</button>
                     <button className="global-button" onClick={() => abortAddButton()}>🗑️</button>
-                </>
+                </div>
             )}
 
-            <div className="bg-gray-100 flex items-center justify-center">
             {showConfirmation && (
-                <>
+                <div className="bg-gray-100 flex items-center justify-center">
                     <p>Are you sure you want to delete this team?</p>
                     <button className="global-button" onClick={handleDeleteConfirm}>Confirm</button>
                     <button className="global-button" onClick={(() => setShowConfirmation(false))}>Cancel</button>
-                </>
+                </div>
+
             )}
-            <p className=" mt-4">{statusMessage}</p>
-            </div>
+            <p className=" mt-4 flex items-center justify-center">{statusMessage}</p>
         </div>
         </div>
         </>
