@@ -51,7 +51,12 @@ const TaskRegistrationForm: React.FC<Props> = ({projectId} : Props) => {
         if (!response.ok) {
          setErrorMessage(response.statusText);
         }
-        else router.push('/tasks/project/' + projectId);
+        else {
+            setErrorMessage(t('tasks.registrationSuccess'));
+            setTimeout(() => {
+              router.push('/tasks/project/' + projectId);
+            }, 2500)
+        }
         }
     }
 
