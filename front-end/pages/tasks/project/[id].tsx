@@ -30,18 +30,15 @@ const Tasks: React.FC = () => {
         else {
             return response.json();
         }
-
-
-        }
+    }
 
     
-    const {data, isLoading, error} = useSWR('tasksByProjectId', getTasksByProjectId);
+    const {data, isLoading, error} = useSWR(['tasksByProjectId', id], getTasksByProjectId);
 
     useInterval(() => {
-        mutate('tasksByProjectId',getTasksByProjectId());
+        mutate(['tasksByProjectId', id], getTasksByProjectId());
     }, 1000);
 
-    console.log('Translations:', t('tasks.title'));
 
     return (
         <>
