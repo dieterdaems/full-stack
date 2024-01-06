@@ -13,18 +13,22 @@ const AddProject: React.FC = () => {
     const [teamId, setTeamId] = useState<number>(0);
     const [button, setButton] = useState<boolean>(false);
     const [errorMessage, setErrorMessage] = useState('');
+    const [nameError, setNameError] = useState('');
+    const [teamIdError, setTeamIdError] = useState('');
 
     const validate = () => {
-        setErrorMessage('');
+        setNameError('');
+        setTeamIdError('');
+        let valid = true;
         if (name === "" || name.trim() === "") {
-            setErrorMessage("Name is required\n");
-            return false;
+            setNameError("Name is required");
+            valid = false;
         }
-        if (teamId === 0) {
-            setErrorMessage("Team Id is required\n");
-            return false;
+        if (teamId === null || teamId < 1 || teamId === undefined) {
+            setTeamIdError("Team Id is required");
+            valid = false;
         }
-        return true;
+        return valid;
     }
 
     const handleSubmit = async (e: FormEvent) => {
@@ -33,10 +37,10 @@ const AddProject: React.FC = () => {
         if (validate()) {
             const project = {name};
             setButton(!button)
-            const teams = await TeamService.getAll();
-            const teamsResponse = await teams.json();
-            const team = teamsResponse.find((team: { id: number; }) => team.id === teamId);
-            const response = await ProjectService.create(name,team);
+            // const teams = await TeamService.getAll();
+            // const teamsResponse = await teams.json();
+            // const team = teamsResponse.find((team: { id: number; }) => team.id === teamId);
+            const response = await ProjectService.create(name,teamId);
             if (response.status === 200) {
                 setName('');
             } else {
@@ -63,6 +67,7 @@ const AddProject: React.FC = () => {
                     type="text" id="name" onChange={(e) => setName(e.target.value)} />
                     <label className="global-label"
                     htmlFor="name">{t('projects.name')}</label>
+                    <p className=' text-red-500'>{nameError}</p>
                 </div>
             </div>
             <div className="bg-gray-100 p-4 rounded-lg">
@@ -70,7 +75,8 @@ const AddProject: React.FC = () => {
             <label className="global-label"
             htmlFor="teamid">Team Id</label>
             <input className="global-input"
-            type="text" id="teamid" onChange={(e) => setTeamId(parseInt(e.target.value))} />
+            type="number" min='1' id="teamid" onChange={(e) => setTeamId(parseInt(e.target.value))} />
+            <p className=' text-red-500'>{teamIdError}</p>
             </div>
             </div>
         <div className="flex justify-center">

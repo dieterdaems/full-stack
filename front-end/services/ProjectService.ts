@@ -12,7 +12,7 @@ const getAll = () => {
     });
 }
 
-const create = (name : string, team: Team) => {
+const create = (name : string, teamId: number) => {
     const token = sessionStorage.getItem('token');
     return fetch(process.env.NEXT_PUBLIC_API_URL + '/projects', {
         method: 'POST',
@@ -20,7 +20,7 @@ const create = (name : string, team: Team) => {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${token}`
         },
-        body: JSON.stringify({name, team}),
+        body: JSON.stringify({name, teamId}),
     });
 }
 
