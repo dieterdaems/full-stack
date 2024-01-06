@@ -4,31 +4,7 @@ import userDb from "../domain/data-access/user.db";
 import { Task } from "../domain/model/task";
 import { Role, TaskInput } from "../types";
 import projectDb from "../domain/data-access/project.db";
-import projectService from "./project.service";
 
-/*
-Parameters: id of logged in user, role of logged in user
-Return: all tasks if role is admin
-        all tasks of user if role is user
-*/
-const getAllTasks = async ({currentUser, role}): Promise<Task[]> => {
-    if (role === 'admin') return taskDb.getAllTasks();
-    else return taskDb.getTasksByUserId(currentUser);
-}
-
-/*
-Parameters: id of task to be retrieved, id of logged in user, role of logged in user
-Return: task
-Authorization Error: if role is not admin or user is not part of the team that the task's project belongs to
-Application Error: if task does not exist
-*/
-const getTaskById = async ({id, currentUser, role}): Promise<Task> => {
-    const task = await taskDb.getTaskById(parseInt(id));
-    if (!task) throw new Error(`Task with id ${id} does not exist.`);
-    const user = await userDb.getUserById(currentUser);
-    if (role !== 'admin' && !user.teams.map(team => team.id).includes(task?.project.team.id) ) throw new UnauthorizedError('credentials_required', { message: 'You are not authorized to access this resource.' });
-    return task;
-};
 
 /*
 Parameters: task to be created, id of logged in user
@@ -90,4 +66,4 @@ const completeTask = async ({id, currentUser, role}): Promise<Task> => {
     return taskDb.completeTask(id);
 }
 
-export default { getAllTasks, getTaskById, getTasksByProjectId, createTask, deleteById, completeTask };
+export default { getTasksByProjectId, createTask, deleteById, completeTask };

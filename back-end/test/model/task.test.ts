@@ -1,13 +1,8 @@
-import { fa, faker } from "@faker-js/faker";
 import { Project } from "../../domain/model/project";
 import { Task } from "../../domain/model/task";
-import { Team } from "../../domain/model/team";
-import { User } from "../../domain/model/user";
 
 const futureDate = new Date();
 futureDate.setDate(futureDate.getDate() + 7);
-const team = new Team({name: "team1", id: 1});
-const user = new User({id: 1, name: "user1", specialisation: "specialisation1", email: "email1@t.t", password: "password1", role: "user", teams: [team]});
 const validName: string = "task1";
 var validId: number = 1;
 var validDescription: string = "description1";

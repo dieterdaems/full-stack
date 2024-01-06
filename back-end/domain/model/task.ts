@@ -41,16 +41,14 @@ export class Task {
         deadline,
         project,
         completed,
-        user
-    }: TaskPrisma & { project: ProjectPrisma & { team: TeamPrisma }} & { user: UserPrisma & { teams: TeamPrisma[] }})  { 
+    }: TaskPrisma & { project: ProjectPrisma & { team: TeamPrisma }})  { 
         return new Task(
             { id,
             name,
             description,
             deadline,
             project: Project.from(project),
-            completed,
-            user: User.from(user)
+            completed
         })
     }
 }

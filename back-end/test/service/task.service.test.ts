@@ -51,52 +51,6 @@ afterAll(() => {
     jest.clearAllMocks();
 });
 
-//tests getAllTasks
-
-test('given valid tasks, when getAllTasks is called as admin, then all tasks are returned', async () => {
-    taskDb.getAllTasks = mockTasksDbGetAllTasks.mockResolvedValue([task1, task2, task3, task4]);
-    const tasks = await taskService.getAllTasks({currentUser: 1, role: "admin"});
-    expect(tasks).toEqual([task1, task2, task3, task4]);
-}
-)
-
-test('given valid tasks, when getAllTasks is called as user, then all tasks by that user id are returned', async () => {
-    taskDb.getTasksByUserId = mockTasksDbGetTasksByUserId.mockResolvedValue([task1, task3]);
-    const tasks = await taskService.getAllTasks({currentUser: 1, role: "user"});
-    expect(tasks).toEqual([task1, task3]);
-}
-)
-
-//tests getTaskById
-
-test('given valid task, when getTaskById is called as admin, then task is returned', async () => {
-    taskDb.getTaskById = mockTasksDbGetTaskById.mockResolvedValue(task1);
-    const task = await taskService.getTaskById({id: 1, currentUser: 1, role: "admin"});
-    expect(task).toEqual(task1);
-}
-)
-
-test('given valid task, when getTaskById is called as user and has task in a project, then task is returned', async () => {
-    taskDb.getTaskById = mockTasksDbGetTaskById.mockResolvedValue(task1);
-    userDb.getUserById = mockUserDbGetUserById.mockResolvedValue(user);
-    const task = await taskService.getTaskById({id: 1, currentUser: 2, role: "user"});
-    expect(task).toEqual(task1);
-}
-)
-
-test('given valid task, when getTaskById is called as user and does not have task in a project, then error is thrown', async () => {
-    taskDb.getTaskById = mockTasksDbGetTaskById.mockResolvedValue(task2);
-    userDb.getUserById = mockUserDbGetUserById.mockResolvedValue(user);
-    await expect(() => taskService.getTaskById({id: 1, currentUser: 3, role: "user"})).rejects.toThrow("You are not authorized to access this resource.");
-}
-)
-
-test('given invalid task, when getTaskById is called, then error is thrown', async () => {
-    taskDb.getTaskById = mockTasksDbGetTaskById.mockResolvedValue(null);
-    await expect(() => taskService.getTaskById({id: 1000, currentUser: 1, role: "admin"})).rejects.toThrow("Task with id 1000 does not exist.");
-}
-)
-
 //tests createTask
 
 test('given valid task, when createTask is called, then task is created', async () => {

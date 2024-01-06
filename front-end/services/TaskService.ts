@@ -1,17 +1,5 @@
 import { Task } from "@/types";
 
-const getAll = () => {
-    const token = sessionStorage.getItem('token');
-    return fetch(process.env.NEXT_PUBLIC_API_URL + '/tasks', {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`
-
-        },
-    });
-}
-
 const getByProjectId = (projectId: string) => {
     const token = sessionStorage.getItem('token');
     return fetch(process.env.NEXT_PUBLIC_API_URL + '/tasks/project/' + projectId, {
@@ -77,7 +65,6 @@ const getTaskByUserId = (userId: string) => {
 }
 
 const TaskService = {
-    getAll,
     getByProjectId,
     create,
     deleteById,
