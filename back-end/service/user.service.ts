@@ -68,6 +68,7 @@ const createUser = async ({ name, specialisation, email, password }: UserInput):
 Parameters: id of user to be updated, updated info, id of user logged in, role saved in JWT token
 Return: updated user
 Authorization Errorr: if inlogged user is not admin nor the same as the one to be updated
+                      if inlogged user is not admin and tries to update his role
 Application Error: if user does not exist
                    if the new email is already taken
                    if password is too short
@@ -88,6 +89,8 @@ const updateUser = async ({ targetUserId, updatedInfo, currentUser, currentRole 
         if (!updatedInfo.password?.trim() || updatedInfo.password.length < 7) throw new Error('Password must be at least 7 characters');
         updatedInfo.password = await bcrypt.hash(updatedInfo.password, 12);
     }
+
+    if (currentRole !== 'admin' && updatedInfo.role && targetUser.role !== updatedInfo.role) throw new UnauthorizedError('credentials_required', { message: 'You are not authorized to update your role.' });
 
     const updatedUser = new User({ ...targetUser, ...updatedInfo });
     return userDb.updateUser({ id: targetUserId, ...updatedUser });

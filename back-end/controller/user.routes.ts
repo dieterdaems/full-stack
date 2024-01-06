@@ -33,6 +33,16 @@
  *              format: email
  *          password:
  *              type: string
+ *    UserInputUpdate:
+ *      type: object
+ *      properties:
+ *          name:
+ *              type: string
+ *          specialisation:
+ *              type: string
+ *          email:
+ *              type: string
+ *              format: email
  *    UserInputLogin:
  *      type: object
  *      properties:
@@ -197,7 +207,7 @@ userRouter.post('/add', async (req: Request, res: Response, next: NextFunction) 
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/UserInput'
+ *             $ref: '#/components/schemas/UserInputUpdate'
  *     responses:
  *       200:
  *         description: Successful response with the updated user.
