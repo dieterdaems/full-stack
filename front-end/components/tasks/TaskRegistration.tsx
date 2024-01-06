@@ -26,17 +26,17 @@ const TaskRegistrationForm: React.FC<Props> = ({projectId} : Props) => {
         setDeadlineError('');
         let valid = true;
         if (name === "" || name.trim() === "") {
-            setNameError("Name is required");
+            setNameError(t('tasks.errorName'));
             valid = false;
         }
 
         if (description === "" || description.trim() === "") {
-            setDescriptionError("Description is required");
+            setDescriptionError(t('tasks.errorDescription'));
             valid = false;
         }
 
-        if (deadline === null || deadline < new Date()) {
-            setDeadlineError("Deadline is required and has to be in the future");
+        if (!deadline || deadline < new Date()){
+            setDeadlineError(t('tasks.errorDeadline'));
             valid = false;
         }
 
@@ -49,14 +49,10 @@ const TaskRegistrationForm: React.FC<Props> = ({projectId} : Props) => {
         const newTask = {name, description, deadline, projectId};
         const response = await TaskService.create(newTask);
         if (!response.ok) {
-            if (response.status === 401) {
-                setErrorMessage("You are not authorized to create a task for this project");
-            }
-            else setErrorMessage(response.statusText);
+         setErrorMessage(response.statusText);
         }
         else router.push('/tasks/project/' + projectId);
         }
-
     }
 
     return (

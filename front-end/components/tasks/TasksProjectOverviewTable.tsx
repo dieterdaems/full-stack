@@ -35,7 +35,7 @@ const TasksOverviewTable: React.FC<Props> = ({ tasks }: Props) => {
         const response = await TaskService.deleteById(taskToDelete);
         const data = await response.json();
         if (response.ok) {
-            setStatusMessage("Deleted task successfully!");
+            setStatusMessage(t('tasks.deleted'));
         }
         else {
             setStatusMessage(data.errorMessage);
@@ -60,7 +60,7 @@ const TasksOverviewTable: React.FC<Props> = ({ tasks }: Props) => {
         const response = await TaskService.completeTask(taskToComplete);
         const data = await response.json();
         if (response.ok) {
-            setStatusMessage("Completed task successfully!");
+            setStatusMessage(t('tasks.completedSuccess'));
         }
         else {
             setStatusMessage(data.errorMessage);
