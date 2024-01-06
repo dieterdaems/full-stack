@@ -14,19 +14,23 @@ import Head from "next/head";
 const Projects: React.FC = () => {
 
     const [statusMessage, setStatusMessage] = useState<string>("");
+    const [errorMessage, setErrorMessage] = useState<string>("");
+    const [authError, setAuthError] = useState<string>("");
 
     const {t} = useTranslation();
     const fetchProjects = async () => {
-        setStatusMessage("")
-        const auth = await UserService.isAuth();
-        if(auth) {
-                const response = await ProjectService.getAll();
-                return response.json();
+        setStatusMessage("");
+        setErrorMessage("");
+        setAuthError("");
+        const response = await ProjectService.getAll();
+        if (!response.ok) {
+            if (response.status === 401) {
+                setAuthError(t('notAuthorized'));
+            }
+            else setErrorMessage(response.statusText);
         }
         else {
-            const reply = t('notLoggedIn')
-            setStatusMessage(reply);
-           return
+            return response.json();
         }
     }
 
@@ -48,6 +52,8 @@ return (
     <Header />
     <main>
         <h1 className='bg-gray-100 text-center font-semibold text-3xl'>{t('projects.title')}</h1>
+        <p>{errorMessage}</p>
+        <p>{authError}</p>
         {statusMessage && <p>{statusMessage}</p>}
         {error && <p>{error}</p>}
         {isLoading && <p>{t('projects.loading')}</p>}

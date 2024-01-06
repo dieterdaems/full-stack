@@ -8,17 +8,31 @@ import useInterval from "use-interval";
 import { GetServerSideProps } from "next";
 import Head from "next/head";
 import Header from "@/components/header";
+import { useState } from "react";
 
 const Tasks: React.FC = () => {
     const router = useRouter();
     const { id } = router.query;
     const { t } = useTranslation();
+    const [errorMessage, setErrorMessage] = useState("");
+    const [authError, setAuthError] = useState("");
 
     const getTasksByProjectId = async () => {
+        setErrorMessage("");
+        setAuthError("");
         const response = await TaskService.getByProjectId(id as string);
-        const tasks = await response.json();
-        return tasks;
-    }
+        if (!response.ok) {
+            if (response.status === 401) {
+                setAuthError(t('notAuthorized'));
+            }
+            else setErrorMessage(response.statusText);
+        }
+        else {
+            return response.json();
+        }
+
+
+        }
 
     
     const {data, isLoading, error} = useSWR('tasksByProjectId', getTasksByProjectId);
@@ -38,6 +52,8 @@ const Tasks: React.FC = () => {
             <Header />
             <main>
                 <h1 className='bg-gray-100 text-center font-semibold text-3xl'>{t('tasks.title')}</h1>
+                <p>{errorMessage}</p>
+                <p>{authError}</p>
                 {error && <p>{error}</p>}
                 {isLoading && <p>{t('tasks.loading')}</p>}
                 <section>
