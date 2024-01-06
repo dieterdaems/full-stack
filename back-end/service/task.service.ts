@@ -10,13 +10,15 @@ import projectDb from "../domain/data-access/project.db";
 Parameters: task to be created, id of logged in user
 Return: created task
 Authorization Error: if user is not admin AND user is not part of the team that the task's project belongs to
-Application Error: if deadline is in the past
+Application Error: if project does not exist
+                   if deadline is in the past
                    if domalin validation fails
 */
 const createTask = async ({task, currentUser, role}: {task: TaskInput, currentUser: number, role: Role}): Promise<Task> => {
     const user = await userDb.getUserById(currentUser);
     const project = await projectDb.getProjectById(task.projectId);
     if (role !== 'admin' && !user.teams.map(team => team.id).includes(project?.team.id)) throw new UnauthorizedError('credentials_required', { message: 'You are not authorized to create a task for this project.' });
+    if (!project) throw new Error(`Project with id ${task.projectId} does not exist.`);
     if (new Date(task.deadline) < new Date()) throw new Error('Deadline must be in the future.');
     const name = task.name
     const description = task.description
