@@ -1,10 +1,6 @@
 import ProjectService from '@/services/ProjectService';
-import TeamService from '@/services/TeamService';
-import { Project } from '@/types';
-import { time } from 'console';
 import { useTranslation } from 'next-i18next';
 import React, { FormEvent, useState } from 'react';
-import { setTimeout } from 'timers/promises';
 
 const AddProject: React.FC = () => {
 
@@ -37,9 +33,6 @@ const AddProject: React.FC = () => {
         if (validate()) {
             const project = {name};
             setButton(!button)
-            // const teams = await TeamService.getAll();
-            // const teamsResponse = await teams.json();
-            // const team = teamsResponse.find((team: { id: number; }) => team.id === teamId);
             const response = await ProjectService.create(name,teamId);
             if (response.status === 200) {
                 setName('');
