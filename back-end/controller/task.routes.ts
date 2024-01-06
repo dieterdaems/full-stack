@@ -63,6 +63,7 @@ const taskRouter = express.Router();
  * /tasks/project/{id}:
  *   get:
  *     summary: Get a list of all tasks for a specific project.
+ *     tags: [Tasks]
  *     parameters:
  *       - in: path
  *         name: id
@@ -109,6 +110,7 @@ taskRouter.get('/project/:id', async (req: Request & {auth: any}, res: Response,
  * /tasks:
  *   post:
  *     summary: Create a new task.
+ *     tags: [Tasks]
  *     requestBody:
  *       required: true
  *       content:
@@ -154,6 +156,7 @@ taskRouter.post('/', async (req: Request & {auth: any}, res: Response, next: Nex
  * /tasks/completeTask/{id}:
  *   put:
  *     summary: Complete a task.
+ *     tags: [Tasks]
  *     parameters:
  *       - in: path
  *         name: id
@@ -197,6 +200,7 @@ taskRouter.put('/completeTask/:id', async (req: Request & {auth:any}, res: Respo
  * /tasks/{id}:
  *   delete:
  *     summary: Delete a task by ID.
+ *     tags: [Tasks]
  *     parameters:
  *       - in: path
  *         name: id
@@ -241,6 +245,7 @@ taskRouter.delete('/:id', async (req: Request & {auth: any}, res: Response, next
  * /tasks/user/{id}:
  *   get:
  *     summary: Get a list of all tasks for a specific user.
+ *     tags: [Tasks]
  *     parameters:
  *       - in: path
  *         name: id
