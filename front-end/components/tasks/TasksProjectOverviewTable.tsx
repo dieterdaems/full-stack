@@ -24,8 +24,10 @@ const TasksOverviewTable: React.FC<Props> = ({ tasks }: Props) => {
     const projectId = router.query.id;
 
     const handleDeleteButton = async (id: any) => {
+        setStatusMessage("");
         setTaskToDelete(String(id));
         setShowConfirmation(true);
+        setShowConfirmationComplete(false);
     };
 
     const handleDeleteConfirm = async () => {
@@ -46,8 +48,10 @@ const TasksOverviewTable: React.FC<Props> = ({ tasks }: Props) => {
     }
 
     const handleCompleteButton = async (id: any) => {
+        setStatusMessage("");
         setTaskToComplete(String(id));
         setShowConfirmationComplete(true);
+        setShowConfirmation(false);
     };
 
     const handleCompleteConfirm = async () => {
