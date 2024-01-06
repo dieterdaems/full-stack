@@ -5,6 +5,7 @@ import { Project } from "../../domain/model/project";
 import { Team } from "../../domain/model/team";
 import projectService from "../../service/project.service";
 import taskDb from "../../domain/data-access/task.db";
+import teamDb from "../../domain/data-access/team.db";
 
 const team = new Team({name: "team1", id: 1});
 const project1 = new Project({name: "project1", id: 1, team: team});
@@ -18,6 +19,8 @@ let mockProjectsDbDeleteById: jest.Mock;
 let mockProjectsDbGetProjectById: jest.Mock;
 let mockTasksDbDeleteById: jest.Mock;
 let mockTasksDbGetAllTasks: jest.Mock;
+let mockProjectDbGetProjectByName: jest.Mock;
+let mockTeamDbGetTeamById: jest.Mock;
 
 beforeAll(() => {
     mockProjectsDbGetAllProjects = jest.fn();
@@ -28,6 +31,8 @@ beforeAll(() => {
     mockProjectsDbGetProjectById = jest.fn();
     mockTasksDbDeleteById = jest.fn();
     mockTasksDbGetAllTasks = jest.fn();
+    mockProjectDbGetProjectByName = jest.fn();
+    mockTeamDbGetTeamById = jest.fn();
 });
 
 afterAll(() => {
@@ -54,7 +59,8 @@ test('given valid projects, when getAllProjects is called as user, then all proj
 //tests for createProject
 
 test('given valid project, when createProject is called, then project is returned', async () => {
-    projectDb.getAllProjects = mockProjectsDbGetAllProjects.mockResolvedValue([project2]);
+    projectDb.getProjectByName = mockProjectDbGetProjectByName.mockResolvedValue(undefined);
+    teamDb.getTeamById = mockTeamDbGetTeamById.mockResolvedValue(team);
     projectDb.createProject = mockProjectsDbcreateProject.mockResolvedValue(project1);
     const project = await projectService.createProject({name: "project1", team: team});
     expect(project).toEqual(project1);
@@ -62,15 +68,15 @@ test('given valid project, when createProject is called, then project is returne
 )
 
 test('given invalid project, when createProject is called, then error is thrown', async () => {
-    projectDb.getAllProjects = mockProjectsDbGetAllProjects.mockResolvedValue([project2]);
-    projectDb.createProject = mockProjectsDbcreateProject.mockResolvedValue(project1);
+    projectDb.getProjectByName = mockProjectDbGetProjectByName.mockResolvedValue(undefined);
+    teamDb.getTeamById = mockTeamDbGetTeamById.mockResolvedValue(team);
     await expect(projectService.createProject({name: "", team: team})).rejects.toThrowError('Project name is required.');
 }
 )
 
 test('given valid project with name already in database, when createProject is called, then error is thrown', async () => {
-    projectDb.getAllProjects = mockProjectsDbGetAllProjects.mockResolvedValue([project1]);
-    projectDb.createProject = mockProjectsDbcreateProject.mockResolvedValue(project1);
+    projectDb.getProjectByName = mockProjectDbGetProjectByName.mockResolvedValue(project1);
+    teamDb.getTeamById = mockTeamDbGetTeamById.mockResolvedValue(team);
     await expect(projectService.createProject({name: "project1", team: team})).rejects.toThrowError('Project with name project1 already exists.');
 }
 )
