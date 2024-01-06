@@ -1,7 +1,6 @@
 //execute: npx ts-node util/seed.ts
 import { faker } from '@faker-js/faker';
 import { PrismaClient } from "@prisma/client";
-import { User } from '../domain/model/user';
 import bcrypt from 'bcrypt';
 
 const prisma = new PrismaClient();
@@ -15,24 +14,27 @@ const main = async () => {
     
     const team1 = await prisma.team.create({
         data: {
-            name: 'Red Team',
+            name: 'red team',
         },
     });
     console.log(`Created team with name: ${team1.name}`);
 
+
     const team2 = await prisma.team.create({
         data: {
-            name: 'Blue Team',
+            name: 'blue team',
         },
     });
     console.log(`Created team with name: ${team2.name}`);
 
+
     const team3 = await prisma.team.create({
         data: {
-            name: 'Green Team',
+            name: 'green team',
         },
     });
     console.log(`Created team with name: ${team3.name}`);
+
 
     const project1 = await prisma.project.create({
         data: {
@@ -44,6 +46,7 @@ const main = async () => {
     });
     console.log(`Created project with name: ${project1.name}`);
 
+
     const project2 = await prisma.project.create({
         data: {
             name: 'Front-end project',
@@ -54,6 +57,7 @@ const main = async () => {
     });
     console.log(`Created project with name: ${project2.name}`);
     
+
     const task1 = await prisma.task.create({
         data: {
             name: 'Create database',
@@ -66,6 +70,7 @@ const main = async () => {
         },
     });
     console.log(`Created task with name: ${task1.name}`);
+
 
     const task2 = await prisma.task.create({
         data: {
@@ -80,6 +85,7 @@ const main = async () => {
     });
     console.log(`Created task with name: ${task2.name}`);
 
+
     const task3 = await prisma.task.create({
         data: {
             name: 'Create back-end',
@@ -92,6 +98,7 @@ const main = async () => {
         },
     });
     console.log(`Created task with name: ${task3.name}`);
+
 
     const task4 = await prisma.task.create({
         data: {
@@ -116,7 +123,8 @@ const main = async () => {
     });
     console.log(`Created project with name: ${project3.name}`);
     
-    const user1pw = bcrypt.hashSync('greetjej123', 12);
+
+    const user1pw = await bcrypt.hash('greetjej123', 12);
     const user1 = await prisma.user.create({
         data: {
             name: 'Greetje Jongen',
@@ -128,7 +136,8 @@ const main = async () => {
     });
     console.log(`Created user with name: ${user1.name} and email: ${user1.email}`);
 
-    const user2pw = bcrypt.hashSync('elkes123', 12);
+
+    const user2pw = await bcrypt.hash('elkes123', 12);
     const user2 = await prisma.user.create({
         data: {
             name: 'Elke Steegmans',
@@ -144,7 +153,7 @@ const main = async () => {
     console.log(`Created user with name: ${user2.name} and email: ${user2.email}`);
 
 
-    const user3pw = bcrypt.hashSync('johanp123', 12);
+    const user3pw = await bcrypt.hash('johanp123', 12);
     const user3 = await prisma.user.create({
         data: {
             name: 'Johan Pieck',
