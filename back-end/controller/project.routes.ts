@@ -19,28 +19,16 @@ const projectRouter = express.Router();
  *          $ref: '#/components/schemas/Team'
  *       required:
  *         - name
- * 
- *     ProjectInputTask:
- *       type: object
- *       properties:
- *         name:
- *           type: string
- *         team:
- *           $ref: '#/components/schemas/ProjectInputTeam'
- *       required:
- *          - name
- * 
  *     ProjectCreate:
  *       type: object
  *       properties:
  *         name:
  *           type: string
- *         team:
- *           $ref: '#/components/schemas/ProjectInputTeam'
+ *         teamId:
+ *           type: number
  *       required:
  *          - name
- *          - team
- * 
+ *          - teamId
  *     ProjectInput:
  *       type: object
  *       properties:
@@ -131,7 +119,7 @@ projectRouter.post('/', async (req: Request & {auth: any}, res: Response, next: 
         const currentUser = req.auth.id;
         const role = req.auth.role;
         const project = <ProjectInput>req.body;
-        const newProject = await projectService.createProject(project);
+        const newProject = await projectService.createProject({projectin: project, currentUser, role});
         res.status(200).json(newProject);
     }
     catch (error) {

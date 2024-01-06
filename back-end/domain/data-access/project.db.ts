@@ -1,5 +1,6 @@
 import { Project } from "../model/project";
 import prisma from "../../util/init-db";
+import { ProjectInput } from "../../types";
 
 const getAllProjects = async (): Promise<Project[]> => {
     try {
@@ -49,21 +50,10 @@ const getProjectByName = async (name: string): Promise<Project> => {
     }
 }
 
-const createProject = async (project: Project): Promise<Project> => {
+const createProject = async (project: ProjectInput): Promise<Project> => {
     try {
-        const data: any = {
-            name: project.name,
-        };
-
-        if (project.team) {
-            data.team = {
-                connect: {
-                    id: project.team.id
-                }
-            };
-        }
         const newProject = await prisma.project.create({
-            data,
+            data : { name: project.name, team: { connect: { id: project.teamId } } },
             include: {
                 team: true
             }

@@ -1,11 +1,9 @@
-import { get } from "http";
 import projectDb from "../domain/data-access/project.db";
 import { Project } from "../domain/model/project";
 import teamDb from "../domain/data-access/team.db";
-import { ProjectInput } from "../types";
-import taskDb from "../domain/data-access/task.db";
-import userDb from "../domain/data-access/user.db";
+import { ProjectInput, Role } from "../types";
 import { UnauthorizedError } from "express-jwt";
+import userDb from "../domain/data-access/user.db";
 
 
 /*
@@ -15,24 +13,30 @@ Return: all projects if role is admin
 */
 const getAllProjects = async ({role, currentUser}): Promise<Project[]> => {
     if (role === 'admin') return await projectDb.getAllProjects();
-    else return await projectDb.getAllProjectsByUserId(currentUser);
+    else return projectDb.getAllProjectsByUserId(currentUser);
 }
 
 
 /*
-Parameters: project to be created
+Parameters: project to be created, id of logged in user, role of logged in user
 Return: created project
-Application Error: if project with same name exists
+Authorization Error: if user is not admin AND user is not part of the team that the project belongs to
+Application Error: if team id is not provided
                    if domalin validation fails
+                   if project with same name exists
+                   if team does not exist
+
 */
-const createProject = async (projectin: ProjectInput): Promise<Project> => {
+const createProject = async ({projectin, currentUser, role}: {projectin: ProjectInput, currentUser: number, role: Role}): Promise<Project> => {
+    const LoggedIn = await userDb.getUserById(currentUser);
+    if (role !== 'admin' && !LoggedIn.teams.map(team => team.id).includes(projectin?.teamId)) throw new UnauthorizedError('credentials_required', { message: 'You are not authorized to create a project for this team.' });
+    if (!projectin.teamId && projectin.teamId !== 0) throw new Error('Team id is required.');
+    const newProject = new Project({name: projectin.name}); // Domain validation
     const existingProject = await projectDb.getProjectByName(projectin.name);
     if (existingProject) throw new Error(`Project with name ${existingProject.name} already exists.`);
     const team = await teamDb.getTeamById(projectin.teamId);
     if (!team) throw new Error(`Team with id ${projectin.teamId} does not exist.`);
-    const newProject = new Project({name: projectin.name, team: team});
-    const project = await projectDb.createProject(newProject);
-    return project;
+    return projectDb.createProject({name: projectin.name, teamId: projectin.teamId});
 }
 
 /*
