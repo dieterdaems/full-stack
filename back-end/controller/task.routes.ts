@@ -238,40 +238,5 @@ taskRouter.delete('/:id', async (req: Request & {auth: any}, res: Response, next
     }
 });
 
-/**
- * @swagger
- * /tasks/user/{id}:
- *   get:
- *     summary: Get a list of all tasks for a specific user.
- *     tags: [Tasks]
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         description: ID of the user to retrieve the tasks off.
- *         schema:
- *           type: integer
- *     responses:
- *       200:
- *         description: Successful response with a list of tasks.
- *         content:
- *           application/json:
- *             schema:
- *               type: array
- *               items:
- *                 $ref: '#/components/schemas/Task'
- *       400:
- *         description: Bad request with an error message.
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 status:
- *                   type: string
- *                 errorMessage:
- *                   type: string
- */
-
 
 export { taskRouter };

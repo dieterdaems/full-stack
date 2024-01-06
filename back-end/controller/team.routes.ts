@@ -124,7 +124,7 @@ teamRouter.get('/:id', async (req: Request, res: Response, next: NextFunction) =
  *           schema:
  *             $ref: '#/components/schemas/TeamCreateInput'
  *     responses:
- *       201:
+ *       200:
  *         description: Successful response with the created team.
  *         content:
  *           application/json:
@@ -147,7 +147,7 @@ teamRouter.post('/create', async (req: Request & { auth: any }, res: Response, n
         const role = req.auth.role;
         const team = <TeamInput>req.body;
         const result = await teamService.createTeam({newTeam: team, role});
-        res.status(201).json(result);
+        res.status(200).json(result);
     }
     catch (error) {
         next(error);

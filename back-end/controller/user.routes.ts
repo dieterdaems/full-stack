@@ -357,7 +357,7 @@ userRouter.delete('/:id', async (req: Request & { auth: any }, res: Response, ne
  *         schema:
  *           type: integer
  *     responses:
- *       201:
+ *       200:
  *         description: Successful response with the updated user.
  *         content:
  *           application/json:
@@ -380,7 +380,7 @@ userRouter.post('/team/:teamId/user/:userId', async (req: Request & { auth: any 
         const currentUser = req.auth.id;
         const role = req.auth.role;
         const user = await userService.addUserToTeam({teamId: parseInt(req.params.teamId), userId: parseInt(req.params.userId), currentUser, role });
-        res.status(201).json(user);
+        res.status(200).json(user);
     }
     catch (error) {
         next(error);
@@ -390,7 +390,7 @@ userRouter.post('/team/:teamId/user/:userId', async (req: Request & { auth: any 
 /**
  * @swagger
  * /users/team/{teamId}/user/{userId}:
- *   delete:
+ *   put:
  *     summary: Remove a user from a team.
  *     tags: [Users]
  *     parameters:
@@ -407,7 +407,7 @@ userRouter.post('/team/:teamId/user/:userId', async (req: Request & { auth: any 
  *         schema:
  *           type: integer
  *     responses:
- *       201:
+ *       200:
  *         description: Successful response with the updated user.
  *         content:
  *           application/json:
@@ -425,12 +425,12 @@ userRouter.post('/team/:teamId/user/:userId', async (req: Request & { auth: any 
  *                 errorMessage:
  *                   type: string
  */
-userRouter.delete('/team/:teamId/user/:userId', async (req: Request & { auth: any }, res: Response, next: NextFunction) => {
+userRouter.put('/team/:teamId/user/:userId', async (req: Request & { auth: any }, res: Response, next: NextFunction) => {
     try {
         const role = req.auth.role;
         const currentUser = req.auth.id;
         const user = await userService.removeUserFromTeam({teamId: parseInt(req.params.teamId), userId: parseInt(req.params.userId), currentUser, role});
-        res.status(201).json(user);
+        res.status(200).json(user);
     }
     catch (error) {
         next(error);
