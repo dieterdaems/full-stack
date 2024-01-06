@@ -1,4 +1,5 @@
 import Header from "@/components/header";
+import ExistingUsersTable from "@/components/users/ExistingUsersTable";
 import UserLoginForm from "@/components/users/UserLoginForm";
 import Head from "next/head";
 import { useRouter } from "next/router";
@@ -39,6 +40,7 @@ const UserLogin: React.FC = () => {
                         <h1 className='bg-gray-100 text-center font-semibold text-3xl'>Login</h1>
                         <section>
                             {<UserLoginForm />}
+                            {<ExistingUsersTable />}
                         </section>
                     </>
                 )}

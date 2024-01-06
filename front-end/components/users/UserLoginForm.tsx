@@ -64,7 +64,6 @@ function UserLogin() {
           <input className="global-input" id="email"
             type="email"
             name="email"
-            placeholder="jan.janssens@example.com"
             onChange={(event) => setEmail(event.target.value)}
             required
           />
@@ -76,7 +75,6 @@ function UserLogin() {
           <input className="global-input" id="password"
             type={showPassword ? "text" : "password"}
             name="password"
-            placeholder="********"
             onChange={(event) => setPassword(event.target.value)}
             required
           />
