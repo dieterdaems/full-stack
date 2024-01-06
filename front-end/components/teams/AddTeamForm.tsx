@@ -32,7 +32,7 @@ const TeamsOverviewTable: React.FC = () => {
         }
         else {
             if (response.status === 401)
-                setStatusMessage(t('notAuthorized'));
+                setStatusMessage(t('notAuthorizedAction'));
             else
                 setStatusMessage(team.errorMessage);
         }

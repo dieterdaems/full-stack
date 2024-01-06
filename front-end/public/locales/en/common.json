@@ -7,6 +7,7 @@
     "delete" : "Delete",
     "notLoggedIn": "You are not logged in. Please log in.",
     "notAuthorized": "You are not authorized to view this page.",
+    "notAuthorizedAction": "You are not authorized to perform this action.",
     "add": "Add",
     "header": {
         "welcome": "Welcome",

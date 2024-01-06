@@ -5,6 +5,7 @@
     "cancel" : "Annuleer",
     "notLoggedIn": "U moet ingelogd zijn om taken te kunnen bekijken.",
     "notAuthorized": "U bent niet geautoriseerd om deze pagina te bekijken.",
+    "notAuthorizedAction": "U bent niet geautoriseerd om deze actie uit te voeren.",
     "delete" : "Verwijder",
     "add": "Toevoegen",
     "header": {
