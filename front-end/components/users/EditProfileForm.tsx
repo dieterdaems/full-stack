@@ -1,5 +1,6 @@
 import UserService from "@/services/UserService";
 import { User } from "@/types";
+import { useTranslation } from "next-i18next";
 import router from "next/router";
 import { FormEvent, useState } from "react";
 
@@ -19,6 +20,8 @@ const EditProfileForm: React.FC<Props> = ({ user }: Props) => {
     const [emailError, setEmailError] = useState<string>("");
     const [specialisationError, setSpecialisationError] = useState<string>("");
 
+    const { t } = useTranslation();
+    
     const validate = () => {
         setNameError('');
         setEmailError('');
@@ -27,22 +30,22 @@ const EditProfileForm: React.FC<Props> = ({ user }: Props) => {
         let valid = true;
 
         if ((name === "" || name.trim() === "")) {
-            setNameError("Name is required");
+            setNameError(t('users.errorName'));
             valid = false;
         }
 
         if (email === "" || email.trim() === "") {
-            setEmailError("Email is required");
+            setEmailError(t('users.errorEmail'));
             valid = false;
         }
         else {
             const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            if (!emailRegex.test(email)) { valid = false; setEmailError('Invalid Email format'); }
+            if (!emailRegex.test(email)) { valid = false; setEmailError(t('users.errorEmailFormat')); }
         }
 
 
         if (specialisation === "" || specialisation.trim() === "") {
-            setSpecialisationError("Specialisation is required");
+            setSpecialisationError(t('users.errorSpecialisation'));
             valid = false;
         }
 
@@ -58,13 +61,13 @@ const EditProfileForm: React.FC<Props> = ({ user }: Props) => {
                 setErrorMessage(response.statusText);
             }
             else {
-                setErrorMessage("Profile updated successfully");
+                setErrorMessage(t('users.profile.updated'));
                 // Refresh the page (/users/profile after a second
                 setTimeout(() => router.reload(), 1000);
             }
         }
         else {
-            setErrorMessage("Cannot update information. Please fill in with valid input.");
+            setErrorMessage(t('users.profile.errorInvalidInput'));
         }
 
     }
@@ -72,41 +75,40 @@ const EditProfileForm: React.FC<Props> = ({ user }: Props) => {
     return (
         <>
         <div className="bg-gray-100 flex items-center justify-center">
-
         <div className="container mx-auto my-8" >
+        <div className="bg-gray-100 flex items-center justify-center">
+            <p className=" text-red-500">{errorMessage}</p>
+            </div>
             <form className="mt-4 flex flex-col items-center" onSubmit={handleSubmit}>
 
                 <div className=" bg-gray-100 p-4 rounded-lg">
                     <div className="relative bg-inherit mt-4">
-                    <label htmlFor="name">Name</label>
-                    <input type="text" id="name" value={name} onChange={(e) => setName(e.target.value)} />
+                    <label className="global-label" htmlFor="name">{t('users.name')}</label>
+                    <input className="global-input"type="text" id="name" value={name} onChange={(e) => setName(e.target.value)} />
                     <p className=" text-red-500">{nameError}</p>
                     </div>
                 </div>
 
                 <div className=" bg-gray-100 p-4 rounded-lg">
                     <div className="relative bg-inherit mt-4">
-                    <label htmlFor="email">Email</label>
-                    <input type="text" id="email" value={email} onChange={(e) => setEmail(e.target.value)} />
+                    <label className="global-label" htmlFor="email">{t('users.email')}</label>
+                    <input className="global-input" type="text" id="email" value={email} onChange={(e) => setEmail(e.target.value)} />
                     <p className=" text-red-500">{emailError}</p>
                     </div>
                 </div>
 
                 <div className=" bg-gray-100 p-4 rounded-lg">
                     <div className="relative bg-inherit mt-4">
-                    <label htmlFor="specialisation">Specialisation</label>
-                    <input type="text" id="specialisation" name={specialisation} value={specialisation} onChange={(e) => setSpecialisation(e.target.value)} />
+                    <label className="global-label" htmlFor="specialisation">{t('users.specialization')}</label>
+                    <input className="global-input" type="text" id="specialisation" name={specialisation} value={specialisation} onChange={(e) => setSpecialisation(e.target.value)} />
                     <p className=" text-red-500">{specialisationError}</p>
                     </div>
                 </div>
 
 
 
-                <button className="global-button" type="submit">Update</button>
+                <button className="global-button" type="submit">{t('users.profile.save')}</button>
             </form>
-            <div>
-            <p className=" text-red-500">{errorMessage}</p>
-            </div>
         </div>
         </div>
         </>

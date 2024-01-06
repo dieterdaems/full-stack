@@ -1,5 +1,9 @@
+import { useTranslation } from "next-i18next";
 
 const ExistingUsersTable: React.FC = () => {
+
+    const { t } = useTranslation();
+    
     return (
         <>
             <div className="bg-gray-100 flex items-start justify-center">
@@ -7,9 +11,9 @@ const ExistingUsersTable: React.FC = () => {
                     <table className="mx-auto bg-white border border-gray-300">
                         <thead>
                             <tr>
-                                <th className="py-2 px-4 border-b border-r">Email</th>
-                                <th className="py-2 px-4 border-b border-r">Password</th>
-                                <th className="py-2 px-4 border-b border-r">Role</th>
+                                <th className="py-2 px-4 border-b border-r">{t('users.email')}</th>
+                                <th className="py-2 px-4 border-b border-r">{t('users.password')}</th>
+                                <th className="py-2 px-4 border-b border-r">{t('users.role')}</th>
                             </tr>
                         </thead>
                         <tbody>

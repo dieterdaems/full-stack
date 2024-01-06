@@ -2,6 +2,9 @@ import Header from "@/components/header";
 import TeamsOverviewTable from "@/components/teams/TeamsOverviewTable";
 import TeamService from "@/services/TeamService";
 import UserService from "@/services/UserService";
+import { GetServerSideProps } from "next";
+import { useTranslation } from "next-i18next";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import Head from "next/head";
 import { useState } from "react";
 import useSWR, { mutate } from "swr";
@@ -11,15 +14,15 @@ const Teams: React.FC = () => {
 
     const [errorMessage, setErrorMessage] = useState<string>("");
     const [authError, setAuthError] = useState<string>("");
-    const [statusMessage, setStatusMessage] = useState<string>("");
 
+    const { t } = useTranslation();
     const getAllTeams = async () => {
         setErrorMessage("");
         setAuthError("");
         const response = await TeamService.getAll();
         if (!response.ok) {
             if (response.status === 401) {
-                setAuthError("You are not authorized to view this page.");
+                setAuthError(t('notAuthorized'));
             }
             else setErrorMessage(response.statusText);
         }
@@ -28,13 +31,11 @@ const Teams: React.FC = () => {
         }
     }
     const getUserTeams = async () => {
-        setStatusMessage("")
-        if (await UserService.getAuth()) {
         const id = sessionStorage.getItem("loggedUser");
         const response = await UserService.getById(id);
         if (!response.ok) {
             if (response.status === 401) {
-                setAuthError("You are not authorized to view this page.");
+                setAuthError(t('notAuthorized'));
             }
             else setErrorMessage(response.statusText);
         }
@@ -43,7 +44,6 @@ const Teams: React.FC = () => {
             return user.teams;
         }
     };
-}
 
 
     const { data: currentTeamsData, error: currentTeamsError } = useSWR('currentTeams', getUserTeams);
@@ -57,11 +57,11 @@ const Teams: React.FC = () => {
     }, 1000);
 
 
-    if (error || currentTeamsError) return <>Failed to load</>
+    if (error || currentTeamsError) return <>{t('generalError')}</>
     return (
         <>
             <Head>
-                <title>Teams</title>
+                <title>{t('teams.title')}</title>
             </Head>
             <div className="bg-gray-100 min-h-screen">
             <Header />
@@ -70,15 +70,25 @@ const Teams: React.FC = () => {
                 <p>{authError}</p>
                 {data && currentTeamsData && (
                     <>
-                        <h1 className='bg-gray-100 text-center font-semibold text-3xl'>Teams</h1>
+                        <h1 className='bg-gray-100 text-center font-semibold text-3xl'>{t('teams.title')}</h1>
                         {<TeamsOverviewTable teams={data} currentTeams={currentTeamsData} />}
                     </>
                 )}
-                {!data && !errorMessage && !authError && <p>Loading...</p>}
+                {!data && !errorMessage && !authError && <p>{t('teams.loading')}</p>}
             </main>
             </div>
         </>
     )
 };
+
+export const getServerSideProps: GetServerSideProps = async (context) =>{
+    const { locale } = context;
+    return {
+    props: {
+      ...(await serverSideTranslations(locale ?? "en" ,["common"])),
+    },
+  }
+}
+
 
 export default Teams;

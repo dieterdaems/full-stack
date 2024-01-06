@@ -3,8 +3,7 @@
 @tailwind utilities;
 
 .global-input {
-    @apply bg-white h-10 w-72 rounded-md text-gray-400 border-2 border-gray-500 p-2 outline-none;
-  
+    @apply bg-white h-10 w-72 rounded-md text-black border-2 border-gray-500 p-2 outline-none;
   }
   
   .global-input::placeholder {
