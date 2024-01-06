@@ -73,8 +73,10 @@ const TasksOverviewTable: React.FC<Props> = ({ tasks }: Props) => {
     }
 
     if (tasks.length == 0 ) return <>
-    <p>{t('tasks.noTasks')}</p>
-    <button onClick={() => router.push('/tasks/register/' + projectId)}>{t('tasks.new')}</button>
+    <div className="bg-gray-100 flex flex-col items-center justify-center mt-6 mb-5">
+    <p className=" text-red-500">{t('tasks.noTasks')}</p>
+    <button className="global-button" onClick={() => router.push('/tasks/register/' + projectId)}>{t('tasks.new')}</button>
+    </div>
     </>
     return (
         <>
