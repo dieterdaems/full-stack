@@ -24,8 +24,6 @@ const taskRouter = express.Router();
  *           type: boolean
  *         project:
  *           $ref: "#/components/schemas/Project"
- *         user:
- *           $ref: "#/components/schemas/User"
  *       required:
  *         - name
  *         - description

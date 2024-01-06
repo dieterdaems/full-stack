@@ -17,8 +17,10 @@
  *              format: email
  *          password:
  *              type: string
- *          team:
- *              $ref: '#/components/schemas/Team'
+ *          teams:
+ *              type: array
+ *              items:
+ *               $ref: '#/components/schemas/Team'
  *    UserInput:
  *      type: object
  *      properties:
@@ -136,6 +138,7 @@ userRouter.get('/:id', async (req: Request & { auth: any }, res: Response, next:
  * @swagger
  * /users/add:
  *   post:
+ *     security: []
  *     summary: Create a new user.
  *     tags: [Users]
  *     requestBody:
@@ -231,6 +234,7 @@ userRouter.put('/update/:id', async (req: Request & { auth: any }, res: Response
  * @swagger
  * /users/login:
  *   post:
+ *     security: []
  *     summary: Authenticate a user.
  *     tags: [Users]
  *     requestBody:
@@ -242,13 +246,18 @@ userRouter.put('/update/:id', async (req: Request & { auth: any }, res: Response
  *             $ref: '#/components/schemas/UserInputLogin'
  *     responses:
  *       200:
- *         description: Successful response with the JWT token.
+ *         description: Successful response with the JWT token and user id and user role.
  *         content:
  *           application/json:
  *             schema:
  *               type: object
  *               properties:
  *                 token:
+ *                   type: string
+ *                 id:
+ *                   type: number
+ *                   format: int64
+ *                 role:
  *                   type: string
  *       400:
  *         description: Bad request with an error message.
