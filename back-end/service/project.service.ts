@@ -9,39 +9,21 @@ import { UnauthorizedError } from "express-jwt";
 
 
 /*
-Parameters: id of user, id of logged in user, role of logged in user
+Parameters: role of logged in user,id of user, id of logged in user
 Return: all projects if role is admin
         all projects of user if role is user
-Authorization Error: if id of user is not same as id of logged in user
 */
 
-const getAllProjects = async ({id, role, currentUser}): Promise<Project[]> => {
+const getAllProjects = async ({role, currentUser}): Promise<Project[]> => {
     if (role === 'admin') return await projectDb.getAllProjects();
-    if (id !== currentUser) throw new UnauthorizedError('credentials_required', { message: 'You are not authorized to access this resource.' });
-    else return await projectDb.getAllProjectsByUserId(currentUser);
+    else return projectDb.getAllProjectsByUserId(currentUser);
 }
 
 
 /*
-Parameters: id of project to be found, id of logged in user, role of logged in user
-Return: project 
-Authorization Error: if role is not admin or user is not part of project's team
-Application Error: if project does not exist
-*/
-
-// const getProjectById = async ({id,role,currentUser}): Promise<Project> => {
-//     const project = await projectDb.getProjectById(id);
-//     if (!project) throw new Error(`Project with id ${id} does not exist.`);
-//     const user = await userDb.getUserById(currentUser);
-//     const teamsId = user.teams.map((team) => team.id);
-//     if (role !== 'admin' && !teamsId.some(teamId => teamId ===  id)) throw new UnauthorizedError('credentials_required', { message: 'You are not authorized to access this resource.' });
-//     return project;
-// };
-
-/*
 Parameters: project to be created
 Return: created project
-Application Error: if project with same id exists
+Application Error: if project with same name exists
                    if domalin validation fails
 */
 
@@ -74,9 +56,5 @@ const deleteProject = async ({id,role}): Promise<Project> => {
     return project;
 }
 
-// const getAllProjectsByUserId = async ({id, role, currentUser}): Promise<Project[]> => {
-//     const projects = await projectDb.getAllProjectsByUserId(id);
-//     return projects;
-// }
 
-export default { getAllProjects, /*getProjectById,*/ createProject, deleteProject, /*getAllProjectsByUserId*/ };
+export default { getAllProjects, createProject, deleteProject };

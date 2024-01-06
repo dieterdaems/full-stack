@@ -1,16 +1,12 @@
 //getallprojects
 
-import { id } from "date-fns/locale";
 import projectDb from "../../domain/data-access/project.db";
 import { Project } from "../../domain/model/project";
 import { Team } from "../../domain/model/team";
 import projectService from "../../service/project.service";
-import { User } from "../../domain/model/user";
-import userDb from "../../domain/data-access/user.db";
 import taskDb from "../../domain/data-access/task.db";
 
 const team = new Team({name: "team1", id: 1});
-const user = new User({id: 1, name: "user1", specialisation: "specialisation1", email: "email1@t.t", password: "password1", role: "user", teams: [team]});
 const project1 = new Project({name: "project1", id: 1, team: team});
 const project2 = new Project({name: "project2", id: 2, team: team});
 
@@ -42,40 +38,18 @@ afterAll(() => {
 
 test('given valid projects, when getAllProjects is called as admin, then all projects are returned', async () => {
     projectDb.getAllProjects = mockProjectsDbGetAllProjects.mockResolvedValue([project1, project2]);
-    const projects = await projectService.getAllProjects({id: 1, role: 'admin', currentUser: 1});
+    const projects = await projectService.getAllProjects({role: 'admin', currentUser: 1});
     expect(projects).toEqual([project1, project2]);
 }
 )
 
 test('given valid projects, when getAllProjects is called as user, then all projects of user are returned', async () => {
     projectDb.getAllProjectsByUserId = mockProjectsDbGetAllProjectsByUserId.mockResolvedValue([project1]);
-    const projects = await projectService.getAllProjects({id: 1, role: 'user', currentUser: 1});
+    const projects = await projectService.getAllProjects({role: 'user', currentUser: 1});
     expect(projects).toEqual([project1]);
 }
 )
 
-test('given valid projects, when getAllProjects is called as user with different id, then error is thrown', async () => {
-    projectDb.getAllProjectsByUserId = mockProjectsDbGetAllProjectsByUserId.mockResolvedValue([project1]);
-    await expect(projectService.getAllProjects({id: 2, role: 'user', currentUser: 1})).rejects.toThrowError('You are not authorized to access this resource.');
-}
-)
-
-// //tests for getProjectById
-
-// test('given valid project, when getProjectById is called as admin, then project is returned', async () => {
-//     projectDb.getProjectById = jest.fn().mockResolvedValue(project1);
-//     const project = await projectService.getProjectById({id: 1, role: 'admin', currentUser: 1});
-//     expect(project).toEqual(project1);
-// }
-// )
-
-// test('given valid project, when getProjectById is called as user, then project is returned', async () => {
-//     projectDb.getProjectById = jest.fn().mockResolvedValue(project1);
-//     userDb.getUserById = jest.fn().mockResolvedValue(user);
-//     const project = await projectService.getProjectById({id: 1, role: 'user', currentUser: 1});
-//     expect(project).toEqual(project1);
-// }
-// )
 
 //tests for createProject
 
