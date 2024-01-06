@@ -1,4 +1,5 @@
 import Header from "@/components/header";
+import AddTeamForm from "@/components/teams/AddTeamForm";
 import TeamsOverviewTable from "@/components/teams/TeamsOverviewTable";
 import TeamService from "@/services/TeamService";
 import UserService from "@/services/UserService";
@@ -72,6 +73,7 @@ const Teams: React.FC = () => {
                     <>
                         <h1 className='bg-gray-100 text-center font-semibold text-3xl'>{t('teams.title')}</h1>
                         {<TeamsOverviewTable teams={data} currentTeams={currentTeamsData} />}
+                        {<AddTeamForm />}
                     </>
                 )}
                 {!data && !errorMessage && !authError && <p>{t('teams.loading')}</p>}

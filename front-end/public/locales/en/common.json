@@ -54,6 +54,8 @@
         "errorDeadline": "Deadline cannot be empty or in the past."
     },
     "projects": {
+        "adminTitle": "All Projects",
+        "userTitle": "My Projects",
         "title": "Projects",
         "loading": "Loading projects...",
         "new": "Add Project",
@@ -84,7 +86,10 @@
         "left1": "You have left the team ",
         "left2": " successfully",
         "joined1": "You have joined the team ",
-        "joined2": " successfully"
+        "joined2": " successfully",
+        "nameError": "Name cannot be empty.",
+        "noTeams": "There are no teams yet. Contact an administrator to create a team.",
+        "newTeam": "Create New Team"
     },
     "users": {
         "name": "Name",

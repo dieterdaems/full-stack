@@ -13,9 +13,6 @@ const TeamsOverviewTable: React.FC<Props> = ({ teams, currentTeams }: Props) => 
 
     const [statusMessage, setStatusMessage] = useState<string>("");
 
-    const [newTeamName, setNewTeamName] = useState<string>("");
-    const [showAddTeam, setShowAddTeam] = useState<boolean>(false);
-
     const id = sessionStorage.getItem("loggedUser");
     const role = sessionStorage.getItem("role");
     const { t } = useTranslation();
@@ -24,14 +21,14 @@ const TeamsOverviewTable: React.FC<Props> = ({ teams, currentTeams }: Props) => 
     // Join&Leave handling
 
     const handleLeaveTeam = async (team: { id: any, name: string }) => {
-
+        setStatusMessage("");
         const response = await UserService.removeUserFromTeam({ teamId: team.id, userId: id });
         if (response.ok) setStatusMessage(t('teams.left1') + team.name + t('teams.left2'));
         else setStatusMessage(response.statusText);
     };
 
     const handleJoinTeam = async (team: { id: any, name: string }) => {
-
+        setStatusMessage("");
         const response = await UserService.addUserToTeam({ teamId: team.id, userId: id });
         if (response.ok) 
             setStatusMessage(t('teams.joined1') + team.name + t('teams.joined2'));
@@ -40,44 +37,20 @@ const TeamsOverviewTable: React.FC<Props> = ({ teams, currentTeams }: Props) => 
 
 
     /* ---------------------------------------------- */
-    // Create handling
+    // Delete handling
 
-    const handleAddTeam = async () => {
-        if (newTeamName.trim() === "") { setStatusMessage(t('teams.nameError')); return; }
-
-        const response = await TeamService.create(newTeamName.trim());
-        if (response.ok) {
-            setStatusMessage(t('teams.created'));
-            setTimeout(() => setStatusMessage(""), 3000);
-            setShowAddTeam(false);
-            setNewTeamName("");
-        }
-        else {
-            if (response.status === 401)
-                setStatusMessage(t('notAuthorized'));
-            else
-                setStatusMessage(response.statusText);
-        }
-    }
-
-    const abortAddButton = () => {
-        setShowAddTeam(false);
-        setNewTeamName("");
-        setStatusMessage("");
-    }
-
+    
     const [teamToDelete, setTeamToDelete] = useState<any>();
     const [showConfirmation, setShowConfirmation] = useState<boolean>(false);
 
-    /* ---------------------------------------------- */
-    // Delete handling
-
     const handleDeleteButton = async (id: any) => {
+        setStatusMessage("");
         setTeamToDelete(id);
         setShowConfirmation(true);
     };
 
     const handleDeleteConfirm = async () => {
+        setStatusMessage("");
         const response = await TeamService.deleteById(teamToDelete);
         if (response.ok) {
             setStatusMessage(t('teams.deleted'));
@@ -132,34 +105,18 @@ const TeamsOverviewTable: React.FC<Props> = ({ teams, currentTeams }: Props) => 
                 </tbody>
             </table>
 
-            {role === '91fb3f8394dead2470aaf953e1bed9d9abf34a41f65ac666cff414ca229245b8' && !showAddTeam && (
-                <div className= "flex justify-center mb-4">
-                <button className="global-button" onClick={() => setShowAddTeam(true)}>➕</button>
-                </div>
-            )}
-            {showAddTeam && (
-                <div className="bg-gray-100 flex items-center justify-center">
-                    <input
-                        className="global-input"
-                        type="text"
-                        placeholder="The avengers"
-                        value={newTeamName}
-                        onChange={(e) => setNewTeamName(e.target.value)}
-                    />
-                    <button className="global-button" onClick={() => handleAddTeam()}>💾</button>
-                    <button className="global-button" onClick={() => abortAddButton()}>🗑️</button>
-                </div>
-            )}
-
             {showConfirmation && (
                 <div className="bg-gray-100 flex items-center justify-center">
-                    <p>Are you sure you want to delete this team?</p>
+                    <p>{t('teams.confirmation')}</p>
                     <button className="global-button" onClick={handleDeleteConfirm}>{t('confirm')}</button>
                     <button className="global-button" onClick={(() => setShowConfirmation(false))}>{t('cancel')}</button>
                 </div>
 
             )}
             <p className=" mt-4 flex items-center justify-center">{statusMessage}</p>
+            <div className="bg-gray-100 flex items-center justify-center text-red-500">
+            {role !== '91fb3f8394dead2470aaf953e1bed9d9abf34a41f65ac666cff414ca229245b8' && (teams.length === 0) && <p className=" mt-4 flex items-center justify-center">{t('teams.noTeams')}</p>}
+             </div>
         </div>
         </div>
         </>

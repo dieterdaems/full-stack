@@ -84,7 +84,10 @@
         "left1": "U heeft het team ",
         "left2": " succesvol verlaten.",
         "joined1": "U bent succesvol toegevoegd aan het team ",
-        "joined2": "."
+        "joined2": ".",
+        "nameError": "Naam mag niet leeg zijn.",
+        "noTeams": "Er bestaan nog geen teams. Neem contact op met een beheerder om een team aan te maken.",
+        "newTeam": "Nieuw Team Aanmaken"
     },
     "users": {
         "name": "Naam",
