@@ -4,6 +4,7 @@
     "confirm" : "Bevestig",
     "notLoggedIn": "U moet ingelogd zijn om taken te kunnen bekijken.",
     "delete" : "Verwijder",
+    "add": "Toevoegen",
     "header": {
         "welcome": "Welkom",
         "home": "Home",
@@ -39,6 +40,7 @@
         "name": "Naam",
         "description": "Beschrijving",
         "return": "Terug naar Project overzicht",
+        "returnToTasks": "Terug naar Taken overzicht",
         "completed": "Voltooid",
         "complete": "Voltooi Taak",
         "deadline": "Deadline",

@@ -1,9 +1,7 @@
-import ProjectService from "@/services/ProjectService";
 import TaskService from "@/services/TaskService";
-import { Project } from "@/types";
 import { useRouter } from "next/router";
 import { FormEvent, useState } from "react";
-import { StatusMessage } from "@/types";
+import { useTranslation } from "next-i18next";
 
 type Props = {
     projectId: number;
@@ -20,6 +18,7 @@ const TaskRegistrationForm: React.FC<Props> = ({projectId} : Props) => {
     const [errorMessage, setErrorMessage] = useState('');
 
     const router = useRouter();
+    const { t } = useTranslation();
 
     const validate = () => {
         setNameError('');
@@ -68,7 +67,7 @@ const TaskRegistrationForm: React.FC<Props> = ({projectId} : Props) => {
             <div>
             <div className=" bg-gray-100 p-4 rounded-lg">
                 <div className="relative bg-inherit mt-4">
-            <label className='global-label' htmlFor="name">Name</label>
+            <label className='global-label' htmlFor="name">{t('tasks.name')}</label>
             <input className='global-input' type="text" id="name" onChange={(e) => setName(e.target.value)} />
             </div>
             </div>
@@ -77,7 +76,7 @@ const TaskRegistrationForm: React.FC<Props> = ({projectId} : Props) => {
             <div>
             <div className=" bg-gray-100 p-4 rounded-lg">
                 <div className="relative bg-inherit mt-4">
-            <label className="global-label" htmlFor="description">Description</label>
+            <label className="global-label" htmlFor="description">{t('tasks.description')}</label>
             <input className='global-input' type="text" id="description" onChange={(e) => setDescription(e.target.value)} />
             </div>
             </div>
@@ -86,15 +85,14 @@ const TaskRegistrationForm: React.FC<Props> = ({projectId} : Props) => {
             <div>
             <div className=" bg-gray-100 p-4 rounded-lg">
                 <div className="relative bg-inherit mt-4">
-            <label className="global-label" htmlFor="deadline">Deadline</label>
+            <label className="global-label" htmlFor="deadline">{t('tasks.deadline')}</label>
             <input className='global-input' type="date" id="deadline" onChange={(e) => setDeadline(new Date(e.target.value))} />
             </div>
             </div>
             {deadlineError && <p className=" text-red-500">{deadlineError}</p>}
             </div>
-            <label htmlFor="project">Project</label>
             <div className="flex justify-center">
-            <button className="global-button" type="submit">Submit</button>
+            <button className="global-button" type="submit">{t('add')}</button>
             </div>
         </form>
         <div>
