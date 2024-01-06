@@ -45,9 +45,6 @@ const deleteProject = async ({id,role}): Promise<Project> => {
     if (role !== 'admin') throw new UnauthorizedError('credentials_required', { message: 'You are not authorized to access this resource.' });
     const project = await projectDb.getProjectById(id);
     if (!project) throw new Error(`Project with id ${id} does not exist.`);
-    const tasks = await taskDb.getAllTasks();
-    const tasksToDelete = tasks.filter((task) => task.project.id === id);
-    tasksToDelete.forEach(async (task) => await taskDb.deleteById(task.id));
     await projectDb.deleteById(id);
     return project;
 }
