@@ -53,7 +53,7 @@ const ProjectOverviewTable: React.FC<Props> = ({ projects }: Props) => {
                         <th className="py-2 px-4 border-b border-r">{t('projects.name')}</th>
                         <th className="py-2 px-4 border-b border-r">{t('projects.team')}</th>
                         <th className="py-2 px-4 border-b">{t('tasks.title')}</th>
-                        {role === "admin" && <th className="py-2 px-4 border-b border-l">{t('projects.delete')}</th>}
+                        {role === "91fb3f8394dead2470aaf953e1bed9d9abf34a41f65ac666cff414ca229245b8" && <th className="py-2 px-4 border-b border-l">{t('projects.delete')}</th>}
                     </tr>
                 </thead>
                 <tbody>
