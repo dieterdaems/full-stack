@@ -41,7 +41,7 @@ const UsersOverviewTable: React.FC<Props> = ({ users }: Props) => {
         <div className="bg-gray-100 flex items-start justify-center">
 
         <div className="container mx-auto my-8" >
-            <table>
+            <table className="mx-auto bg-white border border-gray-300">
                 <thead>
                     <tr>
                         <th className="py-2 px-4 border-b border-r">Name</th>
