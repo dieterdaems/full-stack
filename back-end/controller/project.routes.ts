@@ -30,6 +30,17 @@ const projectRouter = express.Router();
  *       required:
  *          - name
  * 
+ *     ProjectCreate:
+ *       type: object
+ *       properties:
+ *         name:
+ *           type: string
+ *         team:
+ *           $ref: '#/components/schemas/ProjectInputTeam'
+ *       required:
+ *          - name
+ *          - team
+ * 
  *     ProjectInput:
  *       type: object
  *       properties:
@@ -93,7 +104,7 @@ projectRouter.get('/', async (req: Request & {auth: any}, res: Response, next: N
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/ProjectInputTask'
+ *             $ref: '#/components/schemas/ProjectCreate'
  *     responses:
  *       200:
  *         description: Successful response with the created project.

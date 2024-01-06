@@ -26,11 +26,10 @@ Application Error: if project with same name exists
                    if domalin validation fails
 */
 const createProject = async (projectin: ProjectInput): Promise<Project> => {
-    const projects = await projectDb.getAllProjects();
-    const existingProject = projects.find((project) => project.name === projectin.name);
+    const existingProject = await projectDb.getProjectByName(projectin.name);
     if (existingProject) throw new Error(`Project with name ${existingProject.name} already exists.`);
-    const teams = await teamDb.getAllTeams();
-    const team = teams.find((team) => team.id === projectin.team.id);
+    const team = await teamDb.getTeamById(projectin.teamId);
+    if (!team) throw new Error(`Team with id ${projectin.teamId} does not exist.`);
     const newProject = new Project({name: projectin.name, team: team});
     const project = await projectDb.createProject(newProject);
     return project;
