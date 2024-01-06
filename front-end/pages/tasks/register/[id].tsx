@@ -23,10 +23,13 @@ const Tasks: React.FC = () => {
             <div className="bg-gray-100 min-h-screen">
             <Header />
         <main>
-            <h1 className='bg-gray-100 text-center font-semibold text-3xl'>{t('tasks.registration')}</h1>
+            <h1 className='bg-gray-100 text-center font-semibold text-3xl'>{t('tasks.register')}</h1>
             <section>
             {projectId !== undefined && <TaskRegistrationForm projectId={projectId} />}
             </section>
+            <div className="bg-gray-100 flex items-center justify-center">
+                <button className="global-button" onClick={() => router.push('/tasks/project/'+id)}>{t('tasks.returnToTasks')}</button>
+                </div>
         </main>
         </div>
         
