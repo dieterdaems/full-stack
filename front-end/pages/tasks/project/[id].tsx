@@ -14,17 +14,17 @@ const Tasks: React.FC = () => {
     const { id } = router.query;
     const { t } = useTranslation();
 
-    const getTaskByProjectId = async () => {
+    const getTasksByProjectId = async () => {
         const response = await TaskService.getByProjectId(id as string);
         const tasks = await response.json();
         return tasks;
     }
 
     
-    const {data, isLoading, error} = useSWR('tasksByProjectId', getTaskByProjectId);
+    const {data, isLoading, error} = useSWR('tasksByProjectId', getTasksByProjectId);
 
     useInterval(() => {
-        mutate('tasksByProjectId',getTaskByProjectId());
+        mutate('tasksByProjectId',getTasksByProjectId());
     }, 1000);
 
     console.log('Translations:', t('tasks.title'));
