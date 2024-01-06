@@ -1,14 +1,11 @@
 import TasksOverviewTable from "@/components/tasks/TasksProjectOverviewTable";
 import TaskService from "@/services/TaskService";
-import { Task } from "@/types";
-import exp from "constants";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
 import { useTranslation } from "next-i18next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import useSWR, { mutate } from "swr";
 import useInterval from "use-interval";
-import { GetServerSideProps, GetServerSidePropsContext } from "next";
+import { GetServerSideProps } from "next";
 import Head from "next/head";
 import Header from "@/components/header";
 
@@ -20,14 +17,9 @@ const Tasks: React.FC = () => {
     const getTaskByProjectId = async () => {
         const response = await TaskService.getByProjectId(id as string);
         const tasks = await response.json();
-        // console.log("test");
         return tasks;
     }
 
-    // useEffect(() => {
-    //     getTaskByProjectId();
-    // }
-    //     , []);
     
     const {data, isLoading, error} = useSWR('tasksByProjectId', getTaskByProjectId);
 

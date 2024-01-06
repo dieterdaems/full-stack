@@ -1,11 +1,9 @@
 import AddProject from "@/components/projects/AddProject";
 import ProjectOverviewTable from "@/components/projects/ProjectsOverviewTable";
 import ProjectService from "@/services/ProjectService";
-import { Project } from "@/types";
 import { GetServerSideProps } from "next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
-import { mainModule } from "process";
-import { useEffect, useState, useDeferredValue } from "react";
+import { useState } from "react";
 import { useTranslation } from "next-i18next";
 import useSWR, { mutate } from "swr";
 import useInterval from "use-interval";

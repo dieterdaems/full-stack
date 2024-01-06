@@ -56,10 +56,6 @@ const AddProject: React.FC = () => {
             {!button && <button className="global-button"
                 onClick={(e) => setButton(!button)}>{t('projects.new')}</button>}
         </div>
-        <div className="flex justify-center">
-            {button && <button className="global-button"
-                onClick={(e) => {setButton(!button); setErrorMessage('')}}>{t('projects.cancel')}</button>}
-        </div>
         {button && <form className="mt-4 flex flex-col items-center" onSubmit={handleSubmit}>
             <div className=" bg-gray-100 p-4 rounded-lg">
                 <div className="relative bg-inherit mt-4">
@@ -80,10 +76,12 @@ const AddProject: React.FC = () => {
         <div className="flex justify-center">
             <button className="global-button"
             type='submit'>{t('projects.submit')}</button>
+            {button && <button className="global-button"
+                onClick={(e) => {setButton(!button); setErrorMessage('')}}>{t('projects.cancel')}</button>}
         </div>
         </form>}
         {button && <p>{errorMessage}</p>}
-        {errorMessage && <p>{errorMessage}</p>}
+        {!button && errorMessage && <p>{errorMessage}</p>}
         </div>
         </div>
         </>
