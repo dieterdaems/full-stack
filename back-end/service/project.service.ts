@@ -13,7 +13,6 @@ Parameters: role of logged in user,id of user, id of logged in user
 Return: all projects if role is admin
         all projects of user if role is user
 */
-
 const getAllProjects = async ({role, currentUser}): Promise<Project[]> => {
     if (role === 'admin') return await projectDb.getAllProjects();
     else return projectDb.getAllProjectsByUserId(currentUser);
@@ -26,7 +25,6 @@ Return: created project
 Application Error: if project with same name exists
                    if domalin validation fails
 */
-
 const createProject = async (projectin: ProjectInput): Promise<Project> => {
     const projects = await projectDb.getAllProjects();
     const existingProject = projects.find((project) => project.name === projectin.name);
@@ -44,7 +42,6 @@ Return: deleted project
 Authorization Error: if role is not admin
 Application Error: if project does not exist
 */
-
 const deleteProject = async ({id,role}): Promise<Project> => {
     if (role !== 'admin') throw new UnauthorizedError('credentials_required', { message: 'You are not authorized to access this resource.' });
     const project = await projectDb.getProjectById(id);
