@@ -2,19 +2,20 @@ import TeamService from "@/services/TeamService";
 import { useTranslation } from "next-i18next";
 import { FormEvent, useState } from "react";
 
-const TeamsOverviewTable: React.FC = () => {
+type Props = {
+    isAdmin: boolean
+};
+
+const TeamsOverviewTable: React.FC<Props> = ({isAdmin} : Props ) => {
 
     const [statusMessage, setStatusMessage] = useState<string>("");
 
     const [newTeamName, setNewTeamName] = useState<string>("");
     const [showAddTeam, setShowAddTeam] = useState<boolean>(false);
 
-    const role = sessionStorage.getItem("role");
     const { t } = useTranslation();
 
 
-    /* ---------------------------------------------- */
-    // Create handling
 
     const handleAddTeam = async (event: FormEvent) => {
         event.preventDefault();
@@ -51,7 +52,7 @@ const TeamsOverviewTable: React.FC = () => {
 
         <div className="container mx-auto my-8" >
             
-            {role === '91fb3f8394dead2470aaf953e1bed9d9abf34a41f65ac666cff414ca229245b8' && !showAddTeam && (
+            {isAdmin && !showAddTeam && (
                 <div className= "flex justify-center mb-4">
                 <button className="global-button" onClick={() => setShowAddTeam(true)}>{t('teams.newTeam')}</button>
                 </div>

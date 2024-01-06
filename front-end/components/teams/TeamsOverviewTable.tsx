@@ -6,22 +6,23 @@ import { useState } from "react";
 
 type Props = {
     teams: Team[],
-    currentTeams: Team[]
+    currentTeams: Team[],
+    isAdmin: boolean
 };
 
-const TeamsOverviewTable: React.FC<Props> = ({ teams, currentTeams }: Props) => {
+const TeamsOverviewTable: React.FC<Props> = ({ teams, currentTeams, isAdmin }: Props) => {
 
     const [statusMessage, setStatusMessage] = useState<string>("");
 
-    const id = sessionStorage.getItem("loggedUser");
-    const role = sessionStorage.getItem("role");
     const { t } = useTranslation();
+
 
     /* ---------------------------------------------- */
     // Join&Leave handling
 
     const handleLeaveTeam = async (team: { id: any, name: string }) => {
         setStatusMessage("");
+        const id = sessionStorage.getItem("loggedUser");
         const response = await UserService.removeUserFromTeam({ teamId: team.id, userId: id });
         if (response.ok) setStatusMessage(t('teams.left1') + team.name + t('teams.left2'));
         else setStatusMessage(response.statusText);
@@ -29,6 +30,7 @@ const TeamsOverviewTable: React.FC<Props> = ({ teams, currentTeams }: Props) => 
 
     const handleJoinTeam = async (team: { id: any, name: string }) => {
         setStatusMessage("");
+        const id = sessionStorage.getItem("loggedUser");
         const response = await UserService.addUserToTeam({ teamId: team.id, userId: id });
         if (response.ok) 
             setStatusMessage(t('teams.joined1') + team.name + t('teams.joined2'));
@@ -86,7 +88,7 @@ const TeamsOverviewTable: React.FC<Props> = ({ teams, currentTeams }: Props) => 
                             <td className="py-2 px-4 border-b border-r">{team.id}</td>
                             <td className="py-2 px-4 border-b border-r">{team.name}</td>
                             <td className="py-2 px-4 border-b border-r">
-                                {role === '91fb3f8394dead2470aaf953e1bed9d9abf34a41f65ac666cff414ca229245b8' ? (
+                                {isAdmin ? (
                                     <button className="global-button" onClick={() => handleDeleteButton(team.id)}>
                                         🗑️</button>
                                 ) : (
@@ -115,7 +117,7 @@ const TeamsOverviewTable: React.FC<Props> = ({ teams, currentTeams }: Props) => 
             )}
             <p className=" mt-4 flex items-center justify-center">{statusMessage}</p>
             <div className="bg-gray-100 flex items-center justify-center text-red-500">
-            {role !== '91fb3f8394dead2470aaf953e1bed9d9abf34a41f65ac666cff414ca229245b8' && (teams.length === 0) && <p className=" mt-4 flex items-center justify-center">{t('teams.noTeams')}</p>}
+            {isAdmin && (teams.length === 0) && <p className=" mt-4 flex items-center justify-center">{t('teams.noTeams')}</p>}
              </div>
         </div>
         </div>

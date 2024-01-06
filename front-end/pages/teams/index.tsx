@@ -7,7 +7,8 @@ import { GetServerSideProps } from "next";
 import { useTranslation } from "next-i18next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import Head from "next/head";
-import { useState } from "react";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 import useSWR, { mutate } from "swr";
 import useInterval from "use-interval";
 
@@ -46,6 +47,16 @@ const Teams: React.FC = () => {
         }
     };
 
+    const [isAdmin, setIsAdmin] = useState<boolean>(false);
+    const router = useRouter();
+    useEffect(() => {
+        const role = (sessionStorage.getItem('role'));
+        if (role === '91fb3f8394dead2470aaf953e1bed9d9abf34a41f65ac666cff414ca229245b8') {
+            setIsAdmin(true);
+        }
+        else setIsAdmin(false);
+    }, [router]);
+
 
     const { data: currentTeamsData, error: currentTeamsError } = useSWR('currentTeams', getUserTeams);
     const { data, error } = useSWR('allTeams', getAllTeams);
@@ -72,8 +83,8 @@ const Teams: React.FC = () => {
                 {data && currentTeamsData && (
                     <>
                         <h1 className='bg-gray-100 text-center font-semibold text-3xl'>{t('teams.title')}</h1>
-                        {<TeamsOverviewTable teams={data} currentTeams={currentTeamsData} />}
-                        {<AddTeamForm />}
+                        {<TeamsOverviewTable teams={data} currentTeams={currentTeamsData} isAdmin={isAdmin} />}
+                        {<AddTeamForm isAdmin={isAdmin} />}
                     </>
                 )}
                 {!data && !errorMessage && !authError && <p>{t('teams.loading')}</p>}
