@@ -42,11 +42,12 @@ afterEach(() => {
 }
 );
 
+//Tried out other way to write tests in jest with describe and it.
 
 describe('Header', () => {
   it('shows the correct links when logged in as admin', () => {
     const { t } = useTranslation();
-    sessionStorage.setItem('loggedUser', 'admin');
+    sessionStorage.setItem('loggedUser', '1');
     sessionStorage.setItem('role', '91fb3f8394dead2470aaf953e1bed9d9abf34a41f65ac666cff414ca229245b8');
     render(<Header />);
     expect(screen.getByText(t('header.nav.home')))
@@ -59,7 +60,7 @@ describe('Header', () => {
 
   it('shows the correct links when logged in as non-admin', () => {
     const { t } = useTranslation();
-    sessionStorage.setItem('loggedUser', 'user');
+    sessionStorage.setItem('loggedUser', '1');
     sessionStorage.setItem('role', '4b975fd8f0ff3e9fe958e701d5053be7dc223b684ec633f3d322d8868d395d33');
     render(<Header />);
     expect(screen.getByText(t('header.nav.home')))
@@ -116,7 +117,7 @@ it('redirects to the home page when "Home" link is clicked', () => {
 
 it('redirects to the users page when "Users" link is clicked as admin', () => {
   sessionStorage.clear();
-  sessionStorage.setItem('loggedUser', 'admin');
+  sessionStorage.setItem('loggedUser', '1');
   sessionStorage.setItem('role', '91fb3f8394dead2470aaf953e1bed9d9abf34a41f65ac666cff414ca229245b8');
   render(<Header />);
   const { t } = useTranslation();
@@ -127,7 +128,7 @@ it('redirects to the users page when "Users" link is clicked as admin', () => {
 
 it('redirects to the teams page when "Teams" link is clicked as admin', () => {
   sessionStorage.clear();
-  sessionStorage.setItem('loggedUser', 'admin');
+  sessionStorage.setItem('loggedUser', '1');
   sessionStorage.setItem('role', '91fb3f8394dead2470aaf953e1bed9d9abf34a41f65ac666cff414ca229245b8');
   render(<Header />);
   const { t } = useTranslation();
@@ -138,7 +139,7 @@ it('redirects to the teams page when "Teams" link is clicked as admin', () => {
 
 it('redirects to the teams page when "Teams" link is clicked as user', () => {
   sessionStorage.clear();
-  sessionStorage.setItem('loggedUser', 'admin');
+  sessionStorage.setItem('loggedUser', '1');
   sessionStorage.setItem('role', '4b975fd8f0ff3e9fe958e701d5053be7dc223b684ec633f3d322d8868d395d33');
   render(<Header />);
   const { t } = useTranslation();
@@ -150,7 +151,7 @@ it('redirects to the teams page when "Teams" link is clicked as user', () => {
 
 it('redirects to the projects page when "Projects" link is clicked as admin', () => {
   sessionStorage.clear();
-  sessionStorage.setItem('loggedUser', 'admin');
+  sessionStorage.setItem('loggedUser', '1');
   sessionStorage.setItem('role', '91fb3f8394dead2470aaf953e1bed9d9abf34a41f65ac666cff414ca229245b8');
   render(<Header />);
   const { t } = useTranslation();
@@ -161,7 +162,7 @@ it('redirects to the projects page when "Projects" link is clicked as admin', ()
 
 it('redirects to the projects page when "Projects" link is clicked as user', () => {
   sessionStorage.clear();
-  sessionStorage.setItem('loggedUser', 'admin');
+  sessionStorage.setItem('loggedUser', '1');
   sessionStorage.setItem('role', '4b975fd8f0ff3e9fe958e701d5053be7dc223b684ec633f3d322d8868d395d33');
   render(<Header />);
   const { t } = useTranslation();
@@ -172,7 +173,7 @@ it('redirects to the projects page when "Projects" link is clicked as user', () 
 
 it('redirects to the profile page when "Profile" link is clicked as admin', () => {
   sessionStorage.clear();
-  sessionStorage.setItem('loggedUser', 'admin');
+  sessionStorage.setItem('loggedUser', '1');
   sessionStorage.setItem('role', '91fb3f8394dead2470aaf953e1bed9d9abf34a41f65ac666cff414ca229245b8');
   render(<Header />);
   const { t } = useTranslation();
@@ -183,7 +184,7 @@ it('redirects to the profile page when "Profile" link is clicked as admin', () =
 
 it('redirects to the profile page when "Profile" link is clicked as user', () => {
   sessionStorage.clear();
-  sessionStorage.setItem('loggedUser', 'admin');
+  sessionStorage.setItem('loggedUser', '1');
   sessionStorage.setItem('role', '4b975fd8f0ff3e9fe958e701d5053be7dc223b684ec633f3d322d8868d395d33');
   render(<Header />);
   const { t } = useTranslation();
