@@ -80,6 +80,9 @@ const getTasksByProjectId = async (projectId: number): Promise<Task[]> => {
                         team: true
                     }
                 }
+            },
+            orderBy: {
+                deadline: 'asc'
             }
         });
         return tasksPrisma.map((taskPrisma) => Task.from(taskPrisma));

@@ -97,7 +97,10 @@ const getAllProjectsByUserId = async (userId: number): Promise<Project[]> => {
             },
             include: {
                 team: true
-            }
+            },
+            // This function returns projects in random order, unlike getAllProjects
+            // so I added the next line to the query for perfectionism purposes.
+            orderBy: { id: 'asc' }
         });
         const projects = projectsPrisma.map((projectPrisma) => Project.from(projectPrisma));
         return projects;
