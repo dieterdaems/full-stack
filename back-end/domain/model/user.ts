@@ -18,7 +18,7 @@ export class User {
         this.id = user.id;
         this.name = user.name;
         this.specialisation = user.specialisation;
-        this.email = user.email;
+        this.email = user.email.toLowerCase();
         this.password = user.password;
         this.role = user.role;
         this.teams = user.teams ? user.teams : new Array<Team>();

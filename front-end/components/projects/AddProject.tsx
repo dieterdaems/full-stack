@@ -57,8 +57,13 @@ const AddProject: React.FC<Props> = ({userTeams, handleShowAddProject} : Props) 
     const handleShowOrHideAddProject = () => {
         setButton(!button);
         setErrorMessage('');
+        setName('');
+        setTeamId(undefined);
+        setTeamIdError('');
+        setNameError('');
         handleShowAddProject();
     }
+    
     return (
         <>  
         <div className="bg-gray-100 flex items-center justify-center">

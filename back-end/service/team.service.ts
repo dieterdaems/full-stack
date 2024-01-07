@@ -1,7 +1,6 @@
 import { UnauthorizedError } from "express-jwt";
 import teamDb from "../domain/data-access/team.db";
 import { Team } from "../domain/model/team";
-import { Role, TeamInput } from "../types";
 
 /*
 Parameters: none
@@ -30,10 +29,9 @@ Application Error: if domain validation failed
 const createTeam = async ({newTeam, role}): Promise<Team> => {
     if (role !== 'admin') throw new UnauthorizedError('credentials_required', { message: 'You are not authorized to create a team.' });
     const team = new Team(newTeam); // domain validation
-    newTeam.name = newTeam.name.trim().toLowerCase();
-    const teamExists = await teamDb.getTeamByName(newTeam.name);
-    if (teamExists) throw new Error(`Team with name ${team.name} already exists.`);
-    return teamDb.createTeam(newTeam);
+    const teamExists = await teamDb.getTeamByName(team.name);
+    if (teamExists) throw new Error(`Team with name ${newTeam.name} already exists.`);
+    return teamDb.createTeam(team);
 };
 
 /*

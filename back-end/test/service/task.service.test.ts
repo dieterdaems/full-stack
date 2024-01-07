@@ -155,7 +155,7 @@ test('given valid task, when completeTask is called, then task is completed', as
 
 test('given invalid task, when completeTask is called, then error is thrown', async () => {
     taskDb.getTaskById = mockTasksDbGetTaskById.mockResolvedValue(null);
-    await expect(() => taskService.completeTask({id: 1000, currentUser: 1, role: 'user'})).rejects.toThrow("Task with id 1000 does not exist.");
+    await expect(() => taskService.completeTask({id: 1000, currentUser: 1, role: 'admin'})).rejects.toThrow("Task with id 1000 does not exist.");
 }
 )
 
