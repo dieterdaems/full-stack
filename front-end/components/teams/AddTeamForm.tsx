@@ -25,14 +25,14 @@ const TeamsOverviewTable: React.FC = () => {
             setStatusMessage(t('teams.created'));
             setShowAddTeam(false);
             setNewTeamName("");
+            setTimeout(() => setStatusMessage(""), 2000);
         }
         else {
             if (response.status === 401)
                 setStatusMessage(t('notAuthorizedAction'));
             else
                 setStatusMessage(t('teams.createError'));
-        }
-        setTimeout(() => setStatusMessage(""), 2000);
+        };
     }
 
     const abortAddButton = () => {

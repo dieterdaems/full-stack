@@ -74,7 +74,7 @@
         "deleted": "Project is succesvol verwijderd.",
         "errorName": "Naam mag niet leeg zijn.",
         "errorTeam": "Team mag niet leeg zijn.",
-        "createError": "Er is een error opgetreden bij het aanmaken van het project. Kies een andere naam en probeer het opnieuw. Als dit probleem zich blijft voordoen, neem dan contact op met een beheerder.",
+        "createError": "Er is een error opgetreden bij het aanmaken van het project. Kies een andere naam en probeer het opnieuw of neem contact op met een beheerder.",
         "createSuccess": "Project is succesvol aangemaakt.",
         "notAuthorizedCreate": "U bent niet geautoriseerd om een project aan te maken voor dit team.",
         "deleteFail": "Er is een error opgetreden bij het verwijderen van het project. Probeer het later opnieuw."
@@ -123,8 +123,8 @@
             "updated": "Profiel is succesvol geupdate.",
             "save": "Opslaan",
             "errorInvalidInput": "Ongeldige invoer. Probeer het opnieuw.",
-            "updateEmailFail": "Er is een error opgetreden bij het updaten van uw email adres. Kies een ander email adres en probeer het opnieuw. ls dit probleem zich blijft voordoen, neem dan contact op met een beheerder.",
-            "updateFail": "Er is een error opgetreden bij het updaten van uw profiel. Controleer uw invoer en probeer het opnieuw. Als dit probleem zich blijft voordoen, neem dan contact op met een beheerder.",
+            "updateEmailFail": "Er is een error opgetreden bij het updaten van uw profiel. Kies een ander email-adres en probeer het opnieuw, of neem contact op met een beheerder.",
+            "updateFail": "Er is een error opgetreden bij het updaten van uw profiel. Controleer uw invoer en probeer het opnieuw, of neem contact op met een beheerder.",
             "noChanges": "Er zijn geen wijzigingen gemaakt, doorverwijzen naar home pagina..."
         },
         "login": {
