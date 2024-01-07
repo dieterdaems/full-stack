@@ -55,11 +55,10 @@ Application Error:
 */
 const createUser = async ({ name, specialisation, email, password }: UserInput): Promise<User> => {
     const user = new User({ name, specialisation, email, password }); // domain validation
-    const cleanedEmail = email.toLowerCase();
-    const existingUser = await userDb.getUserByEmail(cleanedEmail);
+    const existingUser = await userDb.getUserByEmail(user.email);
     if (existingUser) throw new Error(`User with email ${email} already exists.`);
     const hashedPassword = await bcrypt.hash(password, 12);
-    return userDb.createUser({ ...user, email: cleanedEmail, password: hashedPassword });
+    return userDb.createUser({ ...user, password: hashedPassword });
 };
 
 /*
@@ -80,11 +79,10 @@ const updateUser = async ({ targetUserId, updatedInfo, currentUser, currentRole 
 
     const updatedUser = new User({ ...targetUser, ...updatedInfo }); // domain validation
 
-    const cleanedEmail = updatedInfo.email.toLowerCase();
-    if (targetUser.email !== cleanedEmail) {
-        const existingUser = await userDb.getUserByEmail(cleanedEmail);
+    if (targetUser.email !== updatedUser.email) {
+        const existingUser = await userDb.getUserByEmail(updatedUser.email);
         if (existingUser) throw new Error(`User with email ${updatedInfo.email} already exists.`);
-        else updatedInfo.email = cleanedEmail;
+        else updatedInfo.email = updatedUser.email;
     }
 
     if (updatedInfo.password && targetUser.password !== updatedInfo.password ) {

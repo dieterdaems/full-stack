@@ -6,7 +6,7 @@ export class Team {
 
     constructor(team: {name: string, id? :number}) {
         if (!team.name?.trim()) throw new Error('Team name is required');
-        this.name = team.name;
+        this.name = team.name.trim().toLowerCase();
         this.id = team.id;
     }
 

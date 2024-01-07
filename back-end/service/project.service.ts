@@ -27,25 +27,21 @@ Application Error: if team id is not provided
 */
 const createProject = async ({projectin, currentUser, role}): Promise<Project> => {
     // Checked here because cant be checked in domain validation.
-    projectin.teamId = parseInt(projectin.teamId);
     if (!projectin.teamId && projectin.teamId !== 0) throw new Error('Team id is required.');
-
 
     const LoggedIn = await userDb.getUserById(currentUser);
     if (role !== 'admin' && !LoggedIn.teams.map(team => team.id).includes(projectin.teamId)) throw new UnauthorizedError('credentials_required', { message: 'You are not authorized to create a project for this team.' });
     
     const newProject = new Project(projectin); // Domain validation
 
-    // name is only saved in lowercase and trimmed in the database to prevent bugs.
-    const newName = newProject.name.trim().toLowerCase();
 
-    const existingProject = await projectDb.getProjectByName(newName);
+    const existingProject = await projectDb.getProjectByName(newProject.name);
     if (existingProject) throw new Error(`Project with name ${existingProject.name} already exists.`);
 
     const team = await teamDb.getTeamById(projectin.teamId);
     if (!team) throw new Error(`Team with id ${projectin.teamId} does not exist.`);
 
-    return projectDb.createProject({name: newName, teamId: projectin.teamId});
+    return projectDb.createProject({name: newProject.name, teamId: projectin.teamId});
 }
 
 /*

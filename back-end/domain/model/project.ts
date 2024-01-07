@@ -11,7 +11,7 @@ export class Project {
 
     constructor(project: {name: string, id?:number, team?: Team}) {
         this.validate(project); 
-        this.name = project.name;
+        this.name = project.name.trim().toLowerCase();
         this.id = project.id;
         this.team = project.team;
     }
