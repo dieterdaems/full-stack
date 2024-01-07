@@ -21,10 +21,8 @@ const TeamsOverviewTable: React.FC = () => {
         if (newTeamName.trim() === "") { setStatusMessage(t('teams.nameError')); return; }
 
         const response = await TeamService.create(newTeamName);
-        const team = await response.json();
         if (response.ok) {
             setStatusMessage(t('teams.created'));
-            setTimeout(() => setStatusMessage(""), 2000);
             setShowAddTeam(false);
             setNewTeamName("");
         }
@@ -32,8 +30,9 @@ const TeamsOverviewTable: React.FC = () => {
             if (response.status === 401)
                 setStatusMessage(t('notAuthorizedAction'));
             else
-                setStatusMessage(team.errorMessage);
+                setStatusMessage(t('teams.createError'));
         }
+        setTimeout(() => setStatusMessage(""), 2000);
     }
 
     const abortAddButton = () => {

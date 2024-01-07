@@ -60,10 +60,10 @@ const TeamsOverviewTable: React.FC<Props> = ({ teams, currentTeams, isAdmin }: P
         }
         else {
             if (response.status === 401) {
-                setStatusMessage(t('notAuthorized'));
+                setStatusMessage(t('notAuthorizedAction'));
             }
             else {
-                setStatusMessage(response.statusText);
+                setStatusMessage(t('teams.deteleFail'));
             }
         }
         setShowConfirmation(false);
