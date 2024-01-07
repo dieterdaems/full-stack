@@ -3,7 +3,6 @@ import { Task } from "@/types";
 import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next";
 import { useState } from "react";
-import { error } from "console";
 
 type Props = {
     tasks: Task[];
@@ -56,7 +55,6 @@ const TasksOverviewTable: React.FC<Props> = ({ tasks }: Props) => {
 
     const handleCompleteConfirm = async () => {
         setStatusMessage("");
-        console.log(taskToComplete);
         const response = await TaskService.completeTask(taskToComplete);
         const data = await response.json();
         if (response.ok) {
