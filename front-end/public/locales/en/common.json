@@ -76,9 +76,10 @@
         "deleted": "Project has been deleted.",
         "errorName": "Name cannot be empty.",
         "errorTeam": "Team cannot be empty.",
-        "createError": "An error occurred while creating the project. Check that the name is unique and try again.",
+        "createError": "An error occurred while creating the project. Please choose another name and try again or contact an administrator.",
         "createSuccess": "Project has been successfully created",
-        "notAuthorizedCreate": "You are not authorized to create a project for a team you are not a member of."
+        "notAuthorizedCreate": "You are not authorized to create a project for this team.",
+        "deleteFail": "An error occurred while deleting the project. Please try again later."
     },
     "teams": {
         "title": "Teams",
@@ -97,7 +98,8 @@
         "nameError": "Name cannot be empty.",
         "noTeams": "There are no teams yet. Contact an administrator to create a team.",
         "newTeam": "Create New Team",
-        "createError":"An error occurred while creating the team. Check that the name is unique and try again."
+        "createError":"An error occurred while creating the team. Check that the name is unique and try again.",
+        "deleteFail": "An error occurred while deleting the team. Please try again later."
     },
     "users": {
         "name": "Name",

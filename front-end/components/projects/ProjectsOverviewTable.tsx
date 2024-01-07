@@ -5,7 +5,7 @@ import { useRouter } from "next/router";
 import { useState } from "react";
 
 type Props = {
-    projects: Project[] | undefined;
+    projects: Project[];
 };
 
 
@@ -18,6 +18,7 @@ const ProjectOverviewTable: React.FC<Props> = ({ projects }: Props) => {
     const { t } = useTranslation();
     
     const handleDeleteButton = async (id: any) => {
+        setStatusMessage("");
         setProjectToDelete(String(id));
         setShowConfirmation(true);
     };
@@ -26,13 +27,13 @@ const ProjectOverviewTable: React.FC<Props> = ({ projects }: Props) => {
 
     const handleDeleteConfirm = async () => {
         const response = await ProjectService.deleteProject(projectToDelete);
-        const data = await response.json();
         if (response.ok) {
-            setStatusMessage("Deleted project successfully!");
+            setStatusMessage(t('projects.deleted'));
         }
         else {
-            setStatusMessage(data.errorMessage);
+            setStatusMessage(t('projects.deleteFail'));
         }
+        setTimeout(() => setStatusMessage(""), 2000);
         setShowConfirmation(false);
     };
 
@@ -64,12 +65,13 @@ const ProjectOverviewTable: React.FC<Props> = ({ projects }: Props) => {
                             <td className="py-2 px-4 border-b text-center border-r">{project.team?.name}</td>
                             <td className="py-2 px-4 border-b text-center"><button className="global-button"
                                     onClick={() => router.push('/tasks/project/' + project.id)}>{t('projects.tasks')}</button></td>
-                            {project.id && role === "91fb3f8394dead2470aaf953e1bed9d9abf34a41f65ac666cff414ca229245b8" && <td className="py-2 px-4 border-b text-center border-l"><button className="global-button"
+                            {role === "91fb3f8394dead2470aaf953e1bed9d9abf34a41f65ac666cff414ca229245b8" && <td className="py-2 px-4 border-b text-center border-l"><button className="global-button"
                                     onClick={() => handleDeleteButton(project.id)}>🗑️</button></td>}
                         </tr>
                     ))}
                 </tbody>
             </table>
+            <div className="bg-gray-100 flex items-center justify-center">
             {showConfirmation && (
                             <>
                                 <p>{t('projects.confirmation')}</p>
@@ -80,7 +82,7 @@ const ProjectOverviewTable: React.FC<Props> = ({ projects }: Props) => {
                             </>
                         )}
             <p className=' text-red-600'>{statusMessage}</p>
-        
+            </div>
             </div>
         </div>
         </>

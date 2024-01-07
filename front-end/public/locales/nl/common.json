@@ -74,9 +74,10 @@
         "deleted": "Project is succesvol verwijderd.",
         "errorName": "Naam mag niet leeg zijn.",
         "errorTeam": "Team mag niet leeg zijn.",
-        "createError": "Er is een error opgetreden bij het aanmaken van het project. Controleer of de naam uniek is en probeer het opnieuw.",
+        "createError": "Er is een error opgetreden bij het aanmaken van het project. Kies een andere naam en probeer het opnieuw. Als dit probleem zich blijft voordoen, neem dan contact op met een beheerder.",
         "createSuccess": "Project is succesvol aangemaakt.",
-        "notAuthorizedCreate": "U bent niet geautoriseerd om een project aan te maken voor een team waar u geen lid van bent."
+        "notAuthorizedCreate": "U bent niet geautoriseerd om een project aan te maken voor dit team.",
+        "deleteFail": "Er is een error opgetreden bij het verwijderen van het project. Probeer het later opnieuw."
     },
     "teams": {
         "title": "Teams",
@@ -95,7 +96,8 @@
         "nameError": "Naam mag niet leeg zijn.",
         "noTeams": "Er bestaan nog geen teams. Neem contact op met een beheerder om een team aan te maken.",
         "newTeam": "Nieuw Team Aanmaken",
-        "createError": "Er is een error opgetreden bij het aanmaken van het project. Controleer of de naam uniek is en probeer het opnieuw."
+        "createError": "Er is een error opgetreden bij het aanmaken van het team. Controleer of de naam uniek is en probeer het opnieuw.",
+        "deleteFail": "Er is een error opgetreden bij het verwijderen van het team. Probeer het later opnieuw."
     },
     "users": {
         "name": "Naam",
