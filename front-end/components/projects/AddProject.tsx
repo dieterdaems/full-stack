@@ -88,7 +88,7 @@ const AddProject: React.FC<Props> = ({userTeams, handleShowAddProject} : Props) 
                 <label className="global-label"
                 htmlFor="teamid">Team</label>
                 <select className='global-input' id="teamid" onChange={((e) => setTeamId(parseInt(e.target.value)))} value={teamId}>
-                    <option value={-1}>Select team</option>
+                    <option value={-1}>{t('projects.selectTeam')}</option>
                         {userTeams && (userTeams.map((team) => (
                     <option key={team.id} value={team.id}>
                     {team.name}
