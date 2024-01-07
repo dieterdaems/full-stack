@@ -75,8 +75,8 @@
         "confirmation": "Are you sure you want to delete this project?",
         "deleted": "Project has been deleted.",
         "errorName": "Name cannot be empty.",
-        "errorTeamId": "Team Id is required.",
-        "createError": "An error occurred while creating the project.",
+        "errorTeam": "Team cannot be empty.",
+        "createError": "An error occurred while creating the project. Check that the name is unique and try again.",
         "createSuccess": "Project has been successfully created",
         "notAuthorizedCreate": "You are not authorized to create a project for a team you are not a member of."
     },
@@ -96,7 +96,8 @@
         "joined2": " successfully",
         "nameError": "Name cannot be empty.",
         "noTeams": "There are no teams yet. Contact an administrator to create a team.",
-        "newTeam": "Create New Team"
+        "newTeam": "Create New Team",
+        "createError":"An error occurred while creating the team. Check that the name is unique and try again."
     },
     "users": {
         "name": "Name",

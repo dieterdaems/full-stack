@@ -73,8 +73,8 @@
         "confirmation": "Weet u zeker dat u dit project wilt verwijderen?",
         "deleted": "Project is succesvol verwijderd.",
         "errorName": "Naam mag niet leeg zijn.",
-        "errorTeamId": "Team Id is verplicht",
-        "createError": "Er is een error opgetreden bij het aanmaken van het project.",
+        "errorTeam": "Team mag niet leeg zijn.",
+        "createError": "Er is een error opgetreden bij het aanmaken van het project. Controleer of de naam uniek is en probeer het opnieuw.",
         "createSuccess": "Project is succesvol aangemaakt.",
         "notAuthorizedCreate": "U bent niet geautoriseerd om een project aan te maken voor een team waar u geen lid van bent."
     },
@@ -94,7 +94,8 @@
         "joined2": ".",
         "nameError": "Naam mag niet leeg zijn.",
         "noTeams": "Er bestaan nog geen teams. Neem contact op met een beheerder om een team aan te maken.",
-        "newTeam": "Nieuw Team Aanmaken"
+        "newTeam": "Nieuw Team Aanmaken",
+        "createError": "Er is een error opgetreden bij het aanmaken van het project. Controleer of de naam uniek is en probeer het opnieuw."
     },
     "users": {
         "name": "Naam",

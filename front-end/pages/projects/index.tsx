@@ -10,6 +10,7 @@ import useInterval from "use-interval";
 import Header from "@/components/header";
 import Head from "next/head";
 import { useRouter } from "next/router";
+import UserService from "@/services/UserService";
 
 const Projects: React.FC = () => {
 
@@ -19,6 +20,7 @@ const Projects: React.FC = () => {
     const [title, setTitle] = useState<string>("");
 
     const {t} = useTranslation();
+
     const fetchProjects = async () => {
         setStatusMessage("");
         setErrorMessage("");
@@ -35,25 +37,63 @@ const Projects: React.FC = () => {
         }
     }
 
-const {data, isLoading, error} = useSWR('projectsFromDb', fetchProjects);
+    const getUserTeams = async () => {
+        if (!mayFetchTeams) return; // to prevent the unnecessary first call to getUserTeams() when the page is loaded
+        const id = sessionStorage.getItem("loggedUser");
+        const response = await UserService.getById(id);
+        if (!response.ok) {
+            if (response.status === 401) {
+                setAuthError(t('notAuthorizedAction'));
+            }
+            else setErrorMessage(response.statusText);
+        }
+        else {
+            const user = await response.json();
+            return user.teams;
+        }
+    };
 
 
-useInterval(() => {
-    mutate('projectsFromDb', fetchProjects());
+    const { data: currentTeamsData, error: currentTeamsError } = useSWR('currentTeams', getUserTeams);
+    const {data, isLoading, error} = useSWR('projectsFromDb', fetchProjects);
 
-}, 1000);
 
-// Show different title depending on the role of the user
-    const router = useRouter();
-useEffect(() => {
-    const role = sessionStorage.getItem('role');
-    // Reminder that roles are hashed in session storage for security reasons. Check UserLoginForm.tsx for more details.
-    if (role === '91fb3f8394dead2470aaf953e1bed9d9abf34a41f65ac666cff414ca229245b8') {
-        setTitle(t('projects.adminTitle'));
+    useInterval(() => {
+        mutate('projectsFromDb', fetchProjects());
+        // Only fetch teams if add Project form is visible, to avoid unnecessary requests
+        if (mayFetchTeams) {
+            mutate('currentTeams', getUserTeams());
+        }
+    }, 1000);
+
+
+    // Show different title depending on the role of the user
+        const router = useRouter();
+    useEffect(() => {
+        const role = sessionStorage.getItem('role');
+        // Reminder that roles are hashed in session storage for security reasons. Check UserLoginForm.tsx for more details.
+        if (role === '91fb3f8394dead2470aaf953e1bed9d9abf34a41f65ac666cff414ca229245b8') {
+            setTitle(t('projects.adminTitle'));
+        }
+        else setTitle(t('projects.userTitle'));
+
+    }, [router]);
+
+    // The way this works is that:
+    // We pass the function handleShowAddProject to the component AddProject
+    // Then:
+        // when the user clicks on the "Add project" button in the component AddProject
+        // or when the user clicks on the "Cancel" button in the component AddProject
+        // or when the user clicks on the "Submit" button in the component AddProject AND validation passes in handleSubmit
+    // Then:
+        // the function below (handleShowAddProject) is called in the component Add project
+        // and the state mayFetchTeams is updated to true or false, depending on the previous value.
+    // This way, we can avoid unnecessary requests to the server when the addProject form is not even visible :)
+    const [mayFetchTeams, setMayFetchTeams] = useState<boolean>(false);
+    const handleShowAddProject = () => {
+        setMayFetchTeams(!mayFetchTeams);
     }
-    else setTitle(t('projects.userTitle'));
 
-}, [router]);
 
 return (
     <>
@@ -70,10 +110,10 @@ return (
         {error && <p>{error}</p>}
         {isLoading && <p>{t('projects.loading')}</p>}
         <section>
-            {data && (<ProjectOverviewTable projects={data} />) }
+            {data && (<ProjectOverviewTable projects={data}/>) }
+            {data && (<AddProject userTeams={currentTeamsData} handleShowAddProject={handleShowAddProject} />)}
         </section>
         <section>
-            {data && <AddProject />}
         </section>
     </main>
 
