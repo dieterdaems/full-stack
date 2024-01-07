@@ -1,7 +1,6 @@
 import projectDb from "../domain/data-access/project.db";
 import { Project } from "../domain/model/project";
 import teamDb from "../domain/data-access/team.db";
-import { ProjectInput, Role } from "../types";
 import { UnauthorizedError } from "express-jwt";
 import userDb from "../domain/data-access/user.db";
 
@@ -27,7 +26,7 @@ Application Error: if team id is not provided
                    if team does not exist
 */
 const createProject = async ({projectin, currentUser, role}): Promise<Project> => {
-    // Checked here because cant be checked in domain validation. It's just an id.
+    // Checked here because cant be checked in domain validation.
     projectin.teamId = parseInt(projectin.teamId);
     if (!projectin.teamId && projectin.teamId !== 0) throw new Error('Team id is required.');
 

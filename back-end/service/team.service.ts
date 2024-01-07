@@ -1,7 +1,6 @@
 import { UnauthorizedError } from "express-jwt";
 import teamDb from "../domain/data-access/team.db";
 import { Team } from "../domain/model/team";
-import { Role, TeamInput } from "../types";
 
 /*
 Parameters: none
