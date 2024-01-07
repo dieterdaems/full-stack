@@ -51,6 +51,7 @@ Authorization Error: if user is not admin AND user is not part of the team that 
 */
 const getTasksByProjectId = async ({id, currentUser, role}): Promise<Task[]> => {
     const project = await projectDb.getProjectById(id);
+    if (!project) throw new Error(`Project with id ${id} does not exist.`);
     const user = await userDb.getUserById(currentUser);
     if (role !== 'admin' && !user.teams.map(team => team.id).includes(project?.team.id)) throw new UnauthorizedError('credentials_required', { message: 'You are not authorized to access this resource.' });
     return taskDb.getTasksByProjectId(id);

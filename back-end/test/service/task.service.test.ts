@@ -136,6 +136,13 @@ test('given valid tasks, when getTaskByProjectId is called as user and does not 
 }
 )
 
+test('given invalid project, when getTaskByProjectId is called, then error is thrown', async () => {
+    projectDb.getProjectById = mockProjectDbGetProjectById.mockResolvedValue(null);
+    taskDb.getTasksByProjectId = mockTasksDbGetTaskByProject.mockResolvedValue([]);
+    await expect(() => taskService.getTasksByProjectId({id: 1000, currentUser: 1, role: "admin"})).rejects.toThrow("Project with id 1000 does not exist.");
+}
+)
+
 //tests completeTask
 
 test('given valid task, when completeTask is called, then task is completed', async () => {
