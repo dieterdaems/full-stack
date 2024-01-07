@@ -79,7 +79,8 @@
         "createError": "An error occurred while creating the project. Please choose another name and try again or contact an administrator.",
         "createSuccess": "Project has been successfully created",
         "notAuthorizedCreate": "You are not authorized to create a project for this team.",
-        "deleteFail": "An error occurred while deleting the project. Please try again later."
+        "deleteFail": "An error occurred while deleting the project. Please try again later.",
+        "selectTeam": "Select a team"
     },
     "teams": {
         "title": "Teams",
