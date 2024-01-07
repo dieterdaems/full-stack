@@ -38,7 +38,7 @@ const main = async () => {
 
     const project1 = await prisma.project.create({
         data: {
-            name: 'Full-stack project',
+            name: 'full-stack project',
             team: {
                 connect: {id: 1}
             }
@@ -49,7 +49,7 @@ const main = async () => {
 
     const project2 = await prisma.project.create({
         data: {
-            name: 'Front-end project',
+            name: 'front-end project',
             team: {
                 connect: {id: 2}
             }
@@ -115,7 +115,7 @@ const main = async () => {
     
     const project3 = await prisma.project.create({
         data: {
-            name: 'Back-end project',
+            name: 'back-end project',
             team: {
                 connect: {id: 1}
             }

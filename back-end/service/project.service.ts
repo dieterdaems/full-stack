@@ -31,11 +31,12 @@ const createProject = async ({projectin, currentUser, role}: {projectin: Project
     if (role !== 'admin' && !LoggedIn.teams.map(team => team.id).includes(projectin?.teamId)) throw new UnauthorizedError('credentials_required', { message: 'You are not authorized to create a project for this team.' });
     if (!projectin.teamId && projectin.teamId !== 0) throw new Error('Team id is required.');
     const newProject = new Project({name: projectin.name}); // Domain validation
-    const existingProject = await projectDb.getProjectByName(projectin.name.trim());
+    const newName = newProject.name.trim().toLowerCase();
+    const existingProject = await projectDb.getProjectByName(newName);
     if (existingProject) throw new Error(`Project with name ${existingProject.name} already exists.`);
     const team = await teamDb.getTeamById(projectin.teamId);
     if (!team) throw new Error(`Team with id ${projectin.teamId} does not exist.`);
-    return projectDb.createProject({name: projectin.name.trim(), teamId: projectin.teamId});
+    return projectDb.createProject({name: newName, teamId: projectin.teamId});
 }
 
 /*
