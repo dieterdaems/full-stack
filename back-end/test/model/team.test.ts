@@ -2,7 +2,7 @@ import { Team } from "../../domain/model/team";
 
 
 test('Given: valid data for team, When: creating a team, Then: team is created with valid name',() => {
-    const validName: string = "Red devils";
+    const validName: string = "red devils";
     const validId: number = 1;
     const team: Team = new Team({name: validName, id: validId}); 
     expect(team.name).toEqual(validName);
