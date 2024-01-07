@@ -5,7 +5,7 @@ import teamDb from '../../domain/data-access/team.db';
 
 const team = new Team({
     id: 1,
-    name: 'Red devils'
+    name: 'red devils'
 });
 let mockTeamsDbGetAllTeams: jest.Mock;
 let mockTeamsGetTeamById: jest.Mock;
@@ -87,7 +87,7 @@ test('given unused team name, when createTeam is called as admin, then the team 
 
 test('given used team name, when createTeam is called as admin, then an error is thrown', async () => {
     teamDb.getTeamByName = mockTeamsGetTeamByName.mockResolvedValue(team);
-    await expect(teamService.createTeam({newTeam: team, role: 'admin'})).rejects.toThrow("Team with name Red devils already exists.");
+    await expect(teamService.createTeam({newTeam: team, role: 'admin'})).rejects.toThrow("Team with name red devils already exists.");
 });
 
 test('given (un)used team name, when createTeam is called as user, then an error is thrown', async () => {

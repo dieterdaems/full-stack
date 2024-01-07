@@ -50,18 +50,16 @@ const deleteUserById = async ({ id, role }): Promise<User> => {
 Parameters: name, specialisation, email, password of user to be created
 Return: created user with hashed password
 Application Error: 
-            if user already exists
-            if password is too short
             if domain validation failed
+            if user already exists
 */
 const createUser = async ({ name, specialisation, email, password }: UserInput): Promise<User> => {
-    const existingUser = await userDb.getUserByEmail(email);
+    const user = new User({ name, specialisation, email, password }); // domain validation
+    const cleanedEmail = email.toLowerCase();
+    const existingUser = await userDb.getUserByEmail(cleanedEmail);
     if (existingUser) throw new Error(`User with email ${email} already exists.`);
-
-    if (!password?.trim() || password.length < 7) throw new Error('Password must be at least 7 characters');
     const hashedPassword = await bcrypt.hash(password, 12);
-    const user = new User({ name, specialisation, email, password: hashedPassword });
-    return userDb.createUser(user);
+    return userDb.createUser({ ...user, email: cleanedEmail, password: hashedPassword });
 };
 
 /*
@@ -70,30 +68,32 @@ Return: updated user
 Authorization Errorr: if inlogged user is not admin nor the same as the one to be updated
                       if inlogged user is not admin and tries to update his role
 Application Error: if user does not exist
-                   if the new email is already taken
-                   if password is too short
                    if domain validation failed
+                   if the new email is already taken
 */
 const updateUser = async ({ targetUserId, updatedInfo, currentUser, currentRole }): Promise<User> => {
     if (currentRole !== 'admin' && currentUser !== targetUserId) throw new UnauthorizedError('credentials_required', { message: 'You are not authorized to update this resource.' });
+    if (currentRole !== 'admin' && updatedInfo.role && currentRole !== updatedInfo.role) throw new UnauthorizedError('credentials_required', { message: 'You are not authorized to update your role.' });
 
     const targetUser = await userDb.getUserById(targetUserId);
     if (!targetUser) throw new Error(`User with id ${targetUserId} does not exist.`);
 
-    if (targetUser.email.localeCompare(updatedInfo.email)) {
-        const existingUser = await userDb.getUserByEmail(updatedInfo.email);
+    const updatedUser = new User({ ...targetUser, ...updatedInfo }); // domain validation
+
+    const cleanedEmail = updatedInfo.email.toLowerCase();
+    if (targetUser.email !== cleanedEmail) {
+        const existingUser = await userDb.getUserByEmail(cleanedEmail);
         if (existingUser) throw new Error(`User with email ${updatedInfo.email} already exists.`);
+        else updatedInfo.email = cleanedEmail;
     }
 
     if (updatedInfo.password && targetUser.password !== updatedInfo.password ) {
-        if (!updatedInfo.password?.trim() || updatedInfo.password.length < 7) throw new Error('Password must be at least 7 characters');
         updatedInfo.password = await bcrypt.hash(updatedInfo.password, 12);
     }
 
-    if (currentRole !== 'admin' && updatedInfo.role && targetUser.role !== updatedInfo.role) throw new UnauthorizedError('credentials_required', { message: 'You are not authorized to update your role.' });
+    updatedInfo.id = targetUserId;
 
-    const updatedUser = new User({ ...targetUser, ...updatedInfo });
-    return userDb.updateUser({ id: targetUserId, ...updatedUser });
+    return userDb.updateUser(updatedInfo);
 }
 
 

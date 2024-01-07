@@ -208,7 +208,7 @@ test('given user fields with password too short, when createUser is called, then
 test('given valid user id and new password and email,' +
 ' when updateUser is called as admin,' +
 ' then password is hashed and user is updated and returned', async () => {
-    const updatedInfo = {email: 'newEmail@t.t', password: 'newPassword'};
+    const updatedInfo = {email: 'newemail@t.t', password: 'newPassword'};
 
     userDb.getUserById = mockUsersDbGetUserById.mockResolvedValue(user);
     userDb.updateUser = mockUsersDbupdateUser.mockResolvedValue({...user, ...updatedInfo, password: hashedPassword});
@@ -263,7 +263,7 @@ test('given valid user id and new password that is too short,' +
 test('given valid user id and new password and email,' +
 ' when updateUser is called as the user that wants to be updated (currentUser == targetUserId),' +
 ' then password is hashed and user is updated and returned', async () => {
-    const updatedInfo = {email: 'newEmail@t.t', password: 'newPassword'};
+    const updatedInfo = {email: 'newemail@t.t', password: 'newPassword'};
 
     userDb.getUserById = mockUsersDbGetUserById.mockResolvedValue(user);
     userDb.updateUser = mockUsersDbupdateUser.mockResolvedValue({...user, ...updatedInfo, password: hashedPassword});

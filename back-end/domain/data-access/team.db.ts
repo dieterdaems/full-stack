@@ -42,7 +42,7 @@ const getTeamByName = async (name: string): Promise<Team> => {
     }
 }
 
-const createTeam = async ({name}: Team): Promise<Team> => {
+const createTeam = async ({name}): Promise<Team> => {
     try {
         const teamPrisma = await prisma.team.create({
             data: {

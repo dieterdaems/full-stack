@@ -55,10 +55,17 @@ const EditProfileForm: React.FC<Props> = ({ user }: Props) => {
 
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
+        // Redirect to home page if the user didn't change anything
+        if (name === user.name && email === user.email && specialisation === user.specialisation) {
+            setErrorMessage(t('users.profile.noChanges'));
+            setTimeout(() => router.push("/"), 1000);
+            return;
+        }
         if (validate()) {
             const response = await UserService.update({ id: user.id, name, specialisation, email });
             if (!response.ok) {
-                setErrorMessage(response.statusText);
+                if (email !== user.email) setErrorMessage(t('users.profile.updateEmailFail'));
+                else (setErrorMessage(t('users.profile.updateFail')));
             }
             else {
                 setErrorMessage(t('users.profile.updated'));

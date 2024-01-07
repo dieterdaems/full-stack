@@ -122,7 +122,10 @@
             "loading": "Loading your information...",
             "updated": "Your profile has been updated.",
             "save": "Save",
-            "errorInvalidInput": "Invalid input. Check your input and try again."
+            "errorInvalidInput": "Invalid input. Check your input and try again.",
+            "updateEmailFail": "An error occurred while updating your profile. Please use another email address and try again. If the problem persists, please contact an administrator.",
+            "updateFail": "An error occurred while updating your profile. Please check your input and try again. If the problem persists, please contact an administrator.",
+            "noChanges": "No changes were made, redirecting to home page..."
         },
         "login": {
             "title": "Login",
