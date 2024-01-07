@@ -41,18 +41,6 @@ const taskRouter = express.Router();
  *           format: date-time
  *         projectId:
  *           type: integer
- *     TaskInputUpdate:
- *       type: object
- *       properties:
- *         name:
- *           type: string
- *         description:
- *           type: string
- *         deadline:
- *           type: string
- *           format: date-time
- *         completed:
- *           type: boolean
  */
 
 

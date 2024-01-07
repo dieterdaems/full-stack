@@ -29,13 +29,6 @@ const projectRouter = express.Router();
  *       required:
  *          - name
  *          - teamId
- *     ProjectInput:
- *       type: object
- *       properties:
- *         id:
- *           type: number
- *       required:
- *          - id
  */
 
 /**
